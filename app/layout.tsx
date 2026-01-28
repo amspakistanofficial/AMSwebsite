@@ -2,11 +2,13 @@ import React from "react"
 import type { Metadata } from 'next'
 import { Orbitron, Inter, Geist_Mono } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
+import { GamerBackground } from "@/components/GamerBackground"
 import './globals.css'
 
-const _orbitron = Orbitron({ subsets: ["latin"], variable: '--font-orbitron' });
-const _inter = Inter({ subsets: ["latin"], variable: '--font-inter' });
-const _geistMono = Geist_Mono({ subsets: ["latin"] });
+
+const orbitron = Orbitron({ subsets: ["latin"], variable: '--font-orbitron' });
+const inter = Inter({ subsets: ["latin"], variable: '--font-inter' });
+const geistMono = Geist_Mono({ subsets: ["latin"], variable: '--font-geist-mono' });
 
 export const metadata: Metadata = {
   title: 'AMS - Premium PC Parts, Graphics Cards & Gaming Hardware | Pakistan',
@@ -95,7 +97,7 @@ export const viewport = {
   width: 'device-width',
   initialScale: 1,
   maximumScale: 1,
-  themeColor: '#f5d742',
+  themeColor: '#ff6b00',
 }
 
 export default function RootLayout({
@@ -104,15 +106,16 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className={`${_orbitron.variable} ${_inter.variable} ${_geistMono.variable}`}>
+    <html lang="en" className={`${orbitron.variable} ${inter.variable} ${geistMono.variable}`}>
       <head>
         <meta charSet="utf-8" />
         <link rel="canonical" href="https://amspakistan.com" />
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
         <meta httpEquiv="X-UA-Compatible" content="ie=edge" />
-        <meta name="theme-color" content="#f5d742" />
+        <meta name="theme-color" content="#ff6b00" />
       </head>
-      <body className={`font-sans antialiased`}>
+      <body className={`font-sans antialiased text-white`}>
+        <GamerBackground />
         {children}
         <Analytics />
       </body>

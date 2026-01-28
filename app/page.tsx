@@ -2,13 +2,18 @@
 
 import { useEffect, useRef, useState, useCallback } from "react"
 import { Button } from "@/components/ui/button"
+import Image from "next/image"
 import { ChevronDown, Phone, Mail, MapPin, Clock, Cpu, HardDrive, Monitor, Headphones, Zap, Shield, Package } from 'lucide-react'
+import { GamerHeroBackground } from "@/components/GamerHeroBackground"
+import { InfiniteProductScroller } from "@/components/InfiniteProductScroller"
+import { HERO_PRODUCTS, FEATURED_CATEGORIES } from "@/lib/products"
 
 export default function HomePage() {
   const containerRef = useRef<HTMLDivElement>(null)
-  const [phase, setPhase] = useState<0 | 1 | 2>(0) // 0: logo only, 1: cards popping, 2: cards settled
+  const [phase, setPhase] = useState<0 | 1 | 2>(0)
   const [mounted, setMounted] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
+  const [selectedCategory, setSelectedCategory] = useState("all")
   const rafRef = useRef<number | null>(null)
   const lastPhaseRef = useRef<number>(0)
 
@@ -38,9 +43,9 @@ export default function HomePage() {
 
       // Determine phase based on scroll progress
       let newPhase: 0 | 1 | 2
-      if (progress < 0.33) {
+      if (progress < 0.2) {
         newPhase = 0
-      } else if (progress < 0.66) {
+      } else if (progress < 0.5) {
         newPhase = 1
       } else {
         newPhase = 2
@@ -65,36 +70,25 @@ export default function HomePage() {
     }
   }, [handleScroll])
 
-  const products = [
-    { image: "/products/1.png", name: "Graphics Cards", category: "GPU" },
-    { image: "/products/2.png", name: "PC Cases", category: "Cases" },
-    { image: "/products/3.png", name: "CPU Coolers", category: "Cooling" },
-    { image: "/products/4.png", name: "Motherboards", category: "Components" },
-    { image: "/products/5.png", name: "Memory", category: "RAM" },
-    { image: "/products/6.png", name: "Storage", category: "SSD" },
-    { image: "/products/7.png", name: "Power Supplies", category: "PSU" },
-    { image: "/products/8.png", name: "Case Fans", category: "Cooling" },
-  ]
+  const products = HERO_PRODUCTS
 
-  // Fixed positions for cards around the screen
+  // Fixed symmetrical positions for 6 cards
   const finalPositions = [
-    { x: -450, y: -280 },
-    { x: -320, y: 180 },
-    { x: -550, y: 50 },
-    { x: 450, y: -260 },
-    { x: 320, y: 200 },
-    { x: 520, y: -50 },
-    { x: -180, y: -350 },
-    { x: 380, y: 350 },
+    { x: -500, y: -250 }, // Top Left
+    { x: -550, y: 50 },   // Mid Left
+    { x: -450, y: 320 },  // Bottom Left
+    { x: 500, y: -250 },  // Top Right
+    { x: 550, y: 50 },    // Mid Right
+    { x: 450, y: 320 },   // Bottom Right
   ]
 
   const mobilePositions = [
-    { x: -120, y: -200 },
-    { x: 120, y: -180 },
-    { x: -140, y: 50 },
-    { x: 130, y: 80 },
-    { x: -100, y: 220 },
-    { x: 110, y: 250 },
+    { x: -190, y: -240 }, // Top Left
+    { x: 190, y: -200 },  // Top Right
+    { x: -210, y: 40 },   // Mid Left
+    { x: 210, y: 70 },    // Mid Right
+    { x: -180, y: 320 },  // Bottom Left
+    { x: 180, y: 350 },   // Bottom Right
   ]
 
   const positions = isMobile ? mobilePositions : finalPositions
@@ -106,33 +100,39 @@ export default function HomePage() {
     <div className="bg-[#0a0a0a]">
       {/* Navigation */}
       <nav className="fixed top-0 left-0 right-0 z-50 px-6 py-4 flex items-center justify-between bg-[#0a0a0a]/90 backdrop-blur-md border-b border-[#1a1a1a]">
-        <div className="flex items-center gap-8">
-          <div className="flex items-center gap-3">
-            <img
-              src="/ams-logo.png"
-              alt="AMS"
-              className="h-10 w-auto"
-            />
-          </div>
-          <div className="hidden md:flex items-center gap-8 text-gray-400 text-sm font-medium tracking-wide">
-            <a href="#home" className="hover:text-[#f5d742] transition-colors">Home</a>
-            <a href="#about" className="hover:text-[#f5d742] transition-colors">About</a>
-            <a href="#contact" className="hover:text-[#f5d742] transition-colors">Contact</a>
+        <div className="flex items-center gap-3">
+          <img
+            src="/ams-logo.png"
+            alt="AMS"
+            className="h-10 w-auto"
+          />
+        </div>
+
+        <div className="hidden md:flex flex-1 justify-center">
+          <div className="flex items-center gap-10 text-gray-400 text-sm font-medium tracking-widest uppercase">
+            <a href="#home" className="hover:text-primary transition-colors">Home</a>
+            <a href="#about" className="hover:text-primary transition-colors">About</a>
+            <a href="#products" className="hover:text-primary transition-colors">Products</a>
+            <a href="#contact" className="hover:text-primary transition-colors">Contact</a>
           </div>
         </div>
+
         <Button
           size="sm"
-          className="bg-[#f5d742] text-black hover:bg-[#e5c732] font-semibold px-5 tracking-wide"
+          className="bg-primary text-white hover:bg-orange-600 font-bold px-5 tracking-wide rounded-none border-l-4 border-accent"
           onClick={() => window.open("https://wa.me/923348964450", "_blank")}
         >
-          Get Quote
+          GET QUOTE
         </Button>
       </nav>
 
-      {/* Hero Section - 3 scroll heights */}
-      <div id="home" ref={containerRef} className="relative" style={{ height: "300vh" }}>
+      {/* Hero Section - 2 scroll heights for faster activation */}
+      <div id="home" ref={containerRef} className="relative" style={{ height: "200vh" }}>
         <div className="sticky top-0 left-0 right-0 h-screen overflow-hidden">
           <div className="relative w-full h-full flex items-center justify-center">
+
+            {/* Background Animation */}
+            <GamerHeroBackground phase={phase} />
 
             {/* Product Cards - CSS transitions handle all movement */}
             {displayProducts.map((product, index) => {
@@ -142,7 +142,7 @@ export default function HomePage() {
               return (
                 <div
                   key={index}
-                  className="absolute w-40 h-40 md:w-52 md:h-52 flex items-center justify-center group cursor-pointer"
+                  className="absolute w-28 h-28 md:w-60 md:h-60 flex items-center justify-center pointer-events-none"
                   style={{
                     transform: phase === 0
                       ? 'translate(0px, 0px) scale(0.3)'
@@ -156,12 +156,9 @@ export default function HomePage() {
                   <img
                     src={product.image || "/placeholder.svg"}
                     alt={product.name}
-                    className="w-full h-full object-contain drop-shadow-[0_0_25px_rgba(245,215,66,0.15)] hover:drop-shadow-[0_0_35px_rgba(245,215,66,0.3)] transition-all duration-300 hover:scale-110"
+                    className="w-full h-full object-contain drop-shadow-[0_0_20px_rgba(255,107,0,0.2)] transition-all duration-300"
                     loading="eager"
                   />
-                  <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-center whitespace-nowrap">
-                    <span className="text-[#f5d742] text-xs font-semibold tracking-wider uppercase bg-black/80 px-3 py-1 rounded-full">{product.name}</span>
-                  </div>
                 </div>
               )
             })}
@@ -171,18 +168,66 @@ export default function HomePage() {
               className="absolute z-10 flex flex-col items-center justify-center pointer-events-none"
               style={{
                 opacity: phase === 0 ? 1 : 0,
-                transform: phase === 0 ? 'scale(1)' : 'scale(0.8)',
+                transform: phase === 0 ? 'scale(1.2)' : 'scale(0.8)',
                 transition: 'opacity 500ms ease, transform 500ms ease',
                 willChange: 'transform, opacity',
               }}
             >
-              <img
-                src="/ams-logo.png"
-                alt="AMS"
-                className="h-40 md:h-56 w-auto drop-shadow-2xl"
-              />
-              <p className="text-lg md:text-xl text-gray-500 mt-6 tracking-widest uppercase font-light">Premium PC Parts</p>
+              <div className="relative overflow-hidden metallic-logo-container">
+                <img
+                  src="/ams-logo.png"
+                  alt="AMS"
+                  className="h-64 md:h-80 w-auto drop-shadow-2xl relative z-10"
+                />
+                <div className="absolute inset-0 z-20 metallic-shine" />
+              </div>
+              <p className="text-xl md:text-2xl text-gray-400 mt-3 tracking-widest uppercase font-bold">Premium PC Parts</p>
             </div>
+
+            <style jsx>{`
+              .metallic-logo-container {
+                display: relative;
+              }
+              .metallic-shine {
+                background: linear-gradient(
+                  110deg,
+                  transparent 40%,
+                  rgba(255, 255, 255, 0) 45%,
+                  rgba(255, 255, 255, 0.6) 50%,
+                  rgba(255, 255, 255, 0) 55%,
+                  transparent 60%
+                );
+                background-size: 200% 100%;
+                animation: shine 3s infinite;
+                mask-image: url(/ams-logo.png);
+                mask-size: contain;
+                mask-repeat: no-repeat;
+                mask-position: center;
+                -webkit-mask-image: url(/ams-logo.png);
+                -webkit-mask-size: contain;
+                -webkit-mask-repeat: no-repeat;
+                -webkit-mask-position: center;
+              }
+              @keyframes shine {
+                0% { background-position: 200% 0; }
+                100% { background-position: -200% 0; }
+              }
+              @keyframes float {
+                0%, 100% { transform: translateY(0) scale(1); }
+                50% { transform: translateY(-20px) scale(1.02); }
+              }
+              .animate-float {
+                animation: float 15s ease-in-out infinite;
+              }
+              .animate-float-delayed {
+                animation: float 18s ease-in-out infinite;
+                animation-delay: 2s;
+              }
+              .animate-float-slow {
+                animation: float 22s ease-in-out infinite;
+                animation-delay: 5s;
+              }
+            `}</style>
 
             {/* Headline and CTA - appears after cards settle */}
             <div
@@ -195,18 +240,18 @@ export default function HomePage() {
                 pointerEvents: phase === 2 ? 'auto' : 'none',
               }}
             >
-              <h1 className="text-5xl md:text-7xl font-bold text-white mb-2 leading-tight tracking-tight">
+              <h1 className="text-4xl md:text-7xl font-bold text-white mb-2 leading-tight tracking-tight">
                 BUILD YOUR
               </h1>
-              <h2 className="text-5xl md:text-7xl font-bold text-[#f5d742] mb-6 leading-tight tracking-tight">
+              <h2 className="text-4xl md:text-7xl font-black text-primary mb-6 leading-tight tracking-tighter italic">
                 DREAM RIG
               </h2>
-              <p className="text-gray-400 text-lg md:text-xl mb-8 max-w-xl mx-auto">
-                Premium gaming hardware and PC components for enthusiasts
+              <p className="text-gray-400 text-base md:text-xl mb-8 max-w-xl mx-auto font-medium">
+                Premium gaming hardware and PC components for enthusiasts in Pakistan by <span className="text-accent font-bold">AMS</span>
               </p>
               <Button
                 size="lg"
-                className="bg-[#f5d742] text-black hover:bg-[#e5c732] font-bold text-base px-10 py-6 rounded tracking-wide"
+                className="bg-primary text-white hover:bg-orange-600 font-black text-lg px-12 py-8 rounded-none tracking-tighter uppercase border-b-4 border-accent shadow-[0_10px_20px_rgba(255,107,0,0.3)] transition-all transform hover:scale-105"
               >
                 EXPLORE PRODUCTS
               </Button>
@@ -221,8 +266,8 @@ export default function HomePage() {
               }}
             >
               <div className="flex flex-col items-center gap-2 text-gray-500 text-sm">
-                <span className="tracking-widest uppercase text-xs">Scroll to explore</span>
-                <ChevronDown className="w-5 h-5 text-[#f5d742]" />
+                <span className="tracking-widest uppercase text-xs">Scroll to explore AMS</span>
+                <ChevronDown className="w-5 h-5 text-[#ff6b00]" />
               </div>
             </div>
           </div>
@@ -230,44 +275,54 @@ export default function HomePage() {
       </div>
 
       {/* About Section */}
-      <section id="about" className="py-24 px-6 bg-[#0a0a0a]">
-        <div className="max-w-6xl mx-auto">
+      <section id="about" className="py-24 px-8 bg-[#0a0a0a] relative overflow-hidden">
+        {/* bg1 Positioning - Full Section Coverage */}
+        <div className="absolute inset-0 opacity-[0.06] pointer-events-none z-0 animate-float">
+          <Image
+            src="/backgrounds/bg1.png"
+            alt="AMS background 1"
+            fill
+            className="object-cover"
+          />
+        </div>
+
+        <div className="max-w-[1400px] mx-auto relative z-10">
           <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold text-white mb-4 tracking-tight">
-              WHY CHOOSE <span className="text-[#f5d742]">AMS</span>
+            <h2 className="text-4xl md:text-5xl font-black text-white mb-4 tracking-tighter uppercase">
+              WHY CHOOSE <span className="text-[#ff6b00]">AMS</span>
             </h2>
-            <p className="text-gray-400 text-lg max-w-2xl mx-auto">
-              Your trusted partner for premium PC components and gaming hardware
+            <p className="text-gray-400 text-lg max-w-2xl mx-auto italic">
+              Your trusted partner for premium PC components and gaming hardware in Pakistan
             </p>
           </div>
 
           <div className="grid md:grid-cols-3 gap-8">
-            <div className="bg-[#111111] border border-[#1a1a1a] rounded-lg p-8 hover:border-[#f5d742]/30 transition-colors">
-              <div className="w-14 h-14 bg-[#f5d742]/10 rounded-lg flex items-center justify-center mb-6">
-                <Shield className="w-7 h-7 text-[#f5d742]" />
+            <div className="bg-[#111111] border-l-4 border-[#ff6b00] rounded-none p-8 hover:bg-[#1a1a1a] transition-all group">
+              <div className="w-14 h-14 bg-[#ff6b00]/10 rounded-none flex items-center justify-center mb-6 group-hover:bg-[#ff6b00]/20 transition-colors">
+                <Shield className="w-7 h-7 text-[#ff6b00]" />
               </div>
-              <h3 className="text-xl font-bold text-white mb-3">Authentic Products</h3>
-              <p className="text-gray-400 leading-relaxed">
+              <h3 className="text-xl font-black text-white mb-3 uppercase tracking-tighter">Authentic Products</h3>
+              <p className="text-gray-400 leading-relaxed font-medium">
                 100% genuine components sourced directly from authorized distributors with full manufacturer warranty.
               </p>
             </div>
 
-            <div className="bg-[#111111] border border-[#1a1a1a] rounded-lg p-8 hover:border-[#f5d742]/30 transition-colors">
-              <div className="w-14 h-14 bg-[#f5d742]/10 rounded-lg flex items-center justify-center mb-6">
-                <Zap className="w-7 h-7 text-[#f5d742]" />
+            <div className="bg-[#111111] border-l-4 border-[#8a2be2] rounded-none p-8 hover:bg-[#1a1a1a] transition-all group">
+              <div className="w-14 h-14 bg-[#8a2be2]/10 rounded-none flex items-center justify-center mb-6 group-hover:bg-[#8a2be2]/20 transition-colors">
+                <Zap className="w-7 h-7 text-[#8a2be2]" />
               </div>
-              <h3 className="text-xl font-bold text-white mb-3">Expert Support</h3>
-              <p className="text-gray-400 leading-relaxed">
+              <h3 className="text-xl font-black text-white mb-3 uppercase tracking-tighter">Expert Support</h3>
+              <p className="text-gray-400 leading-relaxed font-medium">
                 Our team of PC enthusiasts provides personalized guidance to help you build the perfect system.
               </p>
             </div>
 
-            <div className="bg-[#111111] border border-[#1a1a1a] rounded-lg p-8 hover:border-[#f5d742]/30 transition-colors">
-              <div className="w-14 h-14 bg-[#f5d742]/10 rounded-lg flex items-center justify-center mb-6">
-                <Cpu className="w-7 h-7 text-[#f5d742]" />
+            <div className="bg-[#111111] border-l-4 border-[#ff6b00] rounded-none p-8 hover:bg-[#1a1a1a] transition-all group">
+              <div className="w-14 h-14 bg-[#ff6b00]/10 rounded-none flex items-center justify-center mb-6 group-hover:bg-[#ff6b00]/20 transition-colors">
+                <Cpu className="w-7 h-7 text-[#ff6b00]" />
               </div>
-              <h3 className="text-xl font-bold text-white mb-3">Latest Hardware</h3>
-              <p className="text-gray-400 leading-relaxed">
+              <h3 className="text-xl font-black text-white mb-3 uppercase tracking-tighter">Latest Hardware</h3>
+              <p className="text-gray-400 leading-relaxed font-medium">
                 Stay ahead with the newest GPUs, CPUs, and components from top brands like NVIDIA, AMD, and Intel.
               </p>
             </div>
@@ -276,11 +331,11 @@ export default function HomePage() {
       </section>
 
       {/* Video Showcase Section */}
-      <section className="py-24 px-6 bg-[#080808]">
-        <div className="max-w-6xl mx-auto">
+      <section className="py-24 px-8 bg-[#080808]">
+        <div className="max-w-[1400px] mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold text-white mb-4 tracking-tight">
-              SEE US IN <span className="text-[#f5d742]">ACTION</span>
+            <h2 className="text-4xl md:text-5xl font-bold text-white mb-4 tracking-tight uppercase">
+              SEE US IN <span className="text-primary italic">ACTION</span>
             </h2>
             <p className="text-gray-400 text-lg max-w-2xl mx-auto">
               Watch our latest builds, reviews, and tutorials
@@ -298,18 +353,17 @@ export default function HomePage() {
             <div className="flex gap-6 pb-4 w-max">
               {/* Video cards - duplicated for infinite loop effect */}
               {[...Array(2)].map((_, setIndex) => (
-                <>
-                  {/* Video 1: RTX Unboxing */}
-                  <div key={`v1-${setIndex}`} className="flex-shrink-0 w-[270px] aspect-[9/16] bg-[#111111] border border-[#1a1a1a] rounded-2xl overflow-hidden relative hover:border-[#f5d742]/50 transition-colors">
+                <div key={`set-${setIndex}`} className="flex gap-6">
+                  <div key={`v1-${setIndex}`} className="flex-shrink-0 w-[270px] aspect-[9/16] bg-[#111111] border border-[#1a1a1a] rounded-2xl overflow-hidden relative hover:border-primary/50 transition-colors">
                     <video
                       className="w-full h-full object-cover"
                       autoPlay
                       muted
                       loop
                       playsInline
-                      poster="/products/gpu-1.jpg"
                     >
-                      {/* Replace with your video: src="/videos/your-video-1.mp4" */}
+                      <source src="/videos/1/video.mp4" type="video/mp4" />
+                      {/* Fallback for development */}
                       <source src="https://assets.mixkit.co/videos/preview/mixkit-hands-of-a-woman-writing-with-a-pen-in-a-notebook-41437-large.mp4" type="video/mp4" />
                     </video>
                     <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4">
@@ -318,16 +372,15 @@ export default function HomePage() {
                   </div>
 
                   {/* Video 2: Custom Build */}
-                  <div key={`v2-${setIndex}`} className="flex-shrink-0 w-[270px] aspect-[9/16] bg-[#111111] border border-[#1a1a1a] rounded-2xl overflow-hidden relative hover:border-[#f5d742]/50 transition-colors">
+                  <div key={`v2-${setIndex}`} className="flex-shrink-0 w-[270px] aspect-[9/16] bg-[#111111] border border-[#1a1a1a] rounded-2xl overflow-hidden relative hover:border-primary/50 transition-colors">
                     <video
                       className="w-full h-full object-cover"
                       autoPlay
                       muted
                       loop
                       playsInline
-                      poster="/products/case-1.jpg"
                     >
-                      {/* Replace with your video: src="/videos/your-video-2.mp4" */}
+                      <source src="/videos/2/video.mp4" type="video/mp4" />
                       <source src="https://assets.mixkit.co/videos/preview/mixkit-typing-on-a-laptop-in-a-pink-neon-atmosphere-50261-large.mp4" type="video/mp4" />
                     </video>
                     <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4">
@@ -336,16 +389,15 @@ export default function HomePage() {
                   </div>
 
                   {/* Video 3: Cooling Solutions */}
-                  <div key={`v3-${setIndex}`} className="flex-shrink-0 w-[270px] aspect-[9/16] bg-[#111111] border border-[#1a1a1a] rounded-2xl overflow-hidden relative hover:border-[#f5d742]/50 transition-colors">
+                  <div key={`v3-${setIndex}`} className="flex-shrink-0 w-[270px] aspect-[9/16] bg-[#111111] border border-[#1a1a1a] rounded-2xl overflow-hidden relative hover:border-primary/50 transition-colors">
                     <video
                       className="w-full h-full object-cover"
                       autoPlay
                       muted
                       loop
                       playsInline
-                      poster="/products/cooler-1.jpg"
                     >
-                      {/* Replace with your video: src="/videos/your-video-3.mp4" */}
+                      <source src="/videos/3/video.mp4" type="video/mp4" />
                       <source src="https://assets.mixkit.co/videos/preview/mixkit-hands-working-on-a-laptop-in-slow-motion-24-large.mp4" type="video/mp4" />
                     </video>
                     <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4">
@@ -354,16 +406,15 @@ export default function HomePage() {
                   </div>
 
                   {/* Video 4: GPU Installation */}
-                  <div key={`v4-${setIndex}`} className="flex-shrink-0 w-[270px] aspect-[9/16] bg-[#111111] border border-[#1a1a1a] rounded-2xl overflow-hidden relative hover:border-[#f5d742]/50 transition-colors">
+                  <div key={`v4-${setIndex}`} className="flex-shrink-0 w-[270px] aspect-[9/16] bg-[#111111] border border-[#1a1a1a] rounded-2xl overflow-hidden relative hover:border-primary/50 transition-colors">
                     <video
                       className="w-full h-full object-cover"
                       autoPlay
                       muted
                       loop
                       playsInline
-                      poster="/products/motherboard-1.jpg"
                     >
-                      {/* Replace with your video: src="/videos/your-video-4.mp4" */}
+                      <source src="/videos/4/video.mp4" type="video/mp4" />
                       <source src="https://assets.mixkit.co/videos/preview/mixkit-computer-and-smartphone-in-a-workspace-top-shot-50235-large.mp4" type="video/mp4" />
                     </video>
                     <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4">
@@ -372,29 +423,27 @@ export default function HomePage() {
                   </div>
 
                   {/* Video 5: Build Review */}
-                  <div key={`v5-${setIndex}`} className="flex-shrink-0 w-[270px] aspect-[9/16] bg-[#111111] border border-[#1a1a1a] rounded-2xl overflow-hidden relative hover:border-[#f5d742]/50 transition-colors">
+                  <div key={`v5-${setIndex}`} className="flex-shrink-0 w-[270px] aspect-[9/16] bg-[#111111] border border-[#1a1a1a] rounded-2xl overflow-hidden relative hover:border-primary/50 transition-colors">
                     <video
                       className="w-full h-full object-cover"
                       autoPlay
                       muted
                       loop
                       playsInline
-                      poster="/products/ram-1.jpg"
                     >
-                      {/* Replace with your video: src="/videos/your-video-5.mp4" */}
+                      <source src="/videos/5/video.mp4" type="video/mp4" />
                       <source src="https://assets.mixkit.co/videos/preview/mixkit-man-working-on-his-laptop-at-home-4839-large.mp4" type="video/mp4" />
                     </video>
                     <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4">
                       <p className="text-white font-semibold text-sm">Build Review</p>
                     </div>
                   </div>
-                </>
+                </div>
               ))}
             </div>
           </div>
 
-          {/* Custom scrollbar hide styles */}
-          <style>{`
+          <style jsx>{`
             .scrollbar-hide {
               -ms-overflow-style: none;
               scrollbar-width: none;
@@ -407,41 +456,53 @@ export default function HomePage() {
       </section>
 
       {/* Products Grid Section */}
-      <section id="services" className="py-24 px-6 bg-[#0a0a0a]">
-        <div className="max-w-6xl mx-auto">
+      <section id="products" className="py-24 px-8 bg-[#0a0a0a] relative overflow-hidden">
+        {/* bg2 Positioning - Covering larger area */}
+        <div className="absolute inset-0 opacity-[0.05] pointer-events-none z-0 animate-float-delayed">
+          <Image
+            src="/backgrounds/bg2.png"
+            alt="AMS background 2"
+            fill
+            className="object-cover scale-110"
+          />
+        </div>
+
+        <div className="max-w-[1400px] mx-auto relative z-10">
           <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold text-white mb-4 tracking-tight">
-              OUR <span className="text-[#f5d742]">PRODUCTS</span>
+            <h2 className="text-4xl md:text-5xl font-black text-white mb-4 tracking-tighter uppercase">
+              AMS <span className="text-[#ff6b00]">PRODUCTS</span>
             </h2>
-            <p className="text-gray-400 text-lg max-w-2xl mx-auto">
-              From high-end GPUs to premium cases, we have everything you need
+            <p className="text-gray-400 text-lg max-w-2xl mx-auto italic font-medium">
+              Filter by category to find your perfect component
             </p>
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {[
-              { icon: Monitor, name: "Graphics Cards", desc: "RTX & RX Series" },
-              { icon: HardDrive, name: "Storage", desc: "SSDs & HDDs" },
-              { icon: Cpu, name: "Processors", desc: "Intel & AMD" },
-              { icon: Package, name: "Cases", desc: "Gaming & Professional" },
-            ].map((item, index) => (
-              <div key={index} className="bg-[#111111] border border-[#1a1a1a] rounded-lg p-6 hover:border-[#f5d742]/50 hover:bg-[#151515] transition-all cursor-pointer group">
-                <item.icon className="w-10 h-10 text-[#f5d742] mb-4 group-hover:scale-110 transition-transform" />
-                <h3 className="text-white font-bold mb-1">{item.name}</h3>
-                <p className="text-gray-500 text-sm">{item.desc}</p>
-              </div>
+          <div className="flex flex-wrap justify-center gap-4 mb-16 px-4">
+            {FEATURED_CATEGORIES.map((cat) => (
+              <button
+                key={cat.id}
+                onClick={() => setSelectedCategory(cat.id)}
+                className={`px-4 md:px-8 py-2 md:py-3 font-bold uppercase tracking-tighter transition-all duration-300 border-2 ${selectedCategory === cat.id
+                  ? 'bg-[#ff6b00] border-[#ff6b00] text-white shadow-[0_0_20px_rgba(255,107,0,0.3)] scale-110'
+                  : 'bg-transparent border-[#2a2a2a] text-gray-500 hover:border-[#ff6b00] hover:text-[#ff6b00]'
+                  }`}
+              >
+                {cat.name}
+              </button>
             ))}
           </div>
 
+          <InfiniteProductScroller selectedCategory={selectedCategory} />
+
           <div className="mt-12 grid md:grid-cols-2 gap-8">
-            <div className="bg-gradient-to-br from-[#f5d742]/10 to-transparent border border-[#f5d742]/20 rounded-lg p-8">
+            <div className="bg-gradient-to-br from-primary/10 to-transparent border border-primary/20 rounded-lg p-8">
               <h3 className="text-2xl font-bold text-white mb-4">Custom PC Builds</h3>
               <p className="text-gray-400 mb-6 leading-relaxed">
                 Let our experts help you design and build your dream gaming PC. We offer complete assembly services with cable management and testing.
               </p>
               <Button
                 variant="outline"
-                className="border-[#f5d742] text-[#f5d742] hover:bg-[#f5d742] hover:text-black bg-transparent"
+                className="border-primary text-primary hover:bg-primary hover:text-black bg-transparent"
                 onClick={() => window.open("https://wa.me/923348964450?text=I%20wanted%20guidance%20on%20the%20build%20something%20like%20this", "_blank")}
               >
                 Learn More
@@ -463,211 +524,224 @@ export default function HomePage() {
             </div>
           </div>
         </div>
-      </section>
+      </section >
 
-      {/* Contact Section */}
-      <section id="contact" className="py-24 px-6 bg-[#0a0a0a]">
-        <div className="max-w-6xl mx-auto">
-          <div className="grid md:grid-cols-2 gap-12">
-            <div>
-              <h2 className="text-4xl md:text-5xl font-bold text-white mb-4 tracking-tight">
-                GET IN <span className="text-[#f5d742]">TOUCH</span>
-              </h2>
-              <p className="text-gray-400 text-lg mb-8">
-                Have questions about our products or need help with your build? Reach out to us!
-              </p>
+      {/* Contact & Reviews Wrapper */}
+      <div className="relative overflow-hidden">
+        {/* bg3 Positioning - Covering both Contact and Reviews */}
+        <div className="absolute inset-0 opacity-[0.07] pointer-events-none z-0 animate-float-slow">
+          <Image
+            src="/backgrounds/bg3.png"
+            alt="AMS background 3"
+            fill
+            className="object-cover"
+          />
+        </div>
 
-              <div className="space-y-6">
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 bg-[#f5d742]/10 rounded-lg flex items-center justify-center">
-                    <Phone className="w-5 h-5 text-[#f5d742]" />
-                  </div>
-                  <div>
-                    <p className="text-gray-500 text-sm">Phone</p>
-                    <p className="text-white font-medium">+923348964450</p>
-                  </div>
-                </div>
+        {/* Contact Section */}
+        <section id="contact" className="py-24 px-8 bg-transparent relative z-10">
+          <div className="max-w-[1400px] mx-auto">
+            <div className="grid md:grid-cols-2 gap-12">
+              <div>
+                <h2 className="text-4xl md:text-5xl font-bold text-white mb-4 tracking-tight">
+                  GET IN <span className="text-primary italic">TOUCH</span>
+                </h2>
+                <p className="text-gray-400 text-lg mb-8">
+                  Have questions about our products or need help with your build? Reach out to us!
+                </p>
 
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 bg-[#f5d742]/10 rounded-lg flex items-center justify-center">
-                    <Mail className="w-5 h-5 text-[#f5d742]" />
+                <div className="space-y-6">
+                  <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
+                      <Phone className="w-5 h-5 text-primary" />
+                    </div>
+                    <div>
+                      <p className="text-gray-500 text-sm">Phone</p>
+                      <p className="text-white font-medium">+923348964450</p>
+                    </div>
                   </div>
-                  <div>
-                    <p className="text-gray-500 text-sm">Email</p>
-                    <p className="text-white font-medium">amspakistanofficial@gmail.com</p>
-                  </div>
-                </div>
 
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 bg-[#f5d742]/10 rounded-lg flex items-center justify-center">
-                    <MapPin className="w-5 h-5 text-[#f5d742]" />
+                  <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
+                      <Mail className="w-5 h-5 text-primary" />
+                    </div>
+                    <div>
+                      <p className="text-gray-500 text-sm">Email</p>
+                      <p className="text-white font-medium">amspakistanofficial@gmail.com</p>
+                    </div>
                   </div>
-                  <div>
-                    <p className="text-gray-500 text-sm">Location</p>
-                    <p className="text-white font-medium">123 Tech Street, Gaming District</p>
+
+                  <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
+                      <MapPin className="w-5 h-5 text-primary" />
+                    </div>
+                    <div>
+                      <p className="text-gray-500 text-sm">Location</p>
+                      <p className="text-white font-medium">123 Tech Street, Gaming District</p>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
 
-            <div className="bg-[#111111] border border-[#1a1a1a] rounded-lg p-12">
-              <h3 className="text-3xl font-bold text-white mb-8">Send us a message</h3>
-              <div className="flex flex-col md:flex-row gap-6">
-                <Button
-                  className="flex-1 bg-[#f5d742] text-black hover:bg-[#e5c732] font-bold py-4 text-lg rounded-lg"
-                  onClick={() => window.open("mailto:amspakistanofficial@gmail.com", "_blank")}
-                >
-                  Email Us
-                </Button>
-                <Button
-                  className="flex-1 bg-green-600 text-white hover:bg-green-700 font-bold py-4 text-lg rounded-lg"
-                  onClick={() => window.open("https://wa.me/923348964450", "_blank")}
-                >
-                  WhatsApp
-                </Button>
+              <div className="bg-[#111111] border border-[#1a1a1a] rounded-lg p-12">
+                <h3 className="text-3xl font-bold text-white mb-8">Send us a message</h3>
+                <div className="flex flex-col md:flex-row gap-6">
+                  <Button
+                    className="flex-1 bg-primary text-white hover:bg-orange-600 font-bold py-4 text-lg rounded-lg shadow-[0_0_15px_rgba(255,107,0,0.2)]"
+                    onClick={() => window.open("mailto:amspakistanofficial@gmail.com", "_blank")}
+                  >
+                    Email Us
+                  </Button>
+                  <Button
+                    className="flex-1 bg-green-600 text-white hover:bg-green-700 font-bold py-4 text-lg rounded-lg"
+                    onClick={() => window.open("https://wa.me/923348964450", "_blank")}
+                  >
+                    WhatsApp
+                  </Button>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section >
 
-      {/* Customer Reviews Section - Horizontally scrolling with 10 reviews */}
-      <section id="reviews" className="py-20 px-6 bg-[#0a0a0a] border-t border-[#1a1a1a]">
-        <div className="max-w-6xl mx-auto">
-          {/* Section heading and description */}
-          <h2 className="text-4xl md:text-5xl font-bold text-white mb-4 text-center">Customer Reviews</h2>
-          <p className="text-gray-400 text-center mb-12 text-lg max-w-2xl mx-auto">Trusted by gamers and PC enthusiasts</p>
+        {/* Customer Reviews Section */}
+        <section id="reviews" className="py-20 px-8 bg-transparent border-t border-[#1a1a1a] relative z-10">
+          <div className="max-w-[1400px] mx-auto">
+            {/* Section heading and description */}
+            <h2 className="text-4xl md:text-5xl font-bold text-white mb-4 text-center">Customer Reviews</h2>
+            <p className="text-gray-400 text-center mb-12 text-lg max-w-2xl mx-auto">Trusted by gamers and PC enthusiasts</p>
 
-          {/* Horizontally scrolling review carousel */}
-          <div className="overflow-x-auto scrollbar-hide">
-            <div className="flex gap-6 pb-4 w-max">
-              {/* Review 1 */}
-              <div className="flex-shrink-0 w-80 bg-[#111111] border border-[#1a1a1a] rounded-lg p-6 hover:border-[#f5d742]/30 transition-colors">
-                <div className="flex gap-1 mb-4">
-                  {[...Array(5)].map((_, i) => (
-                    <span key={i} className="text-[#f5d742] text-xl">★</span>
-                  ))}
+            {/* Horizontally scrolling review carousel */}
+            <div className="overflow-x-auto scrollbar-hide">
+              <div className="flex gap-6 pb-4 w-max">
+                {/* Review 1 */}
+                <div className="flex-shrink-0 w-80 bg-[#111111] border border-[#1a1a1a] rounded-lg p-6 hover:border-primary/30 transition-colors">
+                  <div className="flex gap-1 mb-4">
+                    {[...Array(5)].map((_, i) => (
+                      <span key={i} className="text-primary text-xl">★</span>
+                    ))}
+                  </div>
+                  <p className="text-gray-300 mb-4 leading-relaxed">AMS has the best selection of graphics cards in Pakistan. Their expertise and support are unmatched. Highly recommend!</p>
+                  <p className="text-white font-semibold">Ahmed Khan</p>
+                  <p className="text-gray-500 text-sm">RTX 4090</p>
                 </div>
-                <p className="text-gray-300 mb-4 leading-relaxed">AMS has the best selection of graphics cards in Pakistan. Their expertise and support are unmatched. Highly recommend!</p>
-                <p className="text-white font-semibold">Ahmed Khan</p>
-                <p className="text-gray-500 text-sm">RTX 4090</p>
-              </div>
 
-              {/* Review 2 */}
-              <div className="flex-shrink-0 w-80 bg-[#111111] border border-[#1a1a1a] rounded-lg p-6 hover:border-[#f5d742]/30 transition-colors">
-                <div className="flex gap-1 mb-4">
-                  {[...Array(5)].map((_, i) => (
-                    <span key={i} className="text-[#f5d742] text-xl">★</span>
-                  ))}
+                {/* Review 2 */}
+                <div className="flex-shrink-0 w-80 bg-[#111111] border border-[#1a1a1a] rounded-lg p-6 hover:border-primary/30 transition-colors">
+                  <div className="flex gap-1 mb-4">
+                    {[...Array(5)].map((_, i) => (
+                      <span key={i} className="text-primary text-xl">★</span>
+                    ))}
+                  </div>
+                  <p className="text-gray-300 mb-4 leading-relaxed">Built my dream gaming rig with AMS custom PC building service. The build quality is exceptional and they explained everything.</p>
+                  <p className="text-white font-semibold">Hassan Ali</p>
+                  <p className="text-gray-500 text-sm">Custom Build</p>
                 </div>
-                <p className="text-gray-300 mb-4 leading-relaxed">Built my dream gaming rig with AMS custom PC building service. The build quality is exceptional and they explained everything.</p>
-                <p className="text-white font-semibold">Hassan Ali</p>
-                <p className="text-gray-500 text-sm">Custom Build</p>
-              </div>
 
-              {/* Review 3 */}
-              <div className="flex-shrink-0 w-80 bg-[#111111] border border-[#1a1a1a] rounded-lg p-6 hover:border-[#f5d742]/30 transition-colors">
-                <div className="flex gap-1 mb-4">
-                  {[...Array(5)].map((_, i) => (
-                    <span key={i} className="text-[#f5d742] text-xl">★</span>
-                  ))}
+                {/* Review 3 */}
+                <div className="flex-shrink-0 w-80 bg-[#111111] border border-[#1a1a1a] rounded-lg p-6 hover:border-primary/30 transition-colors">
+                  <div className="flex gap-1 mb-4">
+                    {[...Array(5)].map((_, i) => (
+                      <span key={i} className="text-primary text-xl">★</span>
+                    ))}
+                  </div>
+                  <p className="text-gray-300 mb-4 leading-relaxed">Great selection of cooling solutions and cases. Fast delivery and excellent customer service. AMS is my go-to for all PC components.</p>
+                  <p className="text-white font-semibold">Fatima Malik</p>
+                  <p className="text-gray-500 text-sm">PC Coolers & Cases</p>
                 </div>
-                <p className="text-gray-300 mb-4 leading-relaxed">Great selection of cooling solutions and cases. Fast delivery and excellent customer service. AMS is my go-to for all PC components.</p>
-                <p className="text-white font-semibold">Fatima Malik</p>
-                <p className="text-gray-500 text-sm">PC Coolers & Cases</p>
-              </div>
 
-              {/* Review 4 */}
-              <div className="flex-shrink-0 w-80 bg-[#111111] border border-[#1a1a1a] rounded-lg p-6 hover:border-[#f5d742]/30 transition-colors">
-                <div className="flex gap-1 mb-4">
-                  {[...Array(5)].map((_, i) => (
-                    <span key={i} className="text-[#f5d742] text-xl">★</span>
-                  ))}
+                {/* Review 4 */}
+                <div className="flex-shrink-0 w-80 bg-[#111111] border border-[#1a1a1a] rounded-lg p-6 hover:border-primary/30 transition-colors">
+                  <div className="flex gap-1 mb-4">
+                    {[...Array(5)].map((_, i) => (
+                      <span key={i} className="text-primary text-xl">★</span>
+                    ))}
+                  </div>
+                  <p className="text-gray-300 mb-4 leading-relaxed">The processor I bought from AMS performs amazing. Fast shipping and quality was exactly as described. Definitely ordering again!</p>
+                  <p className="text-white font-semibold">Ali Raza</p>
+                  <p className="text-gray-500 text-sm">Intel i9 Processor</p>
                 </div>
-                <p className="text-gray-300 mb-4 leading-relaxed">The processor I bought from AMS performs amazing. Fast shipping and quality was exactly as described. Definitely ordering again!</p>
-                <p className="text-white font-semibold">Ali Raza</p>
-                <p className="text-gray-500 text-sm">Intel i9 Processor</p>
-              </div>
 
-              {/* Review 5 */}
-              <div className="flex-shrink-0 w-80 bg-[#111111] border border-[#1a1a1a] rounded-lg p-6 hover:border-[#f5d742]/30 transition-colors">
-                <div className="flex gap-1 mb-4">
-                  {[...Array(5)].map((_, i) => (
-                    <span key={i} className="text-[#f5d742] text-xl">★</span>
-                  ))}
+                {/* Review 5 */}
+                <div className="flex-shrink-0 w-80 bg-[#111111] border border-[#1a1a1a] rounded-lg p-6 hover:border-primary/30 transition-colors">
+                  <div className="flex gap-1 mb-4">
+                    {[...Array(5)].map((_, i) => (
+                      <span key={i} className="text-primary text-xl">★</span>
+                    ))}
+                  </div>
+                  <p className="text-gray-300 mb-4 leading-relaxed">Excellent customer support. They helped me choose the right components for my budget. AMS is the best in Pakistan.</p>
+                  <p className="text-white font-semibold">Zain Ahmed</p>
+                  <p className="text-gray-500 text-sm">Budget Build</p>
                 </div>
-                <p className="text-gray-300 mb-4 leading-relaxed">Excellent customer support. They helped me choose the right components for my budget. AMS is the best in Pakistan.</p>
-                <p className="text-white font-semibold">Zain Ahmed</p>
-                <p className="text-gray-500 text-sm">Budget Build</p>
-              </div>
 
-              {/* Review 6 */}
-              <div className="flex-shrink-0 w-80 bg-[#111111] border border-[#1a1a1a] rounded-lg p-6 hover:border-[#f5d742]/30 transition-colors">
-                <div className="flex gap-1 mb-4">
-                  {[...Array(5)].map((_, i) => (
-                    <span key={i} className="text-[#f5d742] text-xl">★</span>
-                  ))}
+                {/* Review 6 */}
+                <div className="flex-shrink-0 w-80 bg-[#111111] border border-[#1a1a1a] rounded-lg p-6 hover:border-primary/30 transition-colors">
+                  <div className="flex gap-1 mb-4">
+                    {[...Array(5)].map((_, i) => (
+                      <span key={i} className="text-primary text-xl">★</span>
+                    ))}
+                  </div>
+                  <p className="text-gray-300 mb-4 leading-relaxed">The SSD and storage options available at AMS are incredible. Prices are competitive and quality is premium. Highly satisfied!</p>
+                  <p className="text-white font-semibold">Maria Khan</p>
+                  <p className="text-gray-500 text-sm">Storage Solutions</p>
                 </div>
-                <p className="text-gray-300 mb-4 leading-relaxed">The SSD and storage options available at AMS are incredible. Prices are competitive and quality is premium. Highly satisfied!</p>
-                <p className="text-white font-semibold">Maria Khan</p>
-                <p className="text-gray-500 text-sm">Storage Solutions</p>
-              </div>
 
-              {/* Review 7 */}
-              <div className="flex-shrink-0 w-80 bg-[#111111] border border-[#1a1a1a] rounded-lg p-6 hover:border-[#f5d742]/30 transition-colors">
-                <div className="flex gap-1 mb-4">
-                  {[...Array(5)].map((_, i) => (
-                    <span key={i} className="text-[#f5d742] text-xl">★</span>
-                  ))}
+                {/* Review 7 */}
+                <div className="flex-shrink-0 w-80 bg-[#111111] border border-[#1a1a1a] rounded-lg p-6 hover:border-primary/30 transition-colors">
+                  <div className="flex gap-1 mb-4">
+                    {[...Array(5)].map((_, i) => (
+                      <span key={i} className="text-primary text-xl">★</span>
+                    ))}
+                  </div>
+                  <p className="text-gray-300 mb-4 leading-relaxed">My gaming PC is running smoothly thanks to AMS. The components work perfectly together. Thanks for the amazing service!</p>
+                  <p className="text-white font-semibold">Bilal Hassan</p>
+                  <p className="text-gray-500 text-sm">Gaming Build</p>
                 </div>
-                <p className="text-gray-300 mb-4 leading-relaxed">My gaming PC is running smoothly thanks to AMS. The components work perfectly together. Thanks for the amazing service!</p>
-                <p className="text-white font-semibold">Bilal Hassan</p>
-                <p className="text-gray-500 text-sm">Gaming Build</p>
-              </div>
 
-              {/* Review 8 */}
-              <div className="flex-shrink-0 w-80 bg-[#111111] border border-[#1a1a1a] rounded-lg p-6 hover:border-[#f5d742]/30 transition-colors">
-                <div className="flex gap-1 mb-4">
-                  {[...Array(5)].map((_, i) => (
-                    <span key={i} className="text-[#f5d742] text-xl">★</span>
-                  ))}
+                {/* Review 8 */}
+                <div className="flex-shrink-0 w-80 bg-[#111111] border border-[#1a1a1a] rounded-lg p-6 hover:border-primary/30 transition-colors">
+                  <div className="flex gap-1 mb-4">
+                    {[...Array(5)].map((_, i) => (
+                      <span key={i} className="text-primary text-xl">★</span>
+                    ))}
+                  </div>
+                  <p className="text-gray-300 mb-4 leading-relaxed">AMS upgraded my old PC and the performance boost is incredible. Professional advice and excellent execution. Highly recommended!</p>
+                  <p className="text-white font-semibold">Saira Ali</p>
+                  <p className="text-gray-500 text-sm">PC Upgrade</p>
                 </div>
-                <p className="text-gray-300 mb-4 leading-relaxed">AMS upgraded my old PC and the performance boost is incredible. Professional advice and excellent execution. Highly recommended!</p>
-                <p className="text-white font-semibold">Saira Ali</p>
-                <p className="text-gray-500 text-sm">PC Upgrade</p>
-              </div>
 
-              {/* Review 9 */}
-              <div className="flex-shrink-0 w-80 bg-[#111111] border border-[#1a1a1a] rounded-lg p-6 hover:border-[#f5d742]/30 transition-colors">
-                <div className="flex gap-1 mb-4">
-                  {[...Array(5)].map((_, i) => (
-                    <span key={i} className="text-[#f5d742] text-xl">★</span>
-                  ))}
+                {/* Review 9 */}
+                <div className="flex-shrink-0 w-80 bg-[#111111] border border-[#1a1a1a] rounded-lg p-6 hover:border-primary/30 transition-colors">
+                  <div className="flex gap-1 mb-4">
+                    {[...Array(5)].map((_, i) => (
+                      <span key={i} className="text-primary text-xl">★</span>
+                    ))}
+                  </div>
+                  <p className="text-gray-300 mb-4 leading-relaxed">Best cooling solutions for my build! The case fans and CPU cooler keep my system running cool. AMS is reliable and trustworthy.</p>
+                  <p className="text-white font-semibold">Hassan Malik</p>
+                  <p className="text-gray-500 text-sm">Cooling Solutions</p>
                 </div>
-                <p className="text-gray-300 mb-4 leading-relaxed">Best cooling solutions for my build! The case fans and CPU cooler keep my system running cool. AMS is reliable and trustworthy.</p>
-                <p className="text-white font-semibold">Hassan Malik</p>
-                <p className="text-gray-500 text-sm">Cooling Solutions</p>
-              </div>
 
-              {/* Review 10 */}
-              <div className="flex-shrink-0 w-80 bg-[#111111] border border-[#1a1a1a] rounded-lg p-6 hover:border-[#f5d742]/30 transition-colors">
-                <div className="flex gap-1 mb-4">
-                  {[...Array(5)].map((_, i) => (
-                    <span key={i} className="text-[#f5d742] text-xl">★</span>
-                  ))}
+                {/* Review 10 */}
+                <div className="flex-shrink-0 w-80 bg-[#111111] border border-[#1a1a1a] rounded-lg p-6 hover:border-primary/30 transition-colors">
+                  <div className="flex gap-1 mb-4">
+                    {[...Array(5)].map((_, i) => (
+                      <span key={i} className="text-primary text-xl">★</span>
+                    ))}
+                  </div>
+                  <p className="text-gray-300 mb-4 leading-relaxed">Fantastic experience from start to finish. AMS delivered exactly what they promised. Best PC parts store in Pakistan without doubt!</p>
+                  <p className="text-white font-semibold">Farah Ahmed</p>
+                  <p className="text-gray-500 text-sm">Complete Build</p>
                 </div>
-                <p className="text-gray-300 mb-4 leading-relaxed">Fantastic experience from start to finish. AMS delivered exactly what they promised. Best PC parts store in Pakistan without doubt!</p>
-                <p className="text-white font-semibold">Farah Ahmed</p>
-                <p className="text-gray-500 text-sm">Complete Build</p>
               </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section >
+      </div>
 
       {/* Footer */}
-      <footer className="py-12 px-6 bg-[#050505] border-t border-[#1a1a1a]">
-        <div className="max-w-6xl mx-auto">
+      < footer className="py-12 px-8 bg-[#050505] border-t border-[#1a1a1a]" >
+        <div className="max-w-[1400px] mx-auto">
           <div className="flex flex-col md:flex-row items-center justify-between gap-6">
             <div className="flex items-center gap-3">
               <img
@@ -680,16 +754,16 @@ export default function HomePage() {
               2025 AMS PC Parts. All rights reserved.
             </p>
             <div className="flex items-center gap-6 text-gray-500 text-sm">
-              <a href="#" className="hover:text-[#f5d742] transition-colors">Privacy</a>
-              <a href="#" className="hover:text-[#f5d742] transition-colors">Terms</a>
-              <a href="#" className="hover:text-[#f5d742] transition-colors">Support</a>
+              <a href="#" className="hover:text-primary transition-colors">Privacy</a>
+              <a href="#" className="hover:text-primary transition-colors">Terms</a>
+              <a href="#" className="hover:text-primary transition-colors">Support</a>
             </div>
           </div>
         </div>
-      </footer>
+      </footer >
 
       {/* JSON-LD Structured Data */}
-      <script type="application/ld+json" dangerouslySetInnerHTML={{
+      < script type="application/ld+json" dangerouslySetInnerHTML={{
         __html: JSON.stringify({
           "@context": "https://schema.org",
           "@type": "Organization",
@@ -709,7 +783,8 @@ export default function HomePage() {
             "https://whatsapp.com"
           ]
         })
-      }} />
+      }
+      } />
 
       {/* Product Schema */}
       <script type="application/ld+json" dangerouslySetInnerHTML={{
@@ -812,6 +887,6 @@ export default function HomePage() {
           ]
         })
       }} />
-    </div>
+    </div >
   )
 }
