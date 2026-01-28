@@ -1,6 +1,8 @@
 "use client"
 
-export function GamerBackground() {
+import React, { memo } from "react"
+
+export const GamerBackground = memo(function GamerBackground() {
   return (
     <div className="fixed inset-0 z-[-1] pointer-events-none overflow-hidden bg-black">
       {/* 1. Base Gradient Glow */}
@@ -21,4 +23,4 @@ export function GamerBackground() {
       `}</style>
     </div>
   )
-}
+})

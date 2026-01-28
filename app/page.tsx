@@ -7,6 +7,7 @@ import { ChevronDown, Phone, Mail, MapPin, Clock, Cpu, HardDrive, Monitor, Headp
 import { GamerHeroBackground } from "@/components/GamerHeroBackground"
 import { InfiniteProductScroller } from "@/components/InfiniteProductScroller"
 import { HERO_PRODUCTS, FEATURED_CATEGORIES } from "@/lib/products"
+import { VideoCard } from "@/components/VideoCard"
 
 export default function HomePage() {
   const containerRef = useRef<HTMLDivElement>(null)
@@ -25,21 +26,32 @@ export default function HomePage() {
     return () => window.removeEventListener('resize', checkMobile)
   }, [])
 
+  const lastProgressRef = useRef<number>(0)
+
   const handleScroll = useCallback(() => {
     if (rafRef.current) return
 
     rafRef.current = requestAnimationFrame(() => {
-      if (!containerRef.current) {
+      const container = containerRef.current
+      if (!container) {
         rafRef.current = null
         return
       }
 
-      const rect = containerRef.current.getBoundingClientRect()
-      const containerHeight = containerRef.current.offsetHeight
+      const rect = container.getBoundingClientRect()
+      // Use window properties instead of recalculating entire container height if possible
       const viewportHeight = window.innerHeight
+      const containerHeight = container.offsetHeight
       const scrollableDistance = containerHeight - viewportHeight
       const scrolled = -rect.top
       const progress = Math.min(Math.max(scrolled / scrollableDistance, 0), 1)
+
+      // Only proceed if progress has meaningfully changed
+      if (Math.abs(progress - lastProgressRef.current) < 0.001) {
+        rafRef.current = null
+        return
+      }
+      lastProgressRef.current = progress
 
       // Determine phase based on scroll progress
       let newPhase: 0 | 1 | 2
@@ -352,92 +364,33 @@ export default function HomePage() {
           <div className="overflow-x-auto scrollbar-hide">
             <div className="flex gap-6 pb-4 w-max">
               {/* Video cards - duplicated for infinite loop effect */}
-              {[...Array(2)].map((_, setIndex) => (
+              {[...Array(1)].map((_, setIndex) => (
                 <div key={`set-${setIndex}`} className="flex gap-6">
-                  <div key={`v1-${setIndex}`} className="flex-shrink-0 w-[270px] aspect-[9/16] bg-[#111111] border border-[#1a1a1a] rounded-2xl overflow-hidden relative hover:border-primary/50 transition-colors">
-                    <video
-                      className="w-full h-full object-cover"
-                      autoPlay
-                      muted
-                      loop
-                      playsInline
-                    >
-                      <source src="/videos/1/video.mp4" type="video/mp4" />
-                      {/* Fallback for development */}
-                      <source src="https://assets.mixkit.co/videos/preview/mixkit-hands-of-a-woman-writing-with-a-pen-in-a-notebook-41437-large.mp4" type="video/mp4" />
-                    </video>
-                    <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4">
-                      <p className="text-white font-semibold text-sm">RTX 4090 Unboxing</p>
-                    </div>
-                  </div>
-
-                  {/* Video 2: Custom Build */}
-                  <div key={`v2-${setIndex}`} className="flex-shrink-0 w-[270px] aspect-[9/16] bg-[#111111] border border-[#1a1a1a] rounded-2xl overflow-hidden relative hover:border-primary/50 transition-colors">
-                    <video
-                      className="w-full h-full object-cover"
-                      autoPlay
-                      muted
-                      loop
-                      playsInline
-                    >
-                      <source src="/videos/2/video.mp4" type="video/mp4" />
-                      <source src="https://assets.mixkit.co/videos/preview/mixkit-typing-on-a-laptop-in-a-pink-neon-atmosphere-50261-large.mp4" type="video/mp4" />
-                    </video>
-                    <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4">
-                      <p className="text-white font-semibold text-sm">Custom Build Showcase</p>
-                    </div>
-                  </div>
-
-                  {/* Video 3: Cooling Solutions */}
-                  <div key={`v3-${setIndex}`} className="flex-shrink-0 w-[270px] aspect-[9/16] bg-[#111111] border border-[#1a1a1a] rounded-2xl overflow-hidden relative hover:border-primary/50 transition-colors">
-                    <video
-                      className="w-full h-full object-cover"
-                      autoPlay
-                      muted
-                      loop
-                      playsInline
-                    >
-                      <source src="/videos/3/video.mp4" type="video/mp4" />
-                      <source src="https://assets.mixkit.co/videos/preview/mixkit-hands-working-on-a-laptop-in-slow-motion-24-large.mp4" type="video/mp4" />
-                    </video>
-                    <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4">
-                      <p className="text-white font-semibold text-sm">Cooling Setup</p>
-                    </div>
-                  </div>
-
-                  {/* Video 4: GPU Installation */}
-                  <div key={`v4-${setIndex}`} className="flex-shrink-0 w-[270px] aspect-[9/16] bg-[#111111] border border-[#1a1a1a] rounded-2xl overflow-hidden relative hover:border-primary/50 transition-colors">
-                    <video
-                      className="w-full h-full object-cover"
-                      autoPlay
-                      muted
-                      loop
-                      playsInline
-                    >
-                      <source src="/videos/4/video.mp4" type="video/mp4" />
-                      <source src="https://assets.mixkit.co/videos/preview/mixkit-computer-and-smartphone-in-a-workspace-top-shot-50235-large.mp4" type="video/mp4" />
-                    </video>
-                    <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4">
-                      <p className="text-white font-semibold text-sm">GPU Installation Guide</p>
-                    </div>
-                  </div>
-
-                  {/* Video 5: Build Review */}
-                  <div key={`v5-${setIndex}`} className="flex-shrink-0 w-[270px] aspect-[9/16] bg-[#111111] border border-[#1a1a1a] rounded-2xl overflow-hidden relative hover:border-primary/50 transition-colors">
-                    <video
-                      className="w-full h-full object-cover"
-                      autoPlay
-                      muted
-                      loop
-                      playsInline
-                    >
-                      <source src="/videos/5/video.mp4" type="video/mp4" />
-                      <source src="https://assets.mixkit.co/videos/preview/mixkit-man-working-on-his-laptop-at-home-4839-large.mp4" type="video/mp4" />
-                    </video>
-                    <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4">
-                      <p className="text-white font-semibold text-sm">Build Review</p>
-                    </div>
-                  </div>
+                  <VideoCard
+                    src="/videos/1/video.mp4"
+                    fallbackSrc="https://assets.mixkit.co/videos/preview/mixkit-hands-of-a-woman-writing-with-a-pen-in-a-notebook-41437-large.mp4"
+                    title="RTX 4090 Unboxing"
+                  />
+                  <VideoCard
+                    src="/videos/2/video.mp4"
+                    fallbackSrc="https://assets.mixkit.co/videos/preview/mixkit-typing-on-a-laptop-in-a-pink-neon-atmosphere-50261-large.mp4"
+                    title="Custom Build Showcase"
+                  />
+                  <VideoCard
+                    src="/videos/3/video.mp4"
+                    fallbackSrc="https://assets.mixkit.co/videos/preview/mixkit-hands-working-on-a-laptop-in-slow-motion-24-large.mp4"
+                    title="Cooling Setup"
+                  />
+                  <VideoCard
+                    src="/videos/4/video.mp4"
+                    fallbackSrc="https://assets.mixkit.co/videos/preview/mixkit-computer-and-smartphone-in-a-workspace-top-shot-50235-large.mp4"
+                    title="GPU Installation Guide"
+                  />
+                  <VideoCard
+                    src="/videos/5/video.mp4"
+                    fallbackSrc="https://assets.mixkit.co/videos/preview/mixkit-man-working-on-his-laptop-at-home-4839-large.mp4"
+                    title="Build Review"
+                  />
                 </div>
               ))}
             </div>
