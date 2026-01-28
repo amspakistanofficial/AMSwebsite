@@ -157,8 +157,8 @@ export default function HomePage() {
                   className="absolute w-28 h-28 md:w-60 md:h-60 flex items-center justify-center pointer-events-none"
                   style={{
                     transform: phase === 0
-                      ? 'translate(0px, 0px) scale(0.3)'
-                      : `translate(${pos.x}px, ${pos.y}px) scale(1)`,
+                      ? 'translate3d(0px, 0px, 0px) scale(0.3)'
+                      : `translate3d(${pos.x}px, ${pos.y}px, 0px) scale(1)`,
                     opacity: phase === 0 ? 0 : 1,
                     transition: `transform 800ms cubic-bezier(0.34, 1.56, 0.64, 1) ${delay}ms, opacity 600ms ease ${delay}ms`,
                     willChange: 'transform, opacity',
@@ -168,7 +168,10 @@ export default function HomePage() {
                   <img
                     src={product.image || "/placeholder.svg"}
                     alt={product.name}
-                    className="w-full h-full object-contain drop-shadow-[0_0_20px_rgba(255,107,0,0.2)] transition-all duration-300"
+                    className="w-full h-full object-contain transition-all duration-300"
+                    style={{
+                      filter: phase === 2 ? 'drop-shadow(0 0 20px rgba(255,107,0,0.2))' : 'none'
+                    }}
                     loading="eager"
                   />
                 </div>
@@ -191,7 +194,7 @@ export default function HomePage() {
                   alt="AMS"
                   className="h-64 md:h-80 w-auto drop-shadow-2xl relative z-10"
                 />
-                <div className="absolute inset-0 z-20 metallic-shine" />
+                {phase === 0 && <div className="absolute inset-0 z-20 metallic-shine" />}
               </div>
               <p className="text-xl md:text-2xl text-gray-400 mt-3 tracking-widest uppercase font-bold">Premium PC Parts</p>
             </div>
@@ -205,20 +208,14 @@ export default function HomePage() {
                   110deg,
                   transparent 40%,
                   rgba(255, 255, 255, 0) 45%,
-                  rgba(255, 255, 255, 0.6) 50%,
+                  rgba(255, 255, 255, 0.4) 50%,
                   rgba(255, 255, 255, 0) 55%,
                   transparent 60%
                 );
                 background-size: 200% 100%;
-                animation: shine 3s infinite;
-                mask-image: url(/ams-logo.png);
-                mask-size: contain;
-                mask-repeat: no-repeat;
-                mask-position: center;
-                -webkit-mask-image: url(/ams-logo.png);
-                -webkit-mask-size: contain;
-                -webkit-mask-repeat: no-repeat;
-                -webkit-mask-position: center;
+                animation: shine 4s infinite linear;
+                /* Simplified shine - remove heavy mask */
+                pointer-events: none;
               }
               @keyframes shine {
                 0% { background-position: 200% 0; }
