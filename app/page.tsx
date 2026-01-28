@@ -201,21 +201,29 @@ export default function HomePage() {
 
             <style jsx>{`
               .metallic-logo-container {
-                display: relative;
+                position: relative;
               }
               .metallic-shine {
                 background: linear-gradient(
                   110deg,
-                  transparent 40%,
-                  rgba(255, 255, 255, 0) 45%,
-                  rgba(255, 255, 255, 0.4) 50%,
-                  rgba(255, 255, 255, 0) 55%,
-                  transparent 60%
+                  transparent 20%,
+                  rgba(255, 255, 255, 0) 35%,
+                  rgba(255, 255, 255, 0.6) 50%,
+                  rgba(255, 255, 255, 0) 65%,
+                  transparent 80%
                 );
                 background-size: 200% 100%;
-                animation: shine 4s infinite linear;
-                /* Simplified shine - remove heavy mask */
+                animation: shine 3s infinite linear;
                 pointer-events: none;
+                mix-blend-mode: overlay;
+                -webkit-mask-image: url('/ams-logo.png');
+                mask-image: url('/ams-logo.png');
+                -webkit-mask-size: contain;
+                mask-size: contain;
+                -webkit-mask-repeat: no-repeat;
+                mask-repeat: no-repeat;
+                -webkit-mask-position: center;
+                mask-position: center;
               }
               @keyframes shine {
                 0% { background-position: 200% 0; }

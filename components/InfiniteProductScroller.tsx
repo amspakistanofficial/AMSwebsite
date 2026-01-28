@@ -31,7 +31,7 @@ export const InfiniteProductScroller = memo(function InfiniteProductScroller({ s
           filteredProducts.map((product) => (
             <div
               key={product.id}
-              className="flex-shrink-0 w-[420px] h-[520px] bg-[#111111]/60 border border-[#1a1a1a] p-8 hover:border-primary/50 transition-all duration-300 group snap-center relative"
+              className="flex-shrink-0 w-[420px] h-[520px] bg-transparent p-8 transition-all duration-300 group snap-center relative"
             >
               {/* Purple Glow Effect - Simplified */}
               <div className="absolute inset-0 bg-[#8a2be2]/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
