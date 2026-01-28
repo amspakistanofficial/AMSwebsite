@@ -24,9 +24,38 @@ function getCategoryName(folderName) {
     return CATEGORY_MAP[folderName.toLowerCase()] || folderName.charAt(0).toUpperCase() + folderName.slice(1);
 }
 
+function findImageInFolder(folderPath) {
+    const files = fs.readdirSync(folderPath);
+    return files.find(file => /\.(png|jpe?g|webp|svg)$/i.test(file));
+}
+
+function parseInfoFile(infoPath) {
+    if (!fs.existsSync(infoPath)) {
+        return { name: null, description: null };
+    }
+
+    const content = fs.readFileSync(infoPath, 'utf8').trim();
+    const lines = content.split('\n');
+
+    // First line is the product name
+    const name = lines[0]?.trim() || null;
+
+    // Rest is the description (skip empty lines after name)
+    const descriptionLines = lines.slice(1).filter((line, index, arr) => {
+        // Keep all lines after the first non-empty description line
+        const hasContentBefore = arr.slice(0, index).some(l => l.trim());
+        return line.trim() || hasContentBefore;
+    });
+    const description = descriptionLines.join('\n').trim() || null;
+
+    return { name, description };
+}
+
 function syncProducts() {
     if (!fs.existsSync(PRODUCTS_DIR)) {
         console.error(`Products directory not found: ${PRODUCTS_DIR}`);
+        console.log('Creating products directory structure...');
+        fs.mkdirSync(PRODUCTS_DIR, { recursive: true });
         return;
     }
 
@@ -41,37 +70,65 @@ function syncProducts() {
         const categoryName = getCategoryName(categoryFolder);
         foundCategories.add(categoryName);
 
-        const files = fs.readdirSync(categoryPath);
-        const images = files.filter(file => /\.(png|jpe?g|webp|svg)$/i.test(file));
+        const items = fs.readdirSync(categoryPath);
 
-        images.forEach(image => {
-            const id = `${categoryFolder}-${path.parse(image).name}`;
-            const baseName = path.parse(image).name;
+        items.forEach(item => {
+            const itemPath = path.join(categoryPath, item);
+            const stat = fs.statSync(itemPath);
 
-            // Format name for display
-            let name = baseName;
-            if (!isNaN(name)) {
-                const singularCategory = categoryName.endsWith('s') ? categoryName.slice(0, -1) : categoryName;
-                name = `${singularCategory} ${name}`;
-            } else {
-                name = name.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+            if (stat.isDirectory()) {
+                // NEW STRUCTURE: Product has its own folder with image + info.txt
+                const image = findImageInFolder(itemPath);
+                if (!image) {
+                    console.warn(`No image found in product folder: ${itemPath}`);
+                    return;
+                }
+
+                const infoPath = path.join(itemPath, 'info.txt');
+                const { name, description } = parseInfoFile(infoPath);
+
+                // Use folder name as fallback for product name
+                const productName = name || item.split('-').map(word =>
+                    word.charAt(0).toUpperCase() + word.slice(1)
+                ).join(' ');
+
+                allProducts.push({
+                    id: `${categoryFolder}-${item}`,
+                    name: productName,
+                    image: `/products/${categoryFolder}/${item}/${image}`,
+                    description: description || `Premium ${categoryName} component selected by AMS.`,
+                    category: categoryName
+                });
+            } else if (/\.(png|jpe?g|webp|svg)$/i.test(item)) {
+                // OLD STRUCTURE: Flat images in category folder (backward compatible)
+                const baseName = path.parse(item).name;
+
+                // Look for accompanying text file
+                const txtPath = path.join(categoryPath, `${baseName}.txt`);
+                const { name, description } = parseInfoFile(txtPath);
+
+                // Use text file name, or format the filename
+                let productName = name;
+                if (!productName) {
+                    if (!isNaN(baseName)) {
+                        // Just a number - skip the number, use category only
+                        const singularCategory = categoryName.endsWith('s') ? categoryName.slice(0, -1) : categoryName;
+                        productName = singularCategory;
+                    } else {
+                        productName = baseName.split('-').map(word =>
+                            word.charAt(0).toUpperCase() + word.slice(1)
+                        ).join(' ');
+                    }
+                }
+
+                allProducts.push({
+                    id: `${categoryFolder}-${baseName}`,
+                    name: productName,
+                    image: `/products/${categoryFolder}/${item}`,
+                    description: description || `Premium ${categoryName} component selected by AMS.`,
+                    category: categoryName
+                });
             }
-
-            // Look for descriptions
-            let description = '';
-            const txtFile = `${baseName}.txt`;
-            const txtPath = path.join(categoryPath, txtFile);
-            if (fs.existsSync(txtPath)) {
-                description = fs.readFileSync(txtPath, 'utf8').trim();
-            }
-
-            allProducts.push({
-                id,
-                name,
-                image: `/products/${categoryFolder}/${image}`,
-                description: description || `Premium ${categoryName} component selected by AMS.`,
-                category: categoryName
-            });
         });
     });
 
@@ -80,7 +137,6 @@ function syncProducts() {
 
     // Auto-select HERO_PRODUCTS (take one from each major category)
     const heroProducts = [];
-    const selectedHeroCategories = new Set();
 
     // Priorities for hero section
     const priorityCategories = ['Cases', 'Cooling', 'Monitors', 'Fans', 'Graphics Cards', 'Processors'];
@@ -89,7 +145,6 @@ function syncProducts() {
         const product = allProducts.find(p => p.category === cat);
         if (product && heroProducts.length < 6) {
             heroProducts.push(product);
-            selectedHeroCategories.add(cat);
         }
     });
 
@@ -127,7 +182,23 @@ export const FEATURED_CATEGORIES = ${JSON.stringify(featuredCategories, null, 4)
 `;
 
     fs.writeFileSync(OUTPUT_FILE, fileContent);
-    console.log(`Successfully synced ${allProducts.length} products with ${foundCategories.size} categories.`);
+    console.log(`\n✓ Successfully synced ${allProducts.length} products with ${foundCategories.size} categories.\n`);
+    console.log('Product structure options:');
+    console.log('─────────────────────────────────────────────────────────');
+    console.log('OPTION 1 - Folder per product (recommended):');
+    console.log('  /public/products/cases/my-product/');
+    console.log('    ├── image.png');
+    console.log('    └── info.txt');
+    console.log('');
+    console.log('  info.txt format:');
+    console.log('    Line 1: Product Name');
+    console.log('    Line 2+: Product description...');
+    console.log('');
+    console.log('OPTION 2 - Flat structure (simple):');
+    console.log('  /public/products/cases/');
+    console.log('    ├── product-name.png');
+    console.log('    └── product-name.txt');
+    console.log('─────────────────────────────────────────────────────────\n');
 }
 
 syncProducts();
