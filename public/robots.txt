@@ -1,0 +1,9 @@
+# AMS Pakistan - Robots.txt
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://amspakistan.com/sitemap.xml
+
+# Crawl-delay for polite crawling
+Crawl-delay: 1
