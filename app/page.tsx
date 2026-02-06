@@ -85,12 +85,12 @@ export default function HomePage() {
   ]
 
   const mobilePositions = [
-    { x: -190, y: -240 }, // Top Left
-    { x: 190, y: -200 },  // Top Right
-    { x: -210, y: 40 },   // Mid Left
-    { x: 210, y: 70 },    // Mid Right
-    { x: -180, y: 320 },  // Bottom Left
-    { x: 180, y: 350 },   // Bottom Right
+    { x: -140, y: -220 }, // Top Left
+    { x: 140, y: -180 },  // Top Right
+    { x: -150, y: 30 },   // Mid Left
+    { x: 150, y: 60 },    // Mid Right
+    { x: -130, y: 280 },  // Bottom Left
+    { x: 130, y: 310 },   // Bottom Right
   ]
 
   const positions = isMobile ? mobilePositions : finalPositions
@@ -240,19 +240,19 @@ export default function HomePage() {
                 transition: 'opacity 600ms ease 300ms, transform 600ms ease 300ms',
                 pointerEvents: phase === 1 ? 'auto' : 'none',
               }}
-            > 
-              <h1 className="text-4xl md:text-7xl font-bold text-white mb-2 leading-tight tracking-tight">
+            >
+              <h1 className="text-3xl md:text-7xl font-bold text-white mb-2 leading-tight tracking-tight">
                 BUILD YOUR
               </h1>
-              <h2 className="text-4xl md:text-7xl font-black text-primary mb-6 leading-tight tracking-tighter italic">
+              <h2 className="text-3xl md:text-7xl font-black text-primary mb-6 leading-tight tracking-tighter italic">
                 DREAM RIG
               </h2>
-              <p className="text-gray-400 text-base md:text-xl mb-8 max-w-xl mx-auto font-medium">
+              <p className="text-gray-400 text-sm md:text-xl mb-8 max-w-xl mx-auto font-medium">
                 Premium gaming hardware and PC components for enthusiasts in Pakistan by <span className="text-accent font-bold">AMS</span>
               </p>
               <Button
                 size="lg"
-                className="bg-linear-to-r from-primary to-accent text-white hover:bg-orange-600 font-black text-lg px-12 py-8 rounded-none tracking-tighter uppercase shadow-[0_10px_20px_rgba(255,107,0,0.3)] transition-all transform hover:scale-105"
+                className="bg-linear-to-r from-primary to-accent text-white hover:bg-orange-600 font-black text-base md:text-lg px-8 md:px-12 py-6 md:py-8 rounded-none tracking-tighter uppercase shadow-[0_10px_20px_rgba(255,107,0,0.3)] transition-all transform hover:scale-105"
               >
                 EXPLORE PRODUCTS
               </Button>
@@ -337,7 +337,7 @@ export default function HomePage() {
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold text-white mb-4 tracking-tight uppercase">
               SEE US IN <span className="text-primary italic">ACTION</span>
-            </h2> 
+            </h2>
             <p className="text-gray-400 text-lg max-w-2xl mx-auto">
               Watch our latest builds, reviews, and tutorials
             </p>
@@ -400,7 +400,7 @@ export default function HomePage() {
             src="/backgrounds/bg4.jpg"
             alt="AMS background 2"
             fill
-            className="object-cover scale-110" 
+            className="object-cover scale-110"
           />
         </div>
 
@@ -520,17 +520,17 @@ export default function HomePage() {
                 </div>
               </div>
 
-              <div className="bg-[#111111] border border-[#1a1a1a] rounded-lg p-12">
-                <h3 className="text-3xl font-bold text-white mb-8">Send us a message</h3>
+              <div className="bg-[#111111] border border-[#1a1a1a] rounded-lg p-6 md:p-12">
+                <h3 className="text-2xl md:text-3xl font-bold text-white mb-8">Send us a message</h3>
                 <div className="flex flex-col md:flex-row gap-6">
                   <Button
-                    className="flex-1 bg-primary text-white hover:bg-orange-600 font-bold py-4 text-lg rounded-lg shadow-[0_0_15px_rgba(255,107,0,0.2)]"
+                    className="flex-1 bg-primary text-white hover:bg-orange-600 font-bold py-4 text-base md:text-lg rounded-lg shadow-[0_0_15px_rgba(255,107,0,0.2)]"
                     onClick={() => window.open("mailto:amspakistanofficial@gmail.com", "_blank")}
                   >
                     Email Us
                   </Button>
                   <Button
-                    className="flex-1 bg-green-600 text-white hover:bg-green-700 font-bold py-4 text-lg rounded-lg"
+                    className="flex-1 bg-green-600 text-white hover:bg-green-700 font-bold py-4 text-base md:text-lg rounded-lg"
                     onClick={() => window.open("https://wa.me/923348964450", "_blank")}
                   >
                     WhatsApp

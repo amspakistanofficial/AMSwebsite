@@ -169,7 +169,7 @@ export const InfiniteProductScroller = memo(function InfiniteProductScroller({ s
             return (
               <div
                 key={product.id}
-                className={`product-snap-item flex-shrink-0 w-[240px] md:w-[350px] bg-transparent p-3 md:p-6 transition-all duration-300 group relative ${isCentered ? 'md:scale-110 md:z-10' : 'md:scale-90 md:opacity-70'}`}
+                className={`product-snap-item flex-shrink-0 w-[160px] md:w-[350px] bg-transparent p-2 md:p-6 transition-all duration-300 group relative ${isCentered ? 'md:scale-110 md:z-10' : 'md:scale-90 md:opacity-70'}`}
               >
                 {/* Purple Glow Effect on hover */}
                 <div className="absolute inset-0 bg-[#8a2be2]/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
