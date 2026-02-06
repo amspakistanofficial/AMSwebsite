@@ -125,14 +125,13 @@ export const InfiniteProductScroller = memo(function InfiniteProductScroller({ s
     const lines = spec.split("\n").filter(Boolean)
     return (
       <>
-        <span className="text-white text-base font-black italic tracking-wide block mb-1">{product.name}</span>
         <span className="text-gray-400 text-sm font-medium tracking-wide">{lines.join(" | ")}</span>
       </>
     )
   }
 
   return (
-    <div className={`w-full bg-transparent py-8 md:py-16 relative transition-opacity duration-300 ${isChanging ? 'opacity-0' : 'opacity-100'}`}>
+    <div className={`w-full bg-transparent py-8 relative transition-opacity duration-300 ${isChanging ? 'opacity-0' : 'opacity-100'}`}>
       {/* Scroll arrow - Left */}
       {canScrollLeft && (
         <button
@@ -198,7 +197,7 @@ export const InfiniteProductScroller = memo(function InfiniteProductScroller({ s
                       <div className="relative">
                         <div className="flex items-center gap-4 mb-5">
                           <div className="w-2 h-7 bg-primary" />
-                          <h4 className="text-primary text-sm font-black uppercase tracking-[0.3em]">Specifications</h4>
+                          <h4 className="text-primary text-sm font-black uppercase tracking-[0.3em]">{product.name}</h4>
                         </div>
                         <div className="leading-relaxed">
                           {formatSpec(getSpec(product))}
@@ -214,7 +213,7 @@ export const InfiniteProductScroller = memo(function InfiniteProductScroller({ s
                       <h4 className="text-primary text-xs font-black uppercase tracking-[0.2em]">{product.name}</h4>
                     </div>
                     <div className="leading-relaxed">
-                      {formatMobileSpec(product, getSpec(product))}
+                      {formatSpec(getSpec(product))}
                     </div>
                   </div>
                 </div>

@@ -4,180 +4,179 @@ export interface Product {
     image: string;
     description?: string;
     category?: string;
-    specFile?: string;
 }
 
 export const HERO_PRODUCTS: Product[] = [
     {
         "id": "cases-1",
-        "name": "Case",
+        "name": "SMALL BLACK",
         "image": "/products/cases/1.png",
-        "category": "Cases",
-        "specFile": "/products/cases/1.txt"
+        "description": "Premium Cases component selected by AMS.",
+        "category": "Cases"
     },
     {
         "id": "cooling-1",
-        "name": "Cooling",
+        "name": "A400",
         "image": "/products/cooling/1.png",
-        "category": "Cooling",
-        "specFile": "/products/cooling/1.txt"
+        "description": "4 PIPE RGB AIR COOLER",
+        "category": "Cooling"
     },
     {
         "id": "monitors-1",
-        "name": "Monitor",
+        "name": "PIXEL STORM X",
         "image": "/products/monitors/1.png",
-        "category": "Monitors",
-        "specFile": "/products/monitors/1.txt"
+        "description": "FHD, 24INCH, IPS, RGB BACK, BORDERLESS,165HZ",
+        "category": "Monitors"
     },
     {
         "id": "fans-1",
-        "name": "Fan",
+        "name": "FREEZO FAN KIT",
         "image": "/products/fans/1.png",
-        "category": "Fans",
-        "specFile": "/products/fans/1.txt"
+        "description": "ARGB 120MM 3X FAN KIT",
+        "category": "Fans"
     },
     {
         "id": "cases-2",
-        "name": "Case",
+        "name": "WHITE BIG",
         "image": "/products/cases/2.png",
-        "category": "Cases",
-        "specFile": "/products/cases/2.txt"
+        "description": "Premium Cases component selected by AMS.",
+        "category": "Cases"
     },
     {
         "id": "cases-3",
-        "name": "Case",
+        "name": "BLACK BIG",
         "image": "/products/cases/3.png",
-        "category": "Cases",
-        "specFile": "/products/cases/3.txt"
+        "description": "Premium Cases component selected by AMS.",
+        "category": "Cases"
     }
 ];
 
 export const ALL_PRODUCTS: Product[] = [
     {
         "id": "cases-1",
-        "name": "Case",
+        "name": "SMALL BLACK",
         "image": "/products/cases/1.png",
-        "category": "Cases",
-        "specFile": "/products/cases/1.txt"
+        "description": "Premium Cases component selected by AMS.",
+        "category": "Cases"
     },
     {
         "id": "cases-2",
-        "name": "Case",
+        "name": "WHITE BIG",
         "image": "/products/cases/2.png",
-        "category": "Cases",
-        "specFile": "/products/cases/2.txt"
+        "description": "Premium Cases component selected by AMS.",
+        "category": "Cases"
     },
     {
         "id": "cases-3",
-        "name": "Case",
+        "name": "BLACK BIG",
         "image": "/products/cases/3.png",
-        "category": "Cases",
-        "specFile": "/products/cases/3.txt"
+        "description": "Premium Cases component selected by AMS.",
+        "category": "Cases"
     },
     {
         "id": "cases-4",
-        "name": "Case",
+        "name": "WHITE CASE",
         "image": "/products/cases/4.png",
-        "category": "Cases",
-        "specFile": "/products/cases/4.txt"
+        "description": "Premium Cases component selected by AMS.",
+        "category": "Cases"
     },
     {
         "id": "cases-5",
-        "name": "Case",
+        "name": "HALO",
         "image": "/products/cases/5.png",
-        "category": "Cases",
-        "specFile": "/products/cases/5.txt"
+        "description": "3 ARGB FANS, TWO SIDE GLASS, M ATX",
+        "category": "Cases"
     },
     {
         "id": "cases-6",
-        "name": "Case",
+        "name": "WRECKER",
         "image": "/products/cases/6.png",
-        "category": "Cases",
-        "specFile": "/products/cases/6.txt"
+        "description": "3 ARGB FANS, TWO SIDE GLASS, FULL ATX",
+        "category": "Cases"
     },
     {
         "id": "cases-7",
-        "name": "Case",
+        "name": "FOREST WHITE",
         "image": "/products/cases/7.png",
-        "category": "Cases",
-        "specFile": "/products/cases/7.txt"
+        "description": "3 ARGB FANS, ONE SIDE GLASS, FRONT WOODEN,FULL ATX",
+        "category": "Cases"
     },
     {
         "id": "cases-8",
-        "name": "Case",
+        "name": "FOREST BLACK",
         "image": "/products/cases/8.png",
-        "category": "Cases",
-        "specFile": "/products/cases/8.txt"
+        "description": "3 ARGB FANS, ONE SIDE GLASS, FRONT WOODEN,FULL ATX",
+        "category": "Cases"
     },
     {
         "id": "cases-9",
-        "name": "Case",
+        "name": "BATMAN WHITE",
         "image": "/products/cases/9.png",
-        "category": "Cases",
-        "specFile": "/products/cases/9.txt"
+        "description": "3 ARGB FANS, TWO SIDE GLASS, FULL ATX, VERTICAL CARD MOUNTING",
+        "category": "Cases"
     },
     {
         "id": "cases-10",
-        "name": "Case",
+        "name": "BATMAN BLACK",
         "image": "/products/cases/10.png",
-        "category": "Cases",
-        "specFile": "/products/cases/10.txt"
+        "description": "3 ARGB FANS, TWO SIDE GLASS, FULL ATX, VERTICAL CARD MOUNTING",
+        "category": "Cases"
     },
     {
         "id": "cases-11",
-        "name": "Case",
+        "name": "COOL WHITE",
         "image": "/products/cases/11.png",
-        "category": "Cases",
-        "specFile": "/products/cases/11.txt"
+        "description": "Premium Cases component selected by AMS.",
+        "category": "Cases"
     },
     {
         "id": "cases-12",
-        "name": "Case",
+        "name": "COOL BLACK",
         "image": "/products/cases/12.png",
-        "category": "Cases",
-        "specFile": "/products/cases/12.txt"
+        "description": "Premium Cases component selected by AMS.",
+        "category": "Cases"
     },
     {
         "id": "cases-13",
-        "name": "Case",
+        "name": "GOLDEN BOY",
         "image": "/products/cases/13.png",
-        "category": "Cases",
-        "specFile": "/products/cases/13.txt"
+        "description": "Premium Cases component selected by AMS.",
+        "category": "Cases"
     },
     {
         "id": "cases-14",
-        "name": "Case",
+        "name": "NORMAL BLACK",
         "image": "/products/cases/14.png",
-        "category": "Cases",
-        "specFile": "/products/cases/14.txt"
+        "description": "Premium Cases component selected by AMS.",
+        "category": "Cases"
     },
     {
         "id": "cooling-1",
-        "name": "Cooling",
+        "name": "A400",
         "image": "/products/cooling/1.png",
-        "category": "Cooling",
-        "specFile": "/products/cooling/1.txt"
+        "description": "4 PIPE RGB AIR COOLER",
+        "category": "Cooling"
     },
     {
         "id": "cooling-2",
-        "name": "Cooling",
+        "name": "A100",
         "image": "/products/cooling/2.png",
-        "category": "Cooling",
-        "specFile": "/products/cooling/2.txt"
+        "description": "TWO PIPE RGB AIR COOLER",
+        "category": "Cooling"
     },
     {
         "id": "fans-1",
-        "name": "Fan",
+        "name": "FREEZO FAN KIT",
         "image": "/products/fans/1.png",
-        "category": "Fans",
-        "specFile": "/products/fans/1.txt"
+        "description": "ARGB 120MM 3X FAN KIT",
+        "category": "Fans"
     },
     {
         "id": "monitors-1",
-        "name": "Monitor",
+        "name": "PIXEL STORM X",
         "image": "/products/monitors/1.png",
-        "category": "Monitors",
-        "specFile": "/products/monitors/1.txt"
+        "description": "FHD, 24INCH, IPS, RGB BACK, BORDERLESS,165HZ",
+        "category": "Monitors"
     }
 ];
 

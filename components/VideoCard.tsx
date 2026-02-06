@@ -5,10 +5,9 @@ import React, { useEffect, useRef, useState } from "react"
 interface VideoCardProps {
     src: string
     fallbackSrc: string
-    title: string
 }
 
-export function VideoCard({ src, fallbackSrc, title }: VideoCardProps) {
+export function VideoCard({ src, fallbackSrc }: VideoCardProps) {
     const videoRef = useRef<HTMLVideoElement>(null)
     const [isIntersecting, setIsIntersecting] = useState(false)
 
@@ -53,7 +52,6 @@ export function VideoCard({ src, fallbackSrc, title }: VideoCardProps) {
                 <source src={fallbackSrc} type="video/mp4" />
             </video>
             <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4">
-                <p className="text-white font-semibold text-sm">{title}</p>
             </div>
         </div>
     )

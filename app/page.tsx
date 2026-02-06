@@ -121,7 +121,7 @@ export default function HomePage() {
 
         <Button
           size="sm"
-          className="bg-primary text-white hover:bg-orange-600 font-bold px-5 tracking-wide rounded-none border-l-4 border-accent"
+          className="from-primary bg-linear-to-r text-white hover:bg-orange-600 hover:scale-110 font-bold px-5 tracking-wide rounded-none border-l-4 to-accent"
           onClick={() => window.open("https://wa.me/923348964450", "_blank")}
         >
           GET QUOTE
@@ -240,7 +240,7 @@ export default function HomePage() {
                 transition: 'opacity 600ms ease 300ms, transform 600ms ease 300ms',
                 pointerEvents: phase === 1 ? 'auto' : 'none',
               }}
-            >
+            > 
               <h1 className="text-4xl md:text-7xl font-bold text-white mb-2 leading-tight tracking-tight">
                 BUILD YOUR
               </h1>
@@ -252,7 +252,7 @@ export default function HomePage() {
               </p>
               <Button
                 size="lg"
-                className="bg-primary text-white hover:bg-orange-600 font-black text-lg px-12 py-8 rounded-none tracking-tighter uppercase border-b-4 border-accent shadow-[0_10px_20px_rgba(255,107,0,0.3)] transition-all transform hover:scale-105"
+                className="bg-linear-to-r from-primary to-accent text-white hover:bg-orange-600 font-black text-lg px-12 py-8 rounded-none tracking-tighter uppercase shadow-[0_10px_20px_rgba(255,107,0,0.3)] transition-all transform hover:scale-105"
               >
                 EXPLORE PRODUCTS
               </Button>
@@ -280,7 +280,7 @@ export default function HomePage() {
         {/* bg1 Positioning - Full Section Coverage */}
         <div className="absolute inset-0 opacity-[0.06] pointer-events-none z-0 animate-float">
           <Image
-            src="/backgrounds/bg1.png"
+            src="/backgrounds/bg5.webp"
             alt="AMS background 1"
             fill
             className="object-cover"
@@ -337,7 +337,7 @@ export default function HomePage() {
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold text-white mb-4 tracking-tight uppercase">
               SEE US IN <span className="text-primary italic">ACTION</span>
-            </h2>
+            </h2> 
             <p className="text-gray-400 text-lg max-w-2xl mx-auto">
               Watch our latest builds, reviews, and tutorials
             </p>
@@ -358,27 +358,22 @@ export default function HomePage() {
                   <VideoCard
                     src="/videos/1/video.mp4"
                     fallbackSrc="https://assets.mixkit.co/videos/preview/mixkit-hands-of-a-woman-writing-with-a-pen-in-a-notebook-41437-large.mp4"
-                    title="RTX 4090 Unboxing"
                   />
                   <VideoCard
                     src="/videos/2/video.mp4"
                     fallbackSrc="https://assets.mixkit.co/videos/preview/mixkit-typing-on-a-laptop-in-a-pink-neon-atmosphere-50261-large.mp4"
-                    title="Custom Build Showcase"
                   />
                   <VideoCard
                     src="/videos/3/video.mp4"
                     fallbackSrc="https://assets.mixkit.co/videos/preview/mixkit-hands-working-on-a-laptop-in-slow-motion-24-large.mp4"
-                    title="Cooling Setup"
                   />
                   <VideoCard
                     src="/videos/4/video.mp4"
                     fallbackSrc="https://assets.mixkit.co/videos/preview/mixkit-computer-and-smartphone-in-a-workspace-top-shot-50235-large.mp4"
-                    title="GPU Installation Guide"
                   />
                   <VideoCard
                     src="/videos/5/video.mp4"
                     fallbackSrc="https://assets.mixkit.co/videos/preview/mixkit-man-working-on-his-laptop-at-home-4839-large.mp4"
-                    title="Build Review"
                   />
                 </div>
               ))}
@@ -402,15 +397,15 @@ export default function HomePage() {
         {/* bg2 Positioning - Covering larger area */}
         <div className="absolute inset-0 opacity-[0.05] pointer-events-none z-0 animate-float-delayed">
           <Image
-            src="/backgrounds/bg2.png"
+            src="/backgrounds/bg4.jpg"
             alt="AMS background 2"
             fill
-            className="object-cover scale-110"
+            className="object-cover scale-110" 
           />
         </div>
 
         <div className="max-w-[1400px] mx-auto relative z-10">
-          <div className="text-center mb-16">
+          <div className="text-center mb-8">
             <h2 className="text-4xl md:text-5xl font-black text-white mb-4 tracking-tighter uppercase">
               AMS <span className="text-[#ff6b00]">PRODUCTS</span>
             </h2>
@@ -419,7 +414,7 @@ export default function HomePage() {
             </p>
           </div>
 
-          <div className="flex flex-wrap justify-center gap-4 mb-16 px-4">
+          <div className="flex flex-wrap justify-center gap-4 mb-8 px-4">
             {FEATURED_CATEGORIES.map((cat) => (
               <button
                 key={cat.id}
@@ -436,7 +431,7 @@ export default function HomePage() {
 
           <InfiniteProductScroller selectedCategory={selectedCategory} />
 
-          <div className="mt-12 grid md:grid-cols-2 gap-8">
+          <div className="grid md:grid-cols-2 gap-8">
             <div className="bg-gradient-to-br from-primary/10 to-transparent border border-primary/20 rounded-lg p-8">
               <h3 className="text-2xl font-bold text-white mb-4">Custom PC Builds</h3>
               <p className="text-gray-400 mb-6 leading-relaxed">
@@ -473,7 +468,7 @@ export default function HomePage() {
         {/* bg3 Positioning - Covering both Contact and Reviews */}
         <div className="absolute inset-0 opacity-[0.07] pointer-events-none z-0 animate-float-slow">
           <Image
-            src="/backgrounds/bg3.png"
+            src="/backgrounds/bg6.jpg"
             alt="AMS background 3"
             fill
             className="object-cover"
