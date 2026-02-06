@@ -11,7 +11,7 @@ import { VideoCard } from "@/components/VideoCard"
 
 export default function HomePage() {
   const containerRef = useRef<HTMLDivElement>(null)
-  const [phase, setPhase] = useState<0 | 1 | 2>(0)
+  const [phase, setPhase] = useState<0 | 1>(0)
   const [mounted, setMounted] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
   const [selectedCategory, setSelectedCategory] = useState("all")
@@ -39,31 +39,21 @@ export default function HomePage() {
       }
 
       const rect = container.getBoundingClientRect()
-      // Use window properties instead of recalculating entire container height if possible
       const viewportHeight = window.innerHeight
       const containerHeight = container.offsetHeight
       const scrollableDistance = containerHeight - viewportHeight
       const scrolled = -rect.top
       const progress = Math.min(Math.max(scrolled / scrollableDistance, 0), 1)
 
-      // Only proceed if progress has meaningfully changed
       if (Math.abs(progress - lastProgressRef.current) < 0.001) {
         rafRef.current = null
         return
       }
       lastProgressRef.current = progress
 
-      // Determine phase based on scroll progress
-      let newPhase: 0 | 1 | 2
-      if (progress < 0.2) {
-        newPhase = 0
-      } else if (progress < 0.5) {
-        newPhase = 1
-      } else {
-        newPhase = 2
-      }
+      // Two phases: 0 = logo visible, 1 = cards + headline appear together
+      const newPhase: 0 | 1 = progress < 0.25 ? 0 : 1
 
-      // Only update state if phase changed
       if (newPhase !== lastPhaseRef.current) {
         lastPhaseRef.current = newPhase
         setPhase(newPhase)
@@ -138,8 +128,8 @@ export default function HomePage() {
         </Button>
       </nav>
 
-      {/* Hero Section - 2 scroll heights for faster activation */}
-      <div id="home" ref={containerRef} className="relative" style={{ height: "200vh" }}>
+      {/* Hero Section */}
+      <div id="home" ref={containerRef} className="relative" style={{ height: "170vh" }}>
         <div className="sticky top-0 left-0 right-0 h-screen overflow-hidden">
           <div className="relative w-full h-full flex items-center justify-center">
 
@@ -149,7 +139,7 @@ export default function HomePage() {
             {/* Product Cards - CSS transitions handle all movement */}
             {displayProducts.map((product, index) => {
               const pos = positions[index] || { x: 0, y: 0 }
-              const delay = index * 50 // stagger animation
+              const delay = index * 50
 
               return (
                 <div
@@ -161,17 +151,13 @@ export default function HomePage() {
                       : `translate3d(${pos.x}px, ${pos.y}px, 0px) scale(1)`,
                     opacity: phase === 0 ? 0 : 1,
                     transition: `transform 800ms cubic-bezier(0.34, 1.56, 0.64, 1) ${delay}ms, opacity 600ms ease ${delay}ms`,
-                    willChange: 'transform, opacity',
                     zIndex: phase >= 1 ? 10 : 1,
                   }}
                 >
                   <img
                     src={product.image || "/placeholder.svg"}
                     alt={product.name}
-                    className="w-full h-full object-contain transition-all duration-300"
-                    style={{
-                      filter: phase === 2 ? 'drop-shadow(0 0 20px rgba(255,107,0,0.2))' : 'none'
-                    }}
+                    className="w-full h-full object-contain"
                     loading="eager"
                   />
                 </div>
@@ -185,7 +171,6 @@ export default function HomePage() {
                 opacity: phase === 0 ? 1 : 0,
                 transform: phase === 0 ? 'scale(1.2)' : 'scale(0.8)',
                 transition: 'opacity 500ms ease, transform 500ms ease',
-                willChange: 'transform, opacity',
               }}
             >
               <div className="relative overflow-hidden metallic-logo-container">
@@ -246,15 +231,14 @@ export default function HomePage() {
               }
             `}</style>
 
-            {/* Headline and CTA - appears after cards settle */}
+            {/* Headline and CTA - appears together with cards */}
             <div
               className="absolute z-20 flex flex-col items-center justify-center text-center px-6 pointer-events-auto"
               style={{
-                opacity: phase === 2 ? 1 : 0,
-                transform: phase === 2 ? 'scale(1)' : 'scale(0.9)',
-                transition: 'opacity 600ms ease 200ms, transform 600ms ease 200ms',
-                willChange: 'transform, opacity',
-                pointerEvents: phase === 2 ? 'auto' : 'none',
+                opacity: phase === 1 ? 1 : 0,
+                transform: phase === 1 ? 'scale(1)' : 'scale(0.9)',
+                transition: 'opacity 600ms ease 300ms, transform 600ms ease 300ms',
+                pointerEvents: phase === 1 ? 'auto' : 'none',
               }}
             >
               <h1 className="text-4xl md:text-7xl font-bold text-white mb-2 leading-tight tracking-tight">

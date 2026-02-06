@@ -3,7 +3,7 @@
 import React, { useEffect, useRef, memo } from "react"
 
 interface GamerHeroBackgroundProps {
-  phase: 0 | 1 | 2
+  phase: 0 | 1
 }
 
 export const GamerHeroBackground = memo(function GamerHeroBackground({ phase }: GamerHeroBackgroundProps) {
@@ -11,9 +11,8 @@ export const GamerHeroBackground = memo(function GamerHeroBackground({ phase }: 
     <div
       className="absolute inset-0 z-0 overflow-hidden pointer-events-none select-none"
       style={{
-        opacity: phase === 0 ? 1 : phase === 1 ? 0.6 : 0.4,
+        opacity: phase === 0 ? 1 : 0.4,
         transition: 'opacity 1000ms cubic-bezier(0.16, 1, 0.3, 1)',
-        willChange: 'opacity'
       }}
     >
       {/* 1. Base Layer */}
@@ -33,9 +32,9 @@ export const GamerHeroBackground = memo(function GamerHeroBackground({ phase }: 
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#ff6b000a_1px,transparent_1px),linear-gradient(to_bottom,#8a2be20a_1px,transparent_1px)] bg-[size:60px_60px] [transform:rotateX(65deg)_translateY(-100px)_scale(2.5)] animate-grid-flow origin-top" />
       </div>
 
-      {/* 3. Floating Particles / Glows */}
-      <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-[#ff6b00]/5 blur-[120px] rounded-full animate-pulse-slow" />
-      <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-[#8a2be2]/5 blur-[120px] rounded-full animate-pulse-slow delay-1000" />
+      {/* 3. Floating Particles / Glows - smaller on mobile for performance */}
+      <div className="absolute top-1/4 left-1/4 w-48 h-48 md:w-96 md:h-96 bg-[#ff6b00]/5 blur-[60px] md:blur-[120px] rounded-full animate-pulse-slow" />
+      <div className="absolute bottom-1/4 right-1/4 w-48 h-48 md:w-96 md:h-96 bg-[#8a2be2]/5 blur-[60px] md:blur-[120px] rounded-full animate-pulse-slow delay-1000" />
 
       <style jsx>{`
         @keyframes grid-flow {
