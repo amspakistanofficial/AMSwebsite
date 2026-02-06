@@ -144,10 +144,10 @@ export default function HomePage() {
               return (
                 <div
                   key={index}
-                  className="absolute w-28 h-28 md:w-60 md:h-60 flex items-center justify-center pointer-events-none"
+                  className="absolute w-20 h-20 md:w-60 md:h-60 flex items-center justify-center pointer-events-none"
                   style={{
                     transform: phase === 0
-                      ? 'translate3d(0px, 0px, 0px) scale(0.3)'
+                      ? 'translate3d(0px, 0px, 0px) scale(0.2)'
                       : `translate3d(${pos.x}px, ${pos.y}px, 0px) scale(1)`,
                     opacity: phase === 0 ? 0 : 1,
                     transition: `transform 800ms cubic-bezier(0.34, 1.56, 0.64, 1) ${delay}ms, opacity 600ms ease ${delay}ms`,
@@ -247,7 +247,7 @@ export default function HomePage() {
               <h2 className="text-3xl md:text-7xl font-black text-primary mb-6 leading-tight tracking-tighter italic">
                 DREAM RIG
               </h2>
-              <p className="text-gray-400 text-sm md:text-xl mb-8 max-w-xl mx-auto font-medium">
+              <p className="text-gray-400 text-sm md:text-xl mb-8 max-w-xs md:max-w-xl mx-auto font-medium px-4">
                 Premium gaming hardware and PC components for enthusiasts in Pakistan by <span className="text-accent font-bold">AMS</span>
               </p>
               <Button
@@ -289,10 +289,10 @@ export default function HomePage() {
 
         <div className="max-w-[1400px] mx-auto relative z-10">
           <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-black text-white mb-4 tracking-tighter uppercase">
+            <h2 className="text-3xl md:text-5xl font-black text-white mb-4 tracking-tighter uppercase">
               WHY CHOOSE <span className="text-[#ff6b00]">AMS</span>
             </h2>
-            <p className="text-gray-400 text-lg max-w-2xl mx-auto italic">
+            <p className="text-gray-400 text-base md:text-lg max-w-2xl mx-auto italic px-4">
               Your trusted partner for premium PC components and gaming hardware in Pakistan
             </p>
           </div>
@@ -480,10 +480,10 @@ export default function HomePage() {
           <div className="max-w-[1400px] mx-auto">
             <div className="grid md:grid-cols-2 gap-12">
               <div>
-                <h2 className="text-4xl md:text-5xl font-bold text-white mb-4 tracking-tight">
+                <h2 className="text-3xl md:text-5xl font-bold text-white mb-4 tracking-tight">
                   GET IN <span className="text-primary italic">TOUCH</span>
                 </h2>
-                <p className="text-gray-400 text-lg mb-8">
+                <p className="text-gray-400 text-base md:text-lg mb-8 px-2">
                   Have questions about our products or need help with your build? Reach out to us!
                 </p>
 
@@ -552,7 +552,7 @@ export default function HomePage() {
             <div className="overflow-x-auto scrollbar-hide">
               <div className="flex gap-6 pb-4 w-max">
                 {/* Review 1 */}
-                <div className="flex-shrink-0 w-80 bg-[#111111] border border-[#1a1a1a] rounded-lg p-6 hover:border-primary/30 transition-colors">
+                <div className="flex-shrink-0 w-72 md:w-80 bg-[#111111] border border-[#1a1a1a] rounded-lg p-6 hover:border-primary/30 transition-colors">
                   <div className="flex gap-1 mb-4">
                     {[...Array(5)].map((_, i) => (
                       <span key={i} className="text-primary text-xl">★</span>
@@ -564,7 +564,7 @@ export default function HomePage() {
                 </div>
 
                 {/* Review 2 */}
-                <div className="flex-shrink-0 w-80 bg-[#111111] border border-[#1a1a1a] rounded-lg p-6 hover:border-primary/30 transition-colors">
+                <div className="flex-shrink-0 w-72 md:w-80 bg-[#111111] border border-[#1a1a1a] rounded-lg p-6 hover:border-primary/30 transition-colors">
                   <div className="flex gap-1 mb-4">
                     {[...Array(5)].map((_, i) => (
                       <span key={i} className="text-primary text-xl">★</span>
@@ -576,7 +576,7 @@ export default function HomePage() {
                 </div>
 
                 {/* Review 3 */}
-                <div className="flex-shrink-0 w-80 bg-[#111111] border border-[#1a1a1a] rounded-lg p-6 hover:border-primary/30 transition-colors">
+                <div className="flex-shrink-0 w-72 md:w-80 bg-[#111111] border border-[#1a1a1a] rounded-lg p-6 hover:border-primary/30 transition-colors">
                   <div className="flex gap-1 mb-4">
                     {[...Array(5)].map((_, i) => (
                       <span key={i} className="text-primary text-xl">★</span>
@@ -588,7 +588,7 @@ export default function HomePage() {
                 </div>
 
                 {/* Review 4 */}
-                <div className="flex-shrink-0 w-80 bg-[#111111] border border-[#1a1a1a] rounded-lg p-6 hover:border-primary/30 transition-colors">
+                <div className="flex-shrink-0 w-72 md:w-80 bg-[#111111] border border-[#1a1a1a] rounded-lg p-6 hover:border-primary/30 transition-colors">
                   <div className="flex gap-1 mb-4">
                     {[...Array(5)].map((_, i) => (
                       <span key={i} className="text-primary text-xl">★</span>
@@ -600,7 +600,7 @@ export default function HomePage() {
                 </div>
 
                 {/* Review 5 */}
-                <div className="flex-shrink-0 w-80 bg-[#111111] border border-[#1a1a1a] rounded-lg p-6 hover:border-primary/30 transition-colors">
+                <div className="flex-shrink-0 w-72 md:w-80 bg-[#111111] border border-[#1a1a1a] rounded-lg p-6 hover:border-primary/30 transition-colors">
                   <div className="flex gap-1 mb-4">
                     {[...Array(5)].map((_, i) => (
                       <span key={i} className="text-primary text-xl">★</span>
@@ -612,7 +612,7 @@ export default function HomePage() {
                 </div>
 
                 {/* Review 6 */}
-                <div className="flex-shrink-0 w-80 bg-[#111111] border border-[#1a1a1a] rounded-lg p-6 hover:border-primary/30 transition-colors">
+                <div className="flex-shrink-0 w-72 md:w-80 bg-[#111111] border border-[#1a1a1a] rounded-lg p-6 hover:border-primary/30 transition-colors">
                   <div className="flex gap-1 mb-4">
                     {[...Array(5)].map((_, i) => (
                       <span key={i} className="text-primary text-xl">★</span>
@@ -624,7 +624,7 @@ export default function HomePage() {
                 </div>
 
                 {/* Review 7 */}
-                <div className="flex-shrink-0 w-80 bg-[#111111] border border-[#1a1a1a] rounded-lg p-6 hover:border-primary/30 transition-colors">
+                <div className="flex-shrink-0 w-72 md:w-80 bg-[#111111] border border-[#1a1a1a] rounded-lg p-6 hover:border-primary/30 transition-colors">
                   <div className="flex gap-1 mb-4">
                     {[...Array(5)].map((_, i) => (
                       <span key={i} className="text-primary text-xl">★</span>
@@ -636,7 +636,7 @@ export default function HomePage() {
                 </div>
 
                 {/* Review 8 */}
-                <div className="flex-shrink-0 w-80 bg-[#111111] border border-[#1a1a1a] rounded-lg p-6 hover:border-primary/30 transition-colors">
+                <div className="flex-shrink-0 w-72 md:w-80 bg-[#111111] border border-[#1a1a1a] rounded-lg p-6 hover:border-primary/30 transition-colors">
                   <div className="flex gap-1 mb-4">
                     {[...Array(5)].map((_, i) => (
                       <span key={i} className="text-primary text-xl">★</span>
@@ -648,7 +648,7 @@ export default function HomePage() {
                 </div>
 
                 {/* Review 9 */}
-                <div className="flex-shrink-0 w-80 bg-[#111111] border border-[#1a1a1a] rounded-lg p-6 hover:border-primary/30 transition-colors">
+                <div className="flex-shrink-0 w-72 md:w-80 bg-[#111111] border border-[#1a1a1a] rounded-lg p-6 hover:border-primary/30 transition-colors">
                   <div className="flex gap-1 mb-4">
                     {[...Array(5)].map((_, i) => (
                       <span key={i} className="text-primary text-xl">★</span>

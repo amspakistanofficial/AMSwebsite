@@ -94,10 +94,13 @@
   }
   html {
     scroll-behavior: smooth;
+    overflow-x: hidden;
   }
   body {
     @apply bg-background text-foreground;
     background-image: radial-gradient(circle at 50% 50%, rgba(138, 43, 226, 0.05), transparent 70%);
+    overflow-x: hidden;
+    width: 100%;
   }
 }
 

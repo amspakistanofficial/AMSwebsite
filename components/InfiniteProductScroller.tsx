@@ -176,7 +176,7 @@ export const InfiniteProductScroller = memo(function InfiniteProductScroller({ s
 
                 <div className="w-full relative overflow-visible flex flex-col items-center justify-center">
                   {/* Image container */}
-                  <div className="relative w-full h-[220px] md:h-[350px] flex items-center justify-center">
+                  <div className="relative w-full h-[140px] md:h-[350px] flex items-center justify-center">
                     {/* Glow behind image on hover - no blur on mobile for perf */}
                     <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 md:w-64 h-48 md:h-64 bg-[#8a2be2]/15 rounded-full md:blur-[60px] opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none hidden md:block" />
 
