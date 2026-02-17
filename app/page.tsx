@@ -17,15 +17,6 @@ export default function HomePage() {
   const [selectedCategory, setSelectedCategory] = useState("all")
   const rafRef = useRef<number | null>(null)
   const lastPhaseRef = useRef<number>(0)
-
-  useEffect(() => {
-    setMounted(true)
-    const checkMobile = () => setIsMobile(window.innerWidth < 768)
-    checkMobile()
-    window.addEventListener('resize', checkMobile)
-    return () => window.removeEventListener('resize', checkMobile)
-  }, [])
-
   const lastProgressRef = useRef<number>(0)
 
   const handleScroll = useCallback(() => {
@@ -52,7 +43,7 @@ export default function HomePage() {
       lastProgressRef.current = progress
 
       // Two phases: 0 = logo visible, 1 = cards + headline appear together
-      const newPhase: 0 | 1 = progress < 0.25 ? 0 : 1
+      const newPhase: 0 | 1 = progress < 0.35 ? 0 : 1
 
       if (newPhase !== lastPhaseRef.current) {
         lastPhaseRef.current = newPhase
@@ -62,6 +53,19 @@ export default function HomePage() {
       rafRef.current = null
     })
   }, [])
+
+  useEffect(() => {
+    setMounted(true)
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768)
+      // Trigger scroll logic on resize to prevent phase glitches
+      handleScroll()
+    }
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [handleScroll])
+
 
   useEffect(() => {
     window.addEventListener("scroll", handleScroll, { passive: true })
@@ -129,7 +133,7 @@ export default function HomePage() {
       </nav>
 
       {/* Hero Section */}
-      <div id="home" ref={containerRef} className="relative" style={{ height: "170vh" }}>
+      <div id="home" ref={containerRef} className="relative" style={{ height: "130vh" }}>
         <div className="sticky top-0 left-0 right-0 h-screen overflow-hidden">
           <div className="relative w-full h-full flex items-center justify-center">
 
@@ -236,7 +240,8 @@ export default function HomePage() {
               className="absolute z-20 flex flex-col items-center justify-center text-center px-6 pointer-events-auto"
               style={{
                 opacity: phase === 1 ? 1 : 0,
-                transform: phase === 1 ? 'scale(1)' : 'scale(0.9)',
+                top: '50%',
+                transform: `translateY(-50%) ${phase === 1 ? 'scale(1)' : 'scale(0.9)'}`,
                 transition: 'opacity 600ms ease 300ms, transform 600ms ease 300ms',
                 pointerEvents: phase === 1 ? 'auto' : 'none',
               }}
