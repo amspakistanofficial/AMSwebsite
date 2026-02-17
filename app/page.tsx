@@ -133,7 +133,7 @@ export default function HomePage() {
       </nav>
 
       {/* Hero Section */}
-      <div id="home" ref={containerRef} className="relative" style={{ height: "130vh" }}>
+      <div id="home" ref={containerRef} className="relative" style={{ height: "115vh" }}>
         <div className="sticky top-0 left-0 right-0 h-screen overflow-hidden">
           <div className="relative w-full h-full flex items-center justify-center">
 
@@ -258,6 +258,9 @@ export default function HomePage() {
               <Button
                 size="lg"
                 className="bg-linear-to-r from-primary to-accent text-white hover:bg-orange-600 font-black text-base md:text-lg px-8 md:px-12 py-6 md:py-8 rounded-none tracking-tighter uppercase shadow-[0_10px_20px_rgba(255,107,0,0.3)] transition-all transform hover:scale-105"
+                onClick={() => {
+                  document.getElementById('products')?.scrollIntoView({ behavior: 'smooth' });
+                }}
               >
                 EXPLORE PRODUCTS
               </Button>
