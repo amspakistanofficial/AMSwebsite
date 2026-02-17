@@ -120,9 +120,10 @@ export default function HomePage() {
         <div className="hidden md:flex flex-1 justify-center">
           <div className="flex items-center gap-10 text-gray-400 text-sm font-medium tracking-widest uppercase">
             <a href="#home" className="hover:text-primary transition-colors">Home</a>
-            <a href="#about" className="hover:text-primary transition-colors">About</a>
             <a href="#products" className="hover:text-primary transition-colors">Products</a>
             <a href="#contact" className="hover:text-primary transition-colors">Contact</a>
+            <a href="#reviews" className="hover:text-primary transition-colors">Reviews</a>
+            <a href="#about" className="hover:text-primary transition-colors">About</a>
           </div>
         </div>
 
