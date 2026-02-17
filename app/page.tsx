@@ -140,8 +140,8 @@ export default function HomePage() {
             {/* Background Animation */}
             <GamerHeroBackground phase={phase} />
 
-            {/* Product Cards - CSS transitions handle all movement */}
-            {displayProducts.map((product, index) => {
+            {/* Product Cards - Only visible/animated on desktop */}
+            {!isMobile && displayProducts.map((product, index) => {
               const pos = positions[index] || { x: 0, y: 0 }
               const delay = index * 50
 
