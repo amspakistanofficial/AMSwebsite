@@ -4,6 +4,7 @@ export interface Product {
     image: string;
     description?: string;
     category?: string;
+    specFile?: string;
 }
 
 export const HERO_PRODUCTS: Product[] = [

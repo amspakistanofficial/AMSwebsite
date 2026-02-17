@@ -13,12 +13,13 @@ export const GamerHeroBackground = memo(function GamerHeroBackground({ phase }: 
       style={{
         opacity: phase === 0 ? 1 : 0.4,
         transition: 'opacity 1000ms cubic-bezier(0.16, 1, 0.3, 1)',
+        willChange: 'opacity',
       }}
     >
       {/* 1. Base Layer */}
       <div className="absolute inset-0 bg-black">
         <div
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-[0.2] mix-blend-screen"
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-[0.2] mix-blend-screen will-change-transform"
           style={{ backgroundImage: 'url(/hero-bg.gif)' }}
         />
         {/* Gradient Overlays for Depth */}
@@ -33,8 +34,8 @@ export const GamerHeroBackground = memo(function GamerHeroBackground({ phase }: 
       </div>
 
       {/* 3. Floating Particles / Glows - smaller on mobile for performance */}
-      <div className="absolute top-1/4 left-1/4 w-48 h-48 md:w-96 md:h-96 bg-[#ff6b00]/5 blur-[60px] md:blur-[120px] rounded-full animate-pulse-slow" />
-      <div className="absolute bottom-1/4 right-1/4 w-48 h-48 md:w-96 md:h-96 bg-[#8a2be2]/5 blur-[60px] md:blur-[120px] rounded-full animate-pulse-slow delay-1000" />
+      <div className="absolute top-1/4 left-1/4 w-48 h-48 md:w-96 md:h-96 bg-[#ff6b00]/5 blur-[60px] md:blur-[120px] rounded-full animate-pulse-slow will-change-transform" />
+      <div className="absolute bottom-1/4 right-1/4 w-48 h-48 md:w-96 md:h-96 bg-[#8a2be2]/5 blur-[60px] md:blur-[120px] rounded-full animate-pulse-slow delay-1000 will-change-transform" />
 
       <style jsx>{`
         @keyframes grid-flow {

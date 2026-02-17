@@ -105,7 +105,10 @@ export default function HomePage() {
   return (
     <div className="bg-[#0a0a0a]">
       {/* Navigation */}
-      <nav className="fixed top-0 left-0 right-0 z-50 px-6 py-4 flex items-center justify-between bg-[#0a0a0a]/90 backdrop-blur-md border-b border-[#1a1a1a]">
+      <nav
+        className="fixed top-0 left-0 right-0 z-50 px-6 py-4 flex items-center justify-between bg-[#0a0a0a]/90 backdrop-blur-md border-b border-[#1a1a1a]"
+        style={{ WebkitBackdropFilter: 'blur(12px)' }}
+      >
         <div className="flex items-center gap-3">
           <img
             src="/ams-logo.png"

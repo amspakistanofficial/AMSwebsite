@@ -92,10 +92,12 @@
   * {
     @apply border-border outline-ring/50;
   }
+
   html {
     scroll-behavior: smooth;
     overflow-x: hidden;
   }
+
   body {
     @apply bg-background text-foreground;
     background-image: radial-gradient(circle at 50% 50%, rgba(138, 43, 226, 0.05), transparent 70%);
@@ -105,8 +107,17 @@
 }
 
 @keyframes breathe {
-  0%, 100% { opacity: 0.3; transform: scale(1); }
-  50% { opacity: 0.6; transform: scale(1.05); }
+
+  0%,
+  100% {
+    opacity: 0.3;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 0.6;
+    transform: scale(1.05);
+  }
 }
 
 .animate-breathe {
@@ -114,9 +125,8 @@
 }
 
 .gamer-texture {
-  background-image: 
+  background-image:
     linear-gradient(rgba(255, 107, 0, 0.03) 1px, transparent 1px),
     linear-gradient(90deg, rgba(138, 43, 226, 0.03) 1px, transparent 1px);
   background-size: 40px 40px;
 }
-

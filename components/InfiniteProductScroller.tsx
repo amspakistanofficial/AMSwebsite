@@ -84,9 +84,22 @@ export const InfiniteProductScroller = memo(function InfiniteProductScroller({ s
   useEffect(() => {
     const el = scrollRef.current
     if (!el) return
-    el.addEventListener("scroll", updateScrollButtons, { passive: true })
+
+    let rafId: number
+    const throttledUpdate = () => {
+      if (rafId) return
+      rafId = requestAnimationFrame(() => {
+        updateScrollButtons()
+        rafId = 0
+      })
+    }
+
+    el.addEventListener("scroll", throttledUpdate, { passive: true })
     updateScrollButtons()
-    return () => el.removeEventListener("scroll", updateScrollButtons)
+    return () => {
+      el.removeEventListener("scroll", throttledUpdate)
+      if (rafId) cancelAnimationFrame(rafId)
+    }
   }, [updateScrollButtons, filteredProducts])
 
   const scroll = (direction: "left" | "right") => {
@@ -169,7 +182,7 @@ export const InfiniteProductScroller = memo(function InfiniteProductScroller({ s
             return (
               <div
                 key={product.id}
-                className={`product-snap-item flex-shrink-0 w-[160px] md:w-[350px] bg-transparent p-2 md:p-6 transition-all duration-300 group relative ${isCentered ? 'md:scale-110 md:z-10' : 'md:scale-90 md:opacity-70'}`}
+                className={`product-snap-item flex-shrink-0 w-[160px] md:w-[350px] bg-transparent p-2 md:p-6 transition-all duration-300 group relative will-change-transform ${isCentered ? 'md:scale-110 md:z-10' : 'md:scale-90 md:opacity-70'}`}
               >
                 {/* Purple Glow Effect on hover */}
                 <div className="absolute inset-0 bg-[#8a2be2]/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
