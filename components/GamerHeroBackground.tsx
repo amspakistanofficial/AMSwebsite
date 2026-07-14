@@ -18,10 +18,17 @@ export const GamerHeroBackground = memo(function GamerHeroBackground({ phase }: 
     >
       {/* 1. Base Layer */}
       <div className="absolute inset-0 bg-black">
-        <div
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-[0.2] mix-blend-screen will-change-transform"
-          style={{ backgroundImage: 'url(/hero-bg.gif)' }}
-        />
+        <div className="absolute inset-0 overflow-hidden">
+  <video
+    autoPlay
+    loop
+    muted
+    playsInline
+    className="absolute inset-0 w-full h-full object-cover opacity-[0.2]"
+  >
+    <source src="/hero-bg.mp4" type="video/mp4" />
+  </video>
+</div>
         {/* Gradient Overlays for Depth */}
         <div className="absolute inset-0 bg-radial-[circle_at_20%_30%,_var(--tw-gradient-stops)] from-[#ff6b001a] via-transparent to-transparent" />
         <div className="absolute inset-0 bg-radial-[circle_at_80%_70%,_var(--tw-gradient-stops)] from-[#8a2be21a] via-transparent to-transparent" />
