@@ -1,4 +1,5 @@
 import Image from "next/image"
+import Link from "next/link"
 import { ArrowRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { FEATURED_PRODUCTS, type FeaturedProduct } from "@/lib/featured-products"
@@ -52,10 +53,10 @@ export function FeaturedProducts({ products = FEATURED_PRODUCTS }: FeaturedProdu
                   variant="outline"
                   className="w-full rounded-none border-primary/50 bg-transparent text-primary hover:bg-primary hover:text-black font-bold uppercase tracking-tighter"
                 >
-                  <a href="#products">
+                  <Link href={`/products/${product.slug}`}>
                     View Details
                     <ArrowRight className="w-4 h-4" />
-                  </a>
+                  </Link>
                 </Button>
               </div>
             </article>
