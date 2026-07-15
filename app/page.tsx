@@ -8,6 +8,7 @@ import { GamerHeroBackground } from "@/components/GamerHeroBackground"
 import { InfiniteProductScroller } from "@/components/InfiniteProductScroller"
 import { HERO_PRODUCTS, FEATURED_CATEGORIES } from "@/lib/products"
 import { VideoCard } from "@/components/VideoCard"
+import { FeaturedProducts } from "@/components/FeaturedProducts"
 
 const FINAL_POSITIONS = [
   { x: -500, y: -250 }, // Top Left
@@ -292,6 +293,8 @@ export default function HomePage() {
           </div>
         </div>
       </div>
+
+      <FeaturedProducts />
 
       {/* About Section */}
       <section id="about" className="py-24 px-8 bg-[#0a0a0a] relative overflow-hidden">
