@@ -9,6 +9,24 @@ import { InfiniteProductScroller } from "@/components/InfiniteProductScroller"
 import { HERO_PRODUCTS, FEATURED_CATEGORIES } from "@/lib/products"
 import { VideoCard } from "@/components/VideoCard"
 
+const FINAL_POSITIONS = [
+  { x: -500, y: -250 }, // Top Left
+  { x: -550, y: 50 },   // Mid Left
+  { x: -450, y: 320 },  // Bottom Left
+  { x: 500, y: -250 },  // Top Right
+  { x: 550, y: 50 },    // Mid Right
+  { x: 450, y: 320 },   // Bottom Right
+]
+
+const MOBILE_POSITIONS = [
+  { x: -140, y: -220 }, // Top Left
+  { x: 140, y: -180 },  // Top Right
+  { x: -150, y: 30 },   // Mid Left
+  { x: 150, y: 60 },    // Mid Right
+  { x: -130, y: 280 },  // Bottom Left
+  { x: 130, y: 310 },   // Bottom Right
+]
+
 export default function HomePage() {
   const containerRef = useRef<HTMLDivElement>(null)
   const [phase, setPhase] = useState<0 | 1>(0)
@@ -76,29 +94,8 @@ export default function HomePage() {
     }
   }, [handleScroll])
 
-  const products = HERO_PRODUCTS
-
-  // Fixed symmetrical positions for 6 cards
-  const finalPositions = [
-    { x: -500, y: -250 }, // Top Left
-    { x: -550, y: 50 },   // Mid Left
-    { x: -450, y: 320 },  // Bottom Left
-    { x: 500, y: -250 },  // Top Right
-    { x: 550, y: 50 },    // Mid Right
-    { x: 450, y: 320 },   // Bottom Right
-  ]
-
-  const mobilePositions = [
-    { x: -140, y: -220 }, // Top Left
-    { x: 140, y: -180 },  // Top Right
-    { x: -150, y: 30 },   // Mid Left
-    { x: 150, y: 60 },    // Mid Right
-    { x: -130, y: 280 },  // Bottom Left
-    { x: 130, y: 310 },   // Bottom Right
-  ]
-
-  const positions = isMobile ? mobilePositions : finalPositions
-  const displayProducts = isMobile ? products.slice(0, 6) : products
+  const positions = isMobile ? MOBILE_POSITIONS : FINAL_POSITIONS
+  const displayProducts = isMobile ? HERO_PRODUCTS.slice(0, 6) : HERO_PRODUCTS
 
   if (!mounted) return null
 
@@ -107,12 +104,15 @@ export default function HomePage() {
       {/* Navigation */}
       <nav
         className="fixed top-0 left-0 right-0 z-50 px-6 py-4 flex items-center justify-between bg-[#0a0a0a]/90 backdrop-blur-md border-b border-[#1a1a1a]"
-        style={{ WebkitBackdropFilter: 'blur(12px)' }}
       >
         <div className="flex items-center gap-3">
-          <img
+          <Image
             src="/ams-logo.png"
             alt="AMS"
+            width={40}
+            height={40}
+            priority
+            sizes="40px"
             className="h-10 w-auto"
           />
         </div>
@@ -162,11 +162,13 @@ export default function HomePage() {
                     zIndex: phase >= 1 ? 10 : 1,
                   }}
                 >
-                  <img
+                  <Image
                     src={product.image || "/placeholder.svg"}
                     alt={product.name}
+                    width={240}
+                    height={240}
+                    sizes="240px"
                     className="w-full h-full object-contain"
-                    loading="eager"
                   />
                 </div>
               )
@@ -182,9 +184,13 @@ export default function HomePage() {
               }}
             >
               <div className="relative overflow-hidden metallic-logo-container">
-                <img
+                <Image
                   src="/ams-logo.png"
                   alt="AMS"
+                  width={320}
+                  height={320}
+                  priority
+                  sizes="(min-width: 768px) 320px, 256px"
                   className="h-64 md:h-80 w-auto drop-shadow-2xl relative z-10"
                 />
                 {phase === 0 && <div className="absolute inset-0 z-20 metallic-shine" />}
@@ -295,6 +301,8 @@ export default function HomePage() {
             src="/backgrounds/bg5.webp"
             alt="AMS background 1"
             fill
+            loading="lazy"
+            sizes="100vw"
             className="object-cover"
           />
         </div>
@@ -412,6 +420,8 @@ export default function HomePage() {
             src="/backgrounds/bg4.jpg"
             alt="AMS background 2"
             fill
+            loading="lazy"
+            sizes="100vw"
             className="object-cover scale-110"
           />
         </div>
@@ -483,6 +493,8 @@ export default function HomePage() {
             src="/backgrounds/bg6.jpg"
             alt="AMS background 3"
             fill
+            loading="lazy"
+            sizes="100vw"
             className="object-cover"
           />
         </div>
@@ -693,9 +705,13 @@ export default function HomePage() {
         <div className="max-w-[1400px] mx-auto">
           <div className="flex flex-col md:flex-row items-center justify-between gap-6">
             <div className="flex items-center gap-3">
-              <img
+              <Image
                 src="/ams-logo.png"
                 alt="AMS"
+                width={32}
+                height={32}
+                loading="lazy"
+                sizes="32px"
                 className="h-8 w-auto opacity-70"
               />
             </div>

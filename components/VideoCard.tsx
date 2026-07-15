@@ -1,29 +1,46 @@
 "use client"
 
-import React, { useEffect, useRef, useState } from "react"
+import React, { memo, useEffect, useRef, useState } from "react"
 
 interface VideoCardProps {
     src: string
     fallbackSrc: string
 }
 
-export function VideoCard({ src, fallbackSrc }: VideoCardProps) {
+export const VideoCard = memo(function VideoCard({ src, fallbackSrc }: VideoCardProps) {
+    const cardRef = useRef<HTMLDivElement>(null)
     const videoRef = useRef<HTMLVideoElement>(null)
     const [isIntersecting, setIsIntersecting] = useState(false)
+    const [shouldLoad, setShouldLoad] = useState(false)
 
     useEffect(() => {
-        const observer = new IntersectionObserver(
+        const card = cardRef.current
+        if (!card) return
+
+        const loadObserver = new IntersectionObserver(
+            ([entry]) => {
+                if (entry.isIntersecting) {
+                    setShouldLoad(true)
+                    loadObserver.disconnect()
+                }
+            },
+            { rootMargin: "300px 0px", threshold: 0 }
+        )
+
+        const playbackObserver = new IntersectionObserver(
             ([entry]) => {
                 setIsIntersecting(entry.isIntersecting)
             },
             { threshold: 0.1 }
         )
 
-        if (videoRef.current) {
-            observer.observe(videoRef.current)
-        }
+        loadObserver.observe(card)
+        playbackObserver.observe(card)
 
-        return () => observer.disconnect()
+        return () => {
+            loadObserver.disconnect()
+            playbackObserver.disconnect()
+        }
     }, [])
 
     useEffect(() => {
@@ -39,20 +56,22 @@ export function VideoCard({ src, fallbackSrc }: VideoCardProps) {
     }, [isIntersecting])
 
     return (
-        <div className="flex-shrink-0 w-[270px] aspect-[9/16] bg-[#111111] border border-[#1a1a1a] rounded-2xl overflow-hidden relative hover:border-primary/50 transition-colors">
-            <video
-                ref={videoRef}
-                className="w-full h-full object-cover"
-                muted
-                loop
-                playsInline
-                preload="metadata"
-            >
-                <source src={src} type="video/mp4" />
-                <source src={fallbackSrc} type="video/mp4" />
-            </video>
+        <div ref={cardRef} className="flex-shrink-0 w-[270px] aspect-[9/16] bg-[#111111] border border-[#1a1a1a] rounded-2xl overflow-hidden relative hover:border-primary/50 transition-colors">
+            {shouldLoad && (
+                <video
+                    ref={videoRef}
+                    className="w-full h-full object-cover"
+                    muted
+                    loop
+                    playsInline
+                    preload="metadata"
+                >
+                    <source src={src} type="video/mp4" />
+                    <source src={fallbackSrc} type="video/mp4" />
+                </video>
+            )}
             <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4">
             </div>
         </div>
     )
-}
+})

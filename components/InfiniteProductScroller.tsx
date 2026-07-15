@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useEffect, useState, useRef, useCallback, memo } from "react"
+import React, { useEffect, useState, useRef, useCallback, useMemo, memo } from "react"
 import Image from "next/image"
 import { ChevronLeft, ChevronRight } from "lucide-react"
 import { ALL_PRODUCTS, Product } from "@/lib/products"
@@ -9,50 +9,111 @@ interface InfiniteProductScrollerProps {
   selectedCategory: string
 }
 
+function getSpec(product: Product) {
+  return product.description || "Premium component selected by AMS."
+}
+
+function formatSpec(spec: string) {
+  const lines = spec.split("\n").filter(Boolean)
+  if (lines.length > 1) {
+    return (
+      <>
+        <span className="text-white text-base font-black italic tracking-wide block mb-1">{lines[0]}</span>
+        <span className="text-gray-400 text-sm font-medium tracking-wide">{lines.slice(1).join(" | ")}</span>
+      </>
+    )
+  }
+  return <span className="text-white text-base font-black italic tracking-wide">{lines[0]}</span>
+}
+
+const ProductCard = memo(function ProductCard({
+  product,
+  isCentered,
+}: {
+  product: Product
+  isCentered: boolean
+}) {
+  return (
+    <div
+      className={`product-snap-item flex-shrink-0 w-[160px] md:w-[350px] bg-transparent p-2 md:p-6 transition-all duration-300 group relative ${isCentered ? 'md:scale-110 md:z-10' : 'md:scale-90 md:opacity-70'}`}
+    >
+      {/* Purple Glow Effect on hover */}
+      <div className="absolute inset-0 bg-[#8a2be2]/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
+
+      <div className="w-full relative overflow-visible flex flex-col items-center justify-center">
+        {/* Image container */}
+        <div className="relative w-full h-[140px] md:h-[350px] flex items-center justify-center">
+          {/* Glow behind image on hover - no blur on mobile for perf */}
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 md:w-64 h-48 md:h-64 bg-[#8a2be2]/15 rounded-full md:blur-[60px] opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none hidden md:block" />
+
+          <Image
+            src={product.image}
+            alt={product.name}
+            width={350}
+            height={350}
+            loading="lazy"
+            sizes="(min-width: 768px) 350px, 160px"
+            className="object-contain group-hover:scale-105 transition-transform duration-500 relative z-10"
+            style={{ width: 'auto', height: 'auto', maxWidth: '100%', maxHeight: '100%' }}
+          />
+
+          {/* Desktop: Popout Info Panel on hover */}
+          <div className="hidden md:block absolute -top-6 left-1/2 -translate-x-1/2 -translate-y-full w-[105%] bg-[#0a0a0a] border border-primary/40 p-6 opacity-0 scale-95 translate-y-2 group-hover:opacity-100 group-hover:scale-100 group-hover:translate-y-0 transition-all duration-300 pointer-events-none z-50 shadow-2xl">
+            <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-4 h-4 bg-[#0a0a0a] border-r border-b border-primary/40 rotate-45" />
+            <div className="relative">
+              <div className="flex items-center gap-4 mb-5">
+                <div className="w-2 h-7 bg-primary" />
+                <h4 className="text-primary text-sm font-black uppercase tracking-[0.3em]">{product.name}</h4>
+              </div>
+              <div className="leading-relaxed">
+                {formatSpec(getSpec(product))}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Mobile: Title + description always visible below image */}
+        <div className="md:hidden mt-3 w-full bg-[#111111] border border-primary/30 p-3">
+          <div className="flex items-center gap-3 mb-2">
+            <div className="w-1.5 h-5 bg-primary" />
+            <h4 className="text-primary text-xs font-black uppercase tracking-[0.2em]">{product.name}</h4>
+          </div>
+          <div className="leading-relaxed">
+            {formatSpec(getSpec(product))}
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+})
+
 export const InfiniteProductScroller = memo(function InfiniteProductScroller({ selectedCategory }: InfiniteProductScrollerProps) {
-  const [filteredProducts, setFilteredProducts] = useState(ALL_PRODUCTS)
+  const [visibleCategory, setVisibleCategory] = useState(selectedCategory)
   const [isChanging, setIsChanging] = useState(false)
-  const [specs, setSpecs] = useState<Record<string, string>>({})
-  const [canScrollLeft, setCanScrollLeft] = useState(false)
-  const [canScrollRight, setCanScrollRight] = useState(true)
-  const [centeredIndex, setCenteredIndex] = useState(0)
+  const [{ canScrollLeft, canScrollRight, centeredIndex }, setScrollState] = useState({
+    canScrollLeft: false,
+    canScrollRight: true,
+    centeredIndex: 0,
+  })
   const scrollRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
+    if (selectedCategory === visibleCategory) return
+
     setIsChanging(true)
     const timer = setTimeout(() => {
-      if (selectedCategory === "all") {
-        setFilteredProducts(ALL_PRODUCTS)
-      } else {
-        setFilteredProducts(ALL_PRODUCTS.filter(p => p.category === selectedCategory))
-      }
+      setVisibleCategory(selectedCategory)
       setIsChanging(false)
     }, 300)
     return () => clearTimeout(timer)
-  }, [selectedCategory])
+  }, [selectedCategory, visibleCategory])
 
-  // Fetch specs dynamically from .txt files
-  useEffect(() => {
-    const fetchSpecs = async () => {
-      const newSpecs: Record<string, string> = {}
-      const promises = ALL_PRODUCTS.map(async (product) => {
-        if (product.specFile) {
-          try {
-            const res = await fetch(product.specFile)
-            if (res.ok) {
-              const text = await res.text()
-              newSpecs[product.id] = text.trim()
-            }
-          } catch {
-            // Fallback to description if fetch fails
-          }
-        }
-      })
-      await Promise.all(promises)
-      setSpecs(newSpecs)
+  const filteredProducts = useMemo(() => {
+    if (visibleCategory === "all") {
+      return ALL_PRODUCTS
     }
-    fetchSpecs()
-  }, [])
+    return ALL_PRODUCTS.filter((product) => product.category === visibleCategory)
+  }, [visibleCategory])
 
   const findCenteredIndex = useCallback(() => {
     const el = scrollRef.current
@@ -76,9 +137,19 @@ export const InfiniteProductScroller = memo(function InfiniteProductScroller({ s
   const updateScrollButtons = useCallback(() => {
     const el = scrollRef.current
     if (!el) return
-    setCanScrollLeft(el.scrollLeft > 10)
-    setCanScrollRight(el.scrollLeft < el.scrollWidth - el.clientWidth - 10)
-    setCenteredIndex(findCenteredIndex())
+    const nextState = {
+      canScrollLeft: el.scrollLeft > 10,
+      canScrollRight: el.scrollLeft < el.scrollWidth - el.clientWidth - 10,
+      centeredIndex: findCenteredIndex(),
+    }
+
+    setScrollState((previousState) => (
+      previousState.canScrollLeft === nextState.canScrollLeft &&
+      previousState.canScrollRight === nextState.canScrollRight &&
+      previousState.centeredIndex === nextState.centeredIndex
+        ? previousState
+        : nextState
+    ))
   }, [findCenteredIndex])
 
   useEffect(() => {
@@ -102,7 +173,7 @@ export const InfiniteProductScroller = memo(function InfiniteProductScroller({ s
     }
   }, [updateScrollButtons, filteredProducts])
 
-  const scroll = (direction: "left" | "right") => {
+  const scroll = useCallback((direction: "left" | "right") => {
     const el = scrollRef.current
     if (!el) return
     const children = el.children
@@ -115,33 +186,7 @@ export const InfiniteProductScroller = memo(function InfiniteProductScroller({ s
       const targetScroll = targetChild.offsetLeft - el.clientWidth / 2 + targetChild.offsetWidth / 2
       el.scrollTo({ left: targetScroll, behavior: "smooth" })
     }
-  }
-
-  const getSpec = (product: Product) => {
-    return specs[product.id] || product.description || "Premium component selected by AMS."
-  }
-
-  const formatSpec = (spec: string) => {
-    const lines = spec.split("\n").filter(Boolean)
-    if (lines.length > 1) {
-      return (
-        <>
-          <span className="text-white text-base font-black italic tracking-wide block mb-1">{lines[0]}</span>
-          <span className="text-gray-400 text-sm font-medium tracking-wide">{lines.slice(1).join(" | ")}</span>
-        </>
-      )
-    }
-    return <span className="text-white text-base font-black italic tracking-wide">{lines[0]}</span>
-  }
-
-  const formatMobileSpec = (product: Product, spec: string) => {
-    const lines = spec.split("\n").filter(Boolean)
-    return (
-      <>
-        <span className="text-gray-400 text-sm font-medium tracking-wide">{lines.join(" | ")}</span>
-      </>
-    )
-  }
+  }, [findCenteredIndex])
 
   return (
     <div className={`w-full bg-transparent py-8 relative transition-opacity duration-300 ${isChanging ? 'opacity-0' : 'opacity-100'}`}>
@@ -177,62 +222,13 @@ export const InfiniteProductScroller = memo(function InfiniteProductScroller({ s
 
       <div ref={scrollRef} className="product-scroll-container flex gap-3 md:gap-6 overflow-x-auto pb-8 md:pb-32 px-8">
         {filteredProducts.length > 0 ? (
-          filteredProducts.map((product, index) => {
-            const isCentered = index === centeredIndex
-            return (
-              <div
-                key={product.id}
-                className={`product-snap-item flex-shrink-0 w-[160px] md:w-[350px] bg-transparent p-2 md:p-6 transition-all duration-300 group relative will-change-transform ${isCentered ? 'md:scale-110 md:z-10' : 'md:scale-90 md:opacity-70'}`}
-              >
-                {/* Purple Glow Effect on hover */}
-                <div className="absolute inset-0 bg-[#8a2be2]/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
-
-                <div className="w-full relative overflow-visible flex flex-col items-center justify-center">
-                  {/* Image container */}
-                  <div className="relative w-full h-[140px] md:h-[350px] flex items-center justify-center">
-                    {/* Glow behind image on hover - no blur on mobile for perf */}
-                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 md:w-64 h-48 md:h-64 bg-[#8a2be2]/15 rounded-full md:blur-[60px] opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none hidden md:block" />
-
-                    <Image
-                      src={product.image}
-                      alt={product.name}
-                      width={350}
-                      height={350}
-                      priority={false}
-                      loading="lazy"
-                      className="object-contain group-hover:scale-105 transition-transform duration-500 relative z-10 will-change-transform"
-                      style={{ width: 'auto', height: 'auto', maxWidth: '100%', maxHeight: '100%' }}
-                    />
-
-                    {/* Desktop: Popout Info Panel on hover */}
-                    <div className="hidden md:block absolute -top-6 left-1/2 -translate-x-1/2 -translate-y-full w-[105%] bg-[#0a0a0a] border border-primary/40 p-6 opacity-0 scale-95 translate-y-2 group-hover:opacity-100 group-hover:scale-100 group-hover:translate-y-0 transition-all duration-300 pointer-events-none z-50 shadow-2xl">
-                      <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-4 h-4 bg-[#0a0a0a] border-r border-b border-primary/40 rotate-45" />
-                      <div className="relative">
-                        <div className="flex items-center gap-4 mb-5">
-                          <div className="w-2 h-7 bg-primary" />
-                          <h4 className="text-primary text-sm font-black uppercase tracking-[0.3em]">{product.name}</h4>
-                        </div>
-                        <div className="leading-relaxed">
-                          {formatSpec(getSpec(product))}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Mobile: Title + description always visible below image */}
-                  <div className="md:hidden mt-3 w-full bg-[#111111] border border-primary/30 p-3">
-                    <div className="flex items-center gap-3 mb-2">
-                      <div className="w-1.5 h-5 bg-primary" />
-                      <h4 className="text-primary text-xs font-black uppercase tracking-[0.2em]">{product.name}</h4>
-                    </div>
-                    <div className="leading-relaxed">
-                      {formatSpec(getSpec(product))}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )
-          })
+          filteredProducts.map((product, index) => (
+            <ProductCard
+              key={product.id}
+              product={product}
+              isCentered={index === centeredIndex}
+            />
+          ))
         ) : (
           <div className="w-full py-20 text-center">
             <p className="text-gray-500">No products found for this category.</p>

@@ -13,7 +13,6 @@ export const GamerHeroBackground = memo(function GamerHeroBackground({ phase }: 
       style={{
         opacity: phase === 0 ? 1 : 0.4,
         transition: 'opacity 1000ms cubic-bezier(0.16, 1, 0.3, 1)',
-        willChange: 'opacity',
       }}
     >
       {/* 1. Base Layer */}
@@ -24,6 +23,7 @@ export const GamerHeroBackground = memo(function GamerHeroBackground({ phase }: 
     loop
     muted
     playsInline
+    preload="metadata"
     className="absolute inset-0 w-full h-full object-cover opacity-[0.2]"
   >
     <source src="/hero-bg.mp4" type="video/mp4" />
@@ -41,8 +41,8 @@ export const GamerHeroBackground = memo(function GamerHeroBackground({ phase }: 
       </div>
 
       {/* 3. Floating Particles / Glows - smaller on mobile for performance */}
-      <div className="absolute top-1/4 left-1/4 w-48 h-48 md:w-96 md:h-96 bg-[#ff6b00]/5 blur-[60px] md:blur-[120px] rounded-full animate-pulse-slow will-change-transform" />
-      <div className="absolute bottom-1/4 right-1/4 w-48 h-48 md:w-96 md:h-96 bg-[#8a2be2]/5 blur-[60px] md:blur-[120px] rounded-full animate-pulse-slow delay-1000 will-change-transform" />
+      <div className="absolute top-1/4 left-1/4 w-48 h-48 md:w-96 md:h-96 bg-[#ff6b00]/5 blur-[60px] md:blur-[120px] rounded-full animate-pulse-slow" />
+      <div className="absolute bottom-1/4 right-1/4 w-48 h-48 md:w-96 md:h-96 bg-[#8a2be2]/5 blur-[60px] md:blur-[120px] rounded-full animate-pulse-slow delay-1000" />
 
       <style jsx>{`
         @keyframes grid-flow {
