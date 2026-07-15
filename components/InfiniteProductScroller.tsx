@@ -2,16 +2,15 @@
 
 import React, { useEffect, useState, useRef, useCallback, useMemo, memo } from "react"
 import Image from "next/image"
+import Link from "next/link"
 import { ChevronLeft, ChevronRight } from "lucide-react"
-import { ALL_PRODUCTS, Product } from "@/lib/products"
+import { getAllProducts, type ProductDetail } from "@/lib/product-catalog"
 
 interface InfiniteProductScrollerProps {
   selectedCategory: string
 }
 
-function getSpec(product: Product) {
-  return product.description || "Premium component selected by AMS."
-}
+const ALL_PRODUCTS = getAllProducts()
 
 function formatSpec(spec: string) {
   const lines = spec.split("\n").filter(Boolean)
@@ -30,12 +29,13 @@ const ProductCard = memo(function ProductCard({
   product,
   isCentered,
 }: {
-  product: Product
+  product: ProductDetail
   isCentered: boolean
 }) {
   return (
-    <div
-      className={`product-snap-item flex-shrink-0 w-[160px] md:w-[350px] bg-transparent p-2 md:p-6 transition-all duration-300 group relative ${isCentered ? 'md:scale-110 md:z-10' : 'md:scale-90 md:opacity-70'}`}
+    <Link
+      href={`/products/${product.slug}`}
+      className={`product-snap-item flex-shrink-0 block w-[160px] md:w-[350px] bg-transparent p-2 md:p-6 transition-all duration-300 group relative focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-[#0a0a0a] ${isCentered ? 'md:scale-110 md:z-10' : 'md:scale-90 md:opacity-70'}`}
     >
       {/* Purple Glow Effect on hover */}
       <div className="absolute inset-0 bg-[#8a2be2]/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
@@ -57,17 +57,20 @@ const ProductCard = memo(function ProductCard({
             style={{ width: 'auto', height: 'auto', maxWidth: '100%', maxHeight: '100%' }}
           />
 
-          {/* Desktop: Popout Info Panel on hover */}
-          <div className="hidden md:block absolute -top-6 left-1/2 -translate-x-1/2 -translate-y-full w-[105%] bg-[#0a0a0a] border border-primary/40 p-6 opacity-0 scale-95 translate-y-2 group-hover:opacity-100 group-hover:scale-100 group-hover:translate-y-0 transition-all duration-300 pointer-events-none z-50 shadow-2xl">
-            <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-4 h-4 bg-[#0a0a0a] border-r border-b border-primary/40 rotate-45" />
-            <div className="relative">
-              <div className="flex items-center gap-4 mb-5">
-                <div className="w-2 h-7 bg-primary" />
-                <h4 className="text-primary text-sm font-black uppercase tracking-[0.3em]">{product.name}</h4>
-              </div>
-              <div className="leading-relaxed">
-                {formatSpec(getSpec(product))}
-              </div>
+          <div className="absolute inset-0 z-20 flex items-end bg-black/80 p-4 opacity-0 transition-all duration-300 group-hover:opacity-100 group-focus-visible:opacity-100">
+            <div className="translate-y-3 transition-transform duration-300 group-hover:translate-y-0 group-focus-visible:translate-y-0">
+              <p className="text-primary text-[10px] md:text-xs font-black uppercase tracking-[0.25em] mb-2">
+                {product.category}
+              </p>
+              <h4 className="text-white text-sm md:text-lg font-black uppercase tracking-tighter mb-2">
+                {product.name}
+              </h4>
+              <p className="text-gray-300 text-xs md:text-sm leading-relaxed font-medium line-clamp-3 mb-4">
+                {product.description}
+              </p>
+              <span className="inline-flex items-center justify-center border border-primary/60 px-3 py-2 text-[10px] md:text-xs font-black uppercase tracking-tighter text-primary transition-colors group-hover:bg-primary group-hover:text-black group-focus-visible:bg-primary group-focus-visible:text-black">
+                View Details
+              </span>
             </div>
           </div>
         </div>
@@ -79,11 +82,14 @@ const ProductCard = memo(function ProductCard({
             <h4 className="text-primary text-xs font-black uppercase tracking-[0.2em]">{product.name}</h4>
           </div>
           <div className="leading-relaxed">
-            {formatSpec(getSpec(product))}
+            {formatSpec(product.description)}
           </div>
+          <span className="mt-3 inline-flex items-center justify-center border border-primary/60 px-3 py-2 text-[10px] font-black uppercase tracking-tighter text-primary">
+            View Details
+          </span>
         </div>
       </div>
-    </div>
+    </Link>
   )
 })
 
