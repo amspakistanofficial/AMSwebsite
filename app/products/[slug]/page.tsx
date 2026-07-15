@@ -2,9 +2,10 @@ import type { Metadata } from "next"
 import Image from "next/image"
 import Link from "next/link"
 import { notFound } from "next/navigation"
-import { ArrowLeft, ArrowRight, Check, MessageCircle } from "lucide-react"
+import { ArrowLeft, ArrowRight, Check } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { ProductGallery } from "@/components/ProductGallery"
+import { WhatsAppOrderButton } from "@/components/WhatsAppOrderButton"
 import {
   getAllProducts,
   getProductBySlug,
@@ -90,20 +91,10 @@ export default async function ProductPage({ params }: ProductPageProps) {
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 mb-10">
-              <Button
-                asChild
-                size="lg"
-                className="rounded-none bg-linear-to-r from-primary to-accent text-white hover:bg-orange-600 font-black uppercase tracking-tighter"
-              >
-                <a
-                  href={`https://wa.me/923348964450?text=${encodeURIComponent(`I want details about ${product.name}`)}`}
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  <MessageCircle className="w-5 h-5" />
-                  Ask on WhatsApp
-                </a>
-              </Button>
+              <WhatsAppOrderButton
+                productName={product.name}
+                category={product.category}
+              />
               <Button
                 asChild
                 size="lg"
