@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState, useCallback } from "react"
 import { Button } from "@/components/ui/button"
 import Image from "next/image"
-import { ChevronDown, Phone, Mail, MapPin, Clock, Cpu, HardDrive, Monitor, Headphones, Zap, Shield, Package } from 'lucide-react'
+import { ChevronDown, Phone, Cpu, Zap, Shield } from 'lucide-react'
 import { GamerHeroBackground } from "@/components/GamerHeroBackground"
 import { InfiniteProductScroller } from "@/components/InfiniteProductScroller"
 import { HERO_PRODUCTS, FEATURED_CATEGORIES } from "@/lib/products"
@@ -122,7 +122,7 @@ export default function HomePage() {
           <div className="flex items-center gap-10 text-gray-400 text-sm font-medium tracking-widest uppercase">
             <a href="#home" className="hover:text-primary transition-colors">Home</a>
             <a href="#products" className="hover:text-primary transition-colors">Products</a>
-            <a href="#contact" className="hover:text-primary transition-colors">Contact</a>
+            <a href="/contact" className="hover:text-primary transition-colors">Contact</a>
             <a href="#reviews" className="hover:text-primary transition-colors">Reviews</a>
             <a href="#about" className="hover:text-primary transition-colors">About</a>
           </div>
@@ -502,68 +502,27 @@ export default function HomePage() {
           />
         </div>
 
-        {/* Contact Section */}
-        <section id="contact" className="py-24 px-8 bg-transparent relative z-10">
+        {/* WhatsApp CTA Section */}
+        <section id="contact" className="py-20 px-8 bg-transparent relative z-10">
           <div className="max-w-[1400px] mx-auto">
-            <div className="grid md:grid-cols-2 gap-12">
-              <div>
-                <h2 className="text-3xl md:text-5xl font-bold text-white mb-4 tracking-tight">
-                  GET IN <span className="text-primary italic">TOUCH</span>
-                </h2>
-                <p className="text-gray-400 text-base md:text-lg mb-8 px-2">
-                  Have questions about our products or need help with your build? Reach out to us!
-                </p>
-
-                <div className="space-y-6">
-                  <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
-                      <Phone className="w-5 h-5 text-primary" />
-                    </div>
-                    <div>
-                      <p className="text-gray-500 text-sm">Phone</p>
-                      <p className="text-white font-medium">+923348964450</p>
-                    </div>
-                  </div>
-
-                  <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
-                      <Mail className="w-5 h-5 text-primary" />
-                    </div>
-                    <div>
-                      <p className="text-gray-500 text-sm">Email</p>
-                      <p className="text-white font-medium">amspakistanofficial@gmail.com</p>
-                    </div>
-                  </div>
-
-                  <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
-                      <MapPin className="w-5 h-5 text-primary" />
-                    </div>
-                    <div>
-                      <p className="text-gray-500 text-sm">Location</p>
-                      <p className="text-white font-medium">123 Tech Street, Gaming District</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="bg-[#111111] border border-[#1a1a1a] rounded-lg p-6 md:p-12">
-                <h3 className="text-2xl md:text-3xl font-bold text-white mb-8">Send us a message</h3>
-                <div className="flex flex-col md:flex-row gap-6">
-                  <Button
-                    className="flex-1 bg-primary text-white hover:bg-orange-600 font-bold py-4 text-base md:text-lg rounded-lg shadow-[0_0_15px_rgba(255,107,0,0.2)]"
-                    onClick={() => window.open("mailto:amspakistanofficial@gmail.com", "_blank")}
-                  >
-                    Email Us
-                  </Button>
-                  <Button
-                    className="flex-1 bg-green-600 text-white hover:bg-green-700 font-bold py-4 text-base md:text-lg rounded-lg"
-                    onClick={() => window.open("https://wa.me/923348964450", "_blank")}
-                  >
-                    WhatsApp
-                  </Button>
-                </div>
-              </div>
+            <div className="bg-[#111111] border border-[#1a1a1a] rounded-lg p-8 md:p-12 text-center">
+              <p className="text-primary text-xs font-black uppercase tracking-[0.3em] mb-4">
+                Need build guidance?
+              </p>
+              <h2 className="text-3xl md:text-5xl font-black text-white mb-4 tracking-tighter uppercase">
+                CHAT WITH <span className="text-primary italic">AMS</span>
+              </h2>
+              <p className="text-gray-400 text-base md:text-lg max-w-2xl mx-auto mb-8 font-medium">
+                Message us on WhatsApp for product availability, pricing, and custom PC build advice.
+              </p>
+              <Button
+                size="lg"
+                className="bg-green-600 text-white hover:bg-green-700 font-black text-base md:text-lg px-8 md:px-12 py-6 md:py-7 rounded-none uppercase tracking-tighter"
+                onClick={() => window.open("https://wa.me/923348964450", "_blank")}
+              >
+                <Phone className="w-5 h-5" />
+                WhatsApp AMS
+              </Button>
             </div>
           </div>
         </section >
