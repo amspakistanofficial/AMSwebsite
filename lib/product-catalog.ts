@@ -14,6 +14,7 @@ export interface ProductDetail {
   id: string
   slug: string
   name: string
+  brand: string
   image: string
   category: string
   description: string
@@ -117,6 +118,7 @@ function buildSpecifications(product: Product): ProductSpecification[] {
 
   return [
     { label: "Model", value: product.name },
+    { label: "Brand", value: "AMS" },
     { label: "Category", value: category },
     { label: "Product ID", value: product.id },
     ...(CATEGORY_SPECIFICATIONS[category] || [
@@ -134,6 +136,7 @@ function buildProductDetail(product: Product): ProductDetail {
     id: product.id,
     slug: getProductSlug(product),
     name: product.name,
+    brand: "AMS",
     image: product.image,
     category: getCategory(product),
     description,
@@ -162,6 +165,16 @@ export function getProductsByIds(ids: string[]) {
   return ids
     .map((id) => PRODUCT_CATALOG.find((product) => product.id === id))
     .filter((product): product is ProductDetail => Boolean(product))
+}
+
+export function getProductCategories() {
+  return [
+    { id: "all", name: "All" },
+    ...Array.from(new Set(PRODUCT_CATALOG.map((product) => product.category))).map((category) => ({
+      id: category,
+      name: category,
+    })),
+  ]
 }
 
 export function getRelatedProducts(product: ProductDetail, limit = 4) {

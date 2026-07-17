@@ -5,7 +5,7 @@
   "scripts": {
     "build": "node scripts/sync-products.mjs && next build",
     "dev": "node scripts/sync-products.mjs && next dev",
-    "lint": "next lint",
+    "lint": "eslint .",
     "start": "next start",
     "sync-products": "node scripts/sync-products.mjs"
   },

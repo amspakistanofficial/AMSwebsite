@@ -11,6 +11,14 @@ const categories = [
     { id: 'fans', name: 'Fans', path: 'fans' }
 ];
 
+interface GeneratedProduct {
+    id: string;
+    name: string;
+    image: string;
+    description: string;
+    category: string;
+}
+
 function cleanRtf(content: string) {
     if (!content.includes('{\\rtf')) return content.trim();
 
@@ -35,7 +43,7 @@ function cleanRtf(content: string) {
     return text.trim();
 }
 
-const allProducts = [];
+const allProducts: GeneratedProduct[] = [];
 
 categories.forEach(cat => {
     const dirPath = path.join(PUBLIC_PRODUCTS_DIR, cat.path);

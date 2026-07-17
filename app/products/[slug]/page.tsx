@@ -1,11 +1,11 @@
 import type { Metadata } from "next"
-import Image from "next/image"
 import Link from "next/link"
 import { notFound } from "next/navigation"
 import { ArrowLeft, ArrowRight, Check } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { ProductGallery } from "@/components/ProductGallery"
 import { WhatsAppOrderButton } from "@/components/WhatsAppOrderButton"
+import { ProductCard } from "@/components/products/ProductCard"
 import {
   getAllProducts,
   getProductBySlug,
@@ -86,6 +86,9 @@ export default async function ProductPage({ params }: ProductPageProps) {
             <h1 className="text-4xl md:text-6xl font-black text-white tracking-tighter uppercase mb-6">
               {product.name}
             </h1>
+            <div className="mb-5 inline-flex items-center border border-primary/40 bg-primary/10 px-4 py-2 text-primary text-xs font-black uppercase tracking-[0.25em]">
+              Brand: {product.brand}
+            </div>
             <p className="text-gray-400 text-base md:text-lg leading-relaxed font-medium mb-8">
               {product.description}
             </p>
@@ -99,9 +102,9 @@ export default async function ProductPage({ params }: ProductPageProps) {
                 asChild
                 size="lg"
                 variant="outline"
-                className="rounded-none border-primary/50 bg-transparent text-primary hover:bg-primary hover:text-black font-black uppercase tracking-tighter"
-              >
-                <Link href="/#products">
+              className="rounded-none border-primary/50 bg-transparent text-primary hover:bg-primary hover:text-black font-black uppercase tracking-tighter"
+            >
+                <Link href="/products">
                   Browse Products
                   <ArrowRight className="w-5 h-5" />
                 </Link>
@@ -168,38 +171,13 @@ export default async function ProductPage({ params }: ProductPageProps) {
               variant="outline"
               className="rounded-none border-primary/50 bg-transparent text-primary hover:bg-primary hover:text-black font-bold uppercase tracking-tighter"
             >
-              <Link href="/#products">View All Products</Link>
+              <Link href="/products">View All Products</Link>
             </Button>
           </div>
 
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {relatedProducts.map((relatedProduct) => (
-              <Link
-                key={relatedProduct.id}
-                href={`/products/${relatedProduct.slug}`}
-                className="group bg-[#111111] border border-[#1a1a1a] rounded-lg overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-[0_20px_45px_rgba(255,107,0,0.12)]"
-              >
-                <div className="relative h-48 bg-[#0a0a0a]">
-                  <Image
-                    src={relatedProduct.image}
-                    alt={relatedProduct.name}
-                    fill
-                    sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
-                    className="object-contain p-7 transition-transform duration-500 group-hover:scale-110"
-                  />
-                </div>
-                <div className="p-5">
-                  <p className="text-primary text-xs font-black uppercase tracking-[0.2em] mb-2">
-                    {relatedProduct.category}
-                  </p>
-                  <h3 className="text-white font-black uppercase tracking-tighter mb-2">
-                    {relatedProduct.name}
-                  </h3>
-                  <p className="text-gray-500 text-sm line-clamp-2">
-                    {relatedProduct.description}
-                  </p>
-                </div>
-              </Link>
+              <ProductCard key={relatedProduct.id} product={relatedProduct} />
             ))}
           </div>
         </section>

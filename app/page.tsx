@@ -3,10 +3,10 @@
 import { useEffect, useRef, useState, useCallback } from "react"
 import { Button } from "@/components/ui/button"
 import Image from "next/image"
+import Link from "next/link"
 import { ChevronDown, Phone, Cpu, Zap, Shield } from 'lucide-react'
 import { GamerHeroBackground } from "@/components/GamerHeroBackground"
-import { InfiniteProductScroller } from "@/components/InfiniteProductScroller"
-import { HERO_PRODUCTS, FEATURED_CATEGORIES } from "@/lib/products"
+import { HERO_PRODUCTS } from "@/lib/products"
 import { VideoCard } from "@/components/VideoCard"
 import { FeaturedProducts } from "@/components/FeaturedProducts"
 
@@ -33,7 +33,6 @@ export default function HomePage() {
   const [phase, setPhase] = useState<0 | 1>(0)
   const [mounted, setMounted] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
-  const [selectedCategory, setSelectedCategory] = useState("all")
   const rafRef = useRef<number | null>(null)
   const lastPhaseRef = useRef<number>(0)
   const lastProgressRef = useRef<number>(0)
@@ -121,8 +120,8 @@ export default function HomePage() {
         <div className="hidden md:flex flex-1 justify-center">
           <div className="flex items-center gap-10 text-gray-400 text-sm font-medium tracking-widest uppercase">
             <a href="#home" className="hover:text-primary transition-colors">Home</a>
-            <a href="#products" className="hover:text-primary transition-colors">Products</a>
-            <a href="/contact" className="hover:text-primary transition-colors">Contact</a>
+            <Link href="/products" className="hover:text-primary transition-colors">Products</Link>
+            <Link href="/contact" className="hover:text-primary transition-colors">Contact</Link>
             <a href="#reviews" className="hover:text-primary transition-colors">Reviews</a>
             <a href="#about" className="hover:text-primary transition-colors">About</a>
           </div>
@@ -270,7 +269,7 @@ export default function HomePage() {
                 size="lg"
                 className="bg-linear-to-r from-primary to-accent text-white hover:bg-orange-600 font-black text-base md:text-lg px-8 md:px-12 py-6 md:py-8 rounded-none tracking-tighter uppercase shadow-[0_10px_20px_rgba(255,107,0,0.3)] transition-all transform hover:scale-105"
                 onClick={() => {
-                  document.getElementById('products')?.scrollIntoView({ behavior: 'smooth' });
+                  window.location.href = "/products"
                 }}
               >
                 EXPLORE PRODUCTS
@@ -414,79 +413,6 @@ export default function HomePage() {
           `}</style>
         </div>
       </section>
-
-      {/* Products Grid Section */}
-      <section id="products" className="py-24 px-8 bg-[#0a0a0a] relative overflow-hidden">
-        {/* bg2 Positioning - Covering larger area */}
-        <div className="absolute inset-0 opacity-[0.05] pointer-events-none z-0 animate-float-delayed">
-          <Image
-            src="/backgrounds/bg4.jpg"
-            alt="AMS background 2"
-            fill
-            loading="lazy"
-            sizes="100vw"
-            className="object-cover scale-110"
-          />
-        </div>
-
-        <div className="max-w-[1400px] mx-auto relative z-10">
-          <div className="text-center mb-8">
-            <h2 className="text-4xl md:text-5xl font-black text-white mb-4 tracking-tighter uppercase">
-              AMS <span className="text-[#ff6b00]">PRODUCTS</span>
-            </h2>
-            <p className="text-gray-400 text-lg max-w-2xl mx-auto italic font-medium">
-              Filter by category to find your perfect component
-            </p>
-          </div>
-
-          <div className="flex flex-wrap justify-center gap-4 mb-8 px-4">
-            {FEATURED_CATEGORIES.map((cat) => (
-              <button
-                key={cat.id}
-                onClick={() => setSelectedCategory(cat.id)}
-                className={`px-4 md:px-8 py-2 md:py-3 font-bold uppercase tracking-tighter transition-all duration-300 border-2 ${selectedCategory === cat.id
-                  ? 'bg-[#ff6b00] border-[#ff6b00] text-white shadow-[0_0_20px_rgba(255,107,0,0.3)] scale-110'
-                  : 'bg-transparent border-[#2a2a2a] text-gray-500 hover:border-[#ff6b00] hover:text-[#ff6b00]'
-                  }`}
-              >
-                {cat.name}
-              </button>
-            ))}
-          </div>
-
-          <InfiniteProductScroller selectedCategory={selectedCategory} />
-
-          <div className="grid md:grid-cols-2 gap-8">
-            <div className="bg-gradient-to-br from-primary/10 to-transparent border border-primary/20 rounded-lg p-8">
-              <h3 className="text-2xl font-bold text-white mb-4">Custom PC Builds</h3>
-              <p className="text-gray-400 mb-6 leading-relaxed">
-                Let our experts help you design and build your dream gaming PC. We offer complete assembly services with cable management and testing.
-              </p>
-              <Button
-                variant="outline"
-                className="border-primary text-primary hover:bg-primary hover:text-black bg-transparent"
-                onClick={() => window.open("https://wa.me/923348964450?text=I%20wanted%20guidance%20on%20the%20build%20something%20like%20this", "_blank")}
-              >
-                Learn More
-              </Button>
-            </div>
-
-            <div className="bg-gradient-to-br from-gray-800/20 to-transparent border border-gray-700/30 rounded-lg p-8">
-              <h3 className="text-2xl font-bold text-white mb-4">Upgrade Services</h3>
-              <p className="text-gray-400 mb-6 leading-relaxed">
-                Already have a PC? We can help upgrade your existing system with the latest components for maximum performance gains.
-              </p>
-              <Button
-                variant="outline"
-                className="border-gray-600 text-gray-300 hover:bg-gray-800 hover:text-white bg-transparent"
-                onClick={() => window.open("https://wa.me/923348964450?text=I%20wanted%20guidance%20on%20the%20build%20something%20like%20this", "_blank")}
-              >
-                Learn More
-              </Button>
-            </div>
-          </div>
-        </div>
-      </section >
 
       {/* Contact & Reviews Wrapper */}
       <div className="relative overflow-hidden">
