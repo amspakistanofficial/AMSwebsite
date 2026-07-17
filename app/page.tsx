@@ -3,7 +3,6 @@
 import { useEffect, useRef, useState, useCallback } from "react"
 import { Button } from "@/components/ui/button"
 import Image from "next/image"
-import Link from "next/link"
 import { ChevronDown, Phone, Cpu, Zap, Shield } from 'lucide-react'
 import { GamerHeroBackground } from "@/components/GamerHeroBackground"
 import { HERO_PRODUCTS } from "@/lib/products"
@@ -101,41 +100,6 @@ export default function HomePage() {
 
   return (
     <div className="bg-[#0a0a0a]">
-      {/* Navigation */}
-      <nav
-        className="fixed top-0 left-0 right-0 z-50 px-6 py-4 flex items-center justify-between bg-[#0a0a0a]/90 backdrop-blur-md border-b border-[#1a1a1a]"
-      >
-        <div className="flex items-center gap-3">
-          <Image
-            src="/ams-logo.png"
-            alt="AMS"
-            width={40}
-            height={40}
-            priority
-            sizes="40px"
-            className="h-10 w-auto"
-          />
-        </div>
-
-        <div className="hidden md:flex flex-1 justify-center">
-          <div className="flex items-center gap-10 text-gray-400 text-sm font-medium tracking-widest uppercase">
-            <a href="#home" className="hover:text-primary transition-colors">Home</a>
-            <Link href="/products" className="hover:text-primary transition-colors">Products</Link>
-            <Link href="/contact" className="hover:text-primary transition-colors">Contact</Link>
-            <a href="#reviews" className="hover:text-primary transition-colors">Reviews</a>
-            <a href="#about" className="hover:text-primary transition-colors">About</a>
-          </div>
-        </div>
-
-        <Button
-          size="sm"
-          className="from-primary bg-linear-to-r text-white hover:bg-orange-600 hover:scale-110 font-bold px-5 tracking-wide rounded-none border-l-4 to-accent"
-          onClick={() => window.open("https://wa.me/923348964450", "_blank")}
-        >
-          GET QUOTE
-        </Button>
-      </nav>
-
       {/* Hero Section */}
       <div id="home" ref={containerRef} className="relative" style={{ height: "115vh" }}>
         <div className="sticky top-0 left-0 right-0 h-screen overflow-hidden">

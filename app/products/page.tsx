@@ -1,7 +1,4 @@
 import type { Metadata } from "next"
-import Link from "next/link"
-import { ArrowLeft } from "lucide-react"
-import { Button } from "@/components/ui/button"
 import { ProductsGrid } from "@/components/products/ProductsGrid"
 import { getAllProducts, getProductCategories } from "@/lib/product-catalog"
 
@@ -17,17 +14,6 @@ export default function ProductsPage() {
   return (
     <main className="min-h-screen bg-[#0a0a0a] pt-28 pb-20 px-6 md:px-8">
       <div className="max-w-[1400px] mx-auto">
-        <Button
-          asChild
-          variant="ghost"
-          className="mb-8 text-gray-400 hover:text-primary hover:bg-primary/10"
-        >
-          <Link href="/">
-            <ArrowLeft className="w-4 h-4" />
-            Back to Home
-          </Link>
-        </Button>
-
         <section className="mb-12 text-center">
           <p className="text-primary text-xs font-black uppercase tracking-[0.3em] mb-4">
             AMS Catalog

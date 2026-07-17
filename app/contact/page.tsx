@@ -1,6 +1,5 @@
 import type { Metadata } from "next"
-import Link from "next/link"
-import { ArrowLeft, Clock, Mail, MapPin, MessageCircle, Phone } from "lucide-react"
+import { Clock, Mail, MapPin, MessageCircle, Phone } from "lucide-react"
 import { Button } from "@/components/ui/button"
 
 export const metadata: Metadata = {
@@ -37,17 +36,6 @@ export default function ContactPage() {
   return (
     <main className="min-h-screen bg-[#0a0a0a] pt-28 pb-20 px-6 md:px-8">
       <div className="max-w-[1400px] mx-auto">
-        <Button
-          asChild
-          variant="ghost"
-          className="mb-8 text-gray-400 hover:text-primary hover:bg-primary/10"
-        >
-          <Link href="/">
-            <ArrowLeft className="w-4 h-4" />
-            Back to Home
-          </Link>
-        </Button>
-
         <section className="grid lg:grid-cols-[0.9fr_1.1fr] gap-10 lg:gap-14 items-start">
           <div>
             <p className="text-primary text-xs font-black uppercase tracking-[0.3em] mb-4">

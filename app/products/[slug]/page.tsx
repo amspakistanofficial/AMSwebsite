@@ -1,7 +1,7 @@
 import type { Metadata } from "next"
 import Link from "next/link"
 import { notFound } from "next/navigation"
-import { ArrowLeft, ArrowRight, Check } from "lucide-react"
+import { ArrowRight, Check } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { ProductGallery } from "@/components/ProductGallery"
 import { WhatsAppOrderButton } from "@/components/WhatsAppOrderButton"
@@ -65,17 +65,6 @@ export default async function ProductPage({ params }: ProductPageProps) {
   return (
     <main className="min-h-screen bg-[#0a0a0a] pt-28 pb-20 px-6 md:px-8">
       <div className="max-w-[1400px] mx-auto">
-        <Button
-          asChild
-          variant="ghost"
-          className="mb-8 text-gray-400 hover:text-primary hover:bg-primary/10"
-        >
-          <Link href="/">
-            <ArrowLeft className="w-4 h-4" />
-            Back to Home
-          </Link>
-        </Button>
-
         <section className="grid lg:grid-cols-2 gap-10 lg:gap-14 items-start">
           <ProductGallery images={product.images} productName={product.name} />
 

@@ -3,6 +3,7 @@ import type { Metadata } from 'next'
 import { Orbitron, Inter, Geist_Mono } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import { GamerBackground } from "@/components/GamerBackground"
+import { Navbar } from "@/components/Navbar"
 import './globals.css'
 
 
@@ -173,6 +174,7 @@ export default function RootLayout({
       </head>
       <body className={`font-sans antialiased text-white`}>
         <GamerBackground />
+        <Navbar />
         {children}
         <Analytics />
       </body>

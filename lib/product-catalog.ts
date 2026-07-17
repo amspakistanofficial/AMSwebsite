@@ -159,6 +159,7 @@ export function getAllProducts() {
 
 export function getProductBySlug(slug: string) {
   return PRODUCT_CATALOG.find((product) => product.slug === slug)
+    || PRODUCT_CATALOG.find((product) => product.slug.startsWith(`${slug}-`))
 }
 
 export function getProductsByIds(ids: string[]) {
