@@ -1,7 +1,20 @@
-import { getProductsByIds, type ProductDetail } from "@/lib/product-catalog"
+import { getAllProducts, type ProductDetail } from "@/lib/product-catalog"
 
 export type FeaturedProduct = ProductDetail
 
-export const FEATURED_PRODUCT_IDS = ["cases-5", "cases-9", "cooling-1", "monitors-1"]
+function getFeaturedProductsByCategory(products: ProductDetail[]) {
+  const productsByCategory = new Map<string, ProductDetail[]>()
 
-export const FEATURED_PRODUCTS: FeaturedProduct[] = getProductsByIds(FEATURED_PRODUCT_IDS)
+  products.forEach((product) => {
+    const categoryProducts = productsByCategory.get(product.category) || []
+
+    if (categoryProducts.length < 2) {
+      categoryProducts.push(product)
+      productsByCategory.set(product.category, categoryProducts)
+    }
+  })
+
+  return Array.from(productsByCategory.values()).flat()
+}
+
+export const FEATURED_PRODUCTS: FeaturedProduct[] = getFeaturedProductsByCategory(getAllProducts())
