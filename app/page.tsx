@@ -378,9 +378,9 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Contact & Reviews Wrapper */}
+      {/* Contact Wrapper */}
       <div className="relative overflow-hidden">
-        {/* bg3 Positioning - Covering both Contact and Reviews */}
+        {/* bg3 Positioning - Covering Contact */}
         <div className="absolute inset-0 opacity-[0.07] pointer-events-none z-0 animate-float-slow">
           <Image
             src="/backgrounds/bg6.jpg"
@@ -413,140 +413,6 @@ export default function HomePage() {
                 <Phone className="w-5 h-5" />
                 WhatsApp AMS
               </Button>
-            </div>
-          </div>
-        </section >
-
-        {/* Customer Reviews Section */}
-        <section id="reviews" className="py-20 px-8 bg-transparent border-t border-[#1a1a1a] relative z-10">
-          <div className="max-w-[1400px] mx-auto">
-            {/* Section heading and description */}
-            <h2 className="text-4xl md:text-5xl font-bold text-white mb-4 text-center">Customer Reviews</h2>
-            <p className="text-gray-400 text-center mb-12 text-lg max-w-2xl mx-auto">Trusted by gamers and PC enthusiasts</p>
-
-            {/* Horizontally scrolling review carousel */}
-            <div className="overflow-x-auto scrollbar-hide">
-              <div className="flex gap-6 pb-4 w-max">
-                {/* Review 1 */}
-                <div className="flex-shrink-0 w-72 md:w-80 bg-[#111111] border border-[#1a1a1a] rounded-lg p-6 hover:border-primary/30 transition-colors">
-                  <div className="flex gap-1 mb-4">
-                    {[...Array(5)].map((_, i) => (
-                      <span key={i} className="text-primary text-xl">★</span>
-                    ))}
-                  </div>
-                  <p className="text-gray-300 mb-4 leading-relaxed">AMS has the best selection of graphics cards in Pakistan. Their expertise and support are unmatched. Highly recommend!</p>
-                  <p className="text-white font-semibold">Ahmed Khan</p>
-                  <p className="text-gray-500 text-sm">RTX 4090</p>
-                </div>
-
-                {/* Review 2 */}
-                <div className="flex-shrink-0 w-72 md:w-80 bg-[#111111] border border-[#1a1a1a] rounded-lg p-6 hover:border-primary/30 transition-colors">
-                  <div className="flex gap-1 mb-4">
-                    {[...Array(5)].map((_, i) => (
-                      <span key={i} className="text-primary text-xl">★</span>
-                    ))}
-                  </div>
-                  <p className="text-gray-300 mb-4 leading-relaxed">Built my dream gaming rig with AMS custom PC building service. The build quality is exceptional and they explained everything.</p>
-                  <p className="text-white font-semibold">Hassan Ali</p>
-                  <p className="text-gray-500 text-sm">Custom Build</p>
-                </div>
-
-                {/* Review 3 */}
-                <div className="flex-shrink-0 w-72 md:w-80 bg-[#111111] border border-[#1a1a1a] rounded-lg p-6 hover:border-primary/30 transition-colors">
-                  <div className="flex gap-1 mb-4">
-                    {[...Array(5)].map((_, i) => (
-                      <span key={i} className="text-primary text-xl">★</span>
-                    ))}
-                  </div>
-                  <p className="text-gray-300 mb-4 leading-relaxed">Great selection of cooling solutions and cases. Fast delivery and excellent customer service. AMS is my go-to for all PC components.</p>
-                  <p className="text-white font-semibold">Fatima Malik</p>
-                  <p className="text-gray-500 text-sm">PC Coolers & Cases</p>
-                </div>
-
-                {/* Review 4 */}
-                <div className="flex-shrink-0 w-72 md:w-80 bg-[#111111] border border-[#1a1a1a] rounded-lg p-6 hover:border-primary/30 transition-colors">
-                  <div className="flex gap-1 mb-4">
-                    {[...Array(5)].map((_, i) => (
-                      <span key={i} className="text-primary text-xl">★</span>
-                    ))}
-                  </div>
-                  <p className="text-gray-300 mb-4 leading-relaxed">The processor I bought from AMS performs amazing. Fast shipping and quality was exactly as described. Definitely ordering again!</p>
-                  <p className="text-white font-semibold">Ali Raza</p>
-                  <p className="text-gray-500 text-sm">Intel i9 Processor</p>
-                </div>
-
-                {/* Review 5 */}
-                <div className="flex-shrink-0 w-72 md:w-80 bg-[#111111] border border-[#1a1a1a] rounded-lg p-6 hover:border-primary/30 transition-colors">
-                  <div className="flex gap-1 mb-4">
-                    {[...Array(5)].map((_, i) => (
-                      <span key={i} className="text-primary text-xl">★</span>
-                    ))}
-                  </div>
-                  <p className="text-gray-300 mb-4 leading-relaxed">Excellent customer support. They helped me choose the right components for my budget. AMS is the best in Pakistan.</p>
-                  <p className="text-white font-semibold">Zain Ahmed</p>
-                  <p className="text-gray-500 text-sm">Budget Build</p>
-                </div>
-
-                {/* Review 6 */}
-                <div className="flex-shrink-0 w-72 md:w-80 bg-[#111111] border border-[#1a1a1a] rounded-lg p-6 hover:border-primary/30 transition-colors">
-                  <div className="flex gap-1 mb-4">
-                    {[...Array(5)].map((_, i) => (
-                      <span key={i} className="text-primary text-xl">★</span>
-                    ))}
-                  </div>
-                  <p className="text-gray-300 mb-4 leading-relaxed">The SSD and storage options available at AMS are incredible. Prices are competitive and quality is premium. Highly satisfied!</p>
-                  <p className="text-white font-semibold">Maria Khan</p>
-                  <p className="text-gray-500 text-sm">Storage Solutions</p>
-                </div>
-
-                {/* Review 7 */}
-                <div className="flex-shrink-0 w-72 md:w-80 bg-[#111111] border border-[#1a1a1a] rounded-lg p-6 hover:border-primary/30 transition-colors">
-                  <div className="flex gap-1 mb-4">
-                    {[...Array(5)].map((_, i) => (
-                      <span key={i} className="text-primary text-xl">★</span>
-                    ))}
-                  </div>
-                  <p className="text-gray-300 mb-4 leading-relaxed">My gaming PC is running smoothly thanks to AMS. The components work perfectly together. Thanks for the amazing service!</p>
-                  <p className="text-white font-semibold">Bilal Hassan</p>
-                  <p className="text-gray-500 text-sm">Gaming Build</p>
-                </div>
-
-                {/* Review 8 */}
-                <div className="flex-shrink-0 w-72 md:w-80 bg-[#111111] border border-[#1a1a1a] rounded-lg p-6 hover:border-primary/30 transition-colors">
-                  <div className="flex gap-1 mb-4">
-                    {[...Array(5)].map((_, i) => (
-                      <span key={i} className="text-primary text-xl">★</span>
-                    ))}
-                  </div>
-                  <p className="text-gray-300 mb-4 leading-relaxed">AMS upgraded my old PC and the performance boost is incredible. Professional advice and excellent execution. Highly recommended!</p>
-                  <p className="text-white font-semibold">Saira Ali</p>
-                  <p className="text-gray-500 text-sm">PC Upgrade</p>
-                </div>
-
-                {/* Review 9 */}
-                <div className="flex-shrink-0 w-72 md:w-80 bg-[#111111] border border-[#1a1a1a] rounded-lg p-6 hover:border-primary/30 transition-colors">
-                  <div className="flex gap-1 mb-4">
-                    {[...Array(5)].map((_, i) => (
-                      <span key={i} className="text-primary text-xl">★</span>
-                    ))}
-                  </div>
-                  <p className="text-gray-300 mb-4 leading-relaxed">Best cooling solutions for my build! The case fans and CPU cooler keep my system running cool. AMS is reliable and trustworthy.</p>
-                  <p className="text-white font-semibold">Hassan Malik</p>
-                  <p className="text-gray-500 text-sm">Cooling Solutions</p>
-                </div>
-
-                {/* Review 10 */}
-                <div className="flex-shrink-0 w-80 bg-[#111111] border border-[#1a1a1a] rounded-lg p-6 hover:border-primary/30 transition-colors">
-                  <div className="flex gap-1 mb-4">
-                    {[...Array(5)].map((_, i) => (
-                      <span key={i} className="text-primary text-xl">★</span>
-                    ))}
-                  </div>
-                  <p className="text-gray-300 mb-4 leading-relaxed">Fantastic experience from start to finish. AMS delivered exactly what they promised. Best PC parts store in Pakistan without doubt!</p>
-                  <p className="text-white font-semibold">Farah Ahmed</p>
-                  <p className="text-gray-500 text-sm">Complete Build</p>
-                </div>
-              </div>
             </div>
           </div>
         </section >

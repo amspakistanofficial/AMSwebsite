@@ -4,13 +4,13 @@ import { useEffect, useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
+import { Menu, X } from "lucide-react"
 import { Button } from "@/components/ui/button"
 
 const navItems = [
   { label: "Home", href: "/" },
   { label: "Products", href: "/products" },
   { label: "Contact", href: "/contact" },
-  { label: "Reviews", href: "/#reviews" },
   { label: "About", href: "/about" },
 ]
 
@@ -20,53 +20,47 @@ function getActiveClass(isActive: boolean) {
 
 export function Navbar() {
   const pathname = usePathname()
-  const [hash, setHash] = useState("")
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
   useEffect(() => {
-    const updateHash = () => setHash(window.location.hash)
-
-    updateHash()
-    window.addEventListener("hashchange", updateHash)
-    return () => window.removeEventListener("hashchange", updateHash)
+    setIsMobileMenuOpen(false)
   }, [pathname])
 
   useEffect(() => {
-    if (pathname !== "/" || hash !== "#reviews") return
+    if (!isMobileMenuOpen) return
 
-    const scrollTimer = window.setTimeout(() => {
-      document.getElementById("reviews")?.scrollIntoView({ behavior: "smooth" })
-    }, 100)
-
-    return () => window.clearTimeout(scrollTimer)
-  }, [hash, pathname])
-
-  const handleReviewsClick = (event: React.MouseEvent<HTMLAnchorElement>) => {
-    if (pathname !== "/") return
-
-    event.preventDefault()
-    const reviewsSection = document.getElementById("reviews")
-    if (reviewsSection) {
-      window.history.pushState(null, "", "/#reviews")
-      setHash("#reviews")
-      reviewsSection.scrollIntoView({ behavior: "smooth" })
+    const originalOverflow = document.body.style.overflow
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setIsMobileMenuOpen(false)
+      }
     }
-  }
+
+    document.body.style.overflow = "hidden"
+    document.addEventListener("keydown", handleEscape)
+
+    return () => {
+      document.body.style.overflow = originalOverflow
+      document.removeEventListener("keydown", handleEscape)
+    }
+  }, [isMobileMenuOpen])
 
   const handleHomeClick = (event: React.MouseEvent<HTMLAnchorElement>) => {
+    setIsMobileMenuOpen(false)
     if (pathname !== "/") return
 
     event.preventDefault()
-    window.history.pushState(null, "", "/")
-    setHash("")
     window.scrollTo({ top: 0, behavior: "smooth" })
+  }
+
+  const handleQuoteClick = () => {
+    setIsMobileMenuOpen(false)
+    window.open("https://wa.me/923348964450", "_blank")
   }
 
   const isActive = (href: string) => {
     if (href === "/") {
-      return pathname === "/" && hash !== "#reviews"
-    }
-    if (href === "/#reviews") {
-      return pathname === "/" && hash === "#reviews"
+      return pathname === "/"
     }
     if (href === "/products") {
       return pathname === "/products" || pathname.startsWith("/products/")
@@ -94,13 +88,7 @@ export function Navbar() {
             <Link
               key={item.href}
               href={item.href}
-              onClick={
-                item.href === "/#reviews"
-                  ? handleReviewsClick
-                  : item.href === "/"
-                    ? handleHomeClick
-                    : undefined
-              }
+              onClick={item.href === "/" ? handleHomeClick : undefined}
               className={`${getActiveClass(isActive(item.href))} transition-colors`}
               aria-current={isActive(item.href) ? "page" : undefined}
             >
@@ -112,11 +100,69 @@ export function Navbar() {
 
       <Button
         size="sm"
-        className="from-primary bg-linear-to-r text-white hover:bg-orange-600 hover:scale-110 font-bold px-5 tracking-wide rounded-none border-l-4 to-accent"
-        onClick={() => window.open("https://wa.me/923348964450", "_blank")}
+        className="hidden md:inline-flex from-primary bg-linear-to-r text-white hover:bg-orange-600 hover:scale-110 font-bold px-5 tracking-wide rounded-none border-l-4 to-accent"
+        onClick={handleQuoteClick}
       >
         GET QUOTE
       </Button>
+
+      <button
+        type="button"
+        className="md:hidden inline-flex h-11 w-11 items-center justify-center border border-[#1a1a1a] bg-[#111111] text-gray-200 transition-colors hover:border-primary/50 hover:text-primary"
+        onClick={() => setIsMobileMenuOpen((isOpen) => !isOpen)}
+        aria-label={isMobileMenuOpen ? "Close navigation menu" : "Open navigation menu"}
+        aria-expanded={isMobileMenuOpen}
+        aria-controls="mobile-navigation"
+      >
+        {isMobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+      </button>
+
+      <div
+        className={`md:hidden fixed inset-x-0 bottom-0 top-[73px] z-40 transition-opacity duration-300 ${
+          isMobileMenuOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+        }`}
+        aria-hidden={!isMobileMenuOpen}
+      >
+        <button
+          type="button"
+          className="absolute inset-0 bg-black/70 backdrop-blur-sm"
+          onClick={() => setIsMobileMenuOpen(false)}
+          aria-label="Close navigation menu"
+          tabIndex={isMobileMenuOpen ? 0 : -1}
+        />
+        <div
+          id="mobile-navigation"
+          className={`absolute right-0 top-0 h-full w-full max-w-xs border-l border-[#1a1a1a] bg-[#0a0a0a] shadow-2xl transition-transform duration-300 ease-out ${
+            isMobileMenuOpen ? "translate-x-0" : "translate-x-full"
+          }`}
+        >
+          <div className="flex h-full flex-col px-6 py-8">
+            <div className="flex flex-col gap-2 text-sm font-medium tracking-widest uppercase">
+              {navItems.map((item) => (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  onClick={item.href === "/" ? handleHomeClick : () => setIsMobileMenuOpen(false)}
+                  className={`${getActiveClass(isActive(item.href))} flex min-h-11 items-center border-b border-[#1a1a1a] transition-colors`}
+                  aria-current={isActive(item.href) ? "page" : undefined}
+                  tabIndex={isMobileMenuOpen ? 0 : -1}
+                >
+                  {item.label}
+                </Link>
+              ))}
+            </div>
+
+            <Button
+              size="sm"
+              className="mt-8 min-h-11 w-full from-primary bg-linear-to-r text-white hover:bg-orange-600 font-bold tracking-wide rounded-none border-l-4 to-accent"
+              onClick={handleQuoteClick}
+              tabIndex={isMobileMenuOpen ? 0 : -1}
+            >
+              GET QUOTE
+            </Button>
+          </div>
+        </div>
+      </div>
     </nav>
   )
 }
