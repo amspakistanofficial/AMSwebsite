@@ -108,7 +108,11 @@ export function Navbar() {
   }
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 px-6 py-4 flex items-center justify-between bg-[#0a0a0a]/90 backdrop-blur-md border-b border-[#1a1a1a]">
+    <nav
+      className={`fixed top-0 left-0 right-0 px-6 py-4 flex items-center justify-between bg-[#0a0a0a]/90 backdrop-blur-md border-b border-[#1a1a1a] ${
+        isMobileMenuOpen ? "z-[9998]" : "z-50"
+      }`}
+    >
       <Link href="/" onClick={handleHomeClick} className="flex items-center gap-3" aria-label="AMS Home">
         <Image
           src="/ams-logo.png"
@@ -150,7 +154,7 @@ export function Navbar() {
         role="dialog"
         aria-modal="true"
         aria-label="Mobile navigation"
-        className={`md:hidden fixed inset-0 z-40 bg-black/95 backdrop-blur-[2px] transition-opacity duration-300 ${
+        className={`md:hidden fixed left-0 top-0 z-[9999] h-screen w-screen overflow-hidden bg-[linear-gradient(180deg,#000000,#050505,#0b0b0b)] transition-opacity duration-300 ease-out ${
           isMobileMenuOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
         }`}
         aria-hidden={!isMobileMenuOpen}
@@ -158,7 +162,7 @@ export function Navbar() {
       >
         <button
           type="button"
-          className={`absolute right-6 top-4 z-[60] inline-flex h-11 w-11 items-center justify-center border border-[#1a1a1a] bg-[#111111] text-gray-200 transition-colors hover:border-primary/50 hover:text-primary active:scale-95 ${
+          className={`fixed right-5 top-4 z-[10000] inline-flex h-12 w-12 items-center justify-center border border-[#1a1a1a] bg-[#111111] text-gray-200 transition-all duration-300 hover:border-primary/50 hover:text-primary active:scale-95 ${
             isMobileMenuOpen ? "opacity-100" : "opacity-0"
           }`}
           onClick={() => setIsMobileMenuOpen(false)}
@@ -171,8 +175,8 @@ export function Navbar() {
         <div
           id="mobile-navigation"
           onClick={(event) => event.stopPropagation()}
-          className={`flex min-h-dvh w-full flex-col items-center justify-center px-6 py-24 text-center transition-all duration-300 ease-out ${
-            isMobileMenuOpen ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
+          className={`mx-auto flex h-screen w-full max-w-sm flex-col items-center justify-center overflow-hidden px-6 py-24 text-center transition-transform duration-300 ease-out ${
+            isMobileMenuOpen ? "translate-x-0" : "translate-x-full"
           }`}
         >
           <Link
