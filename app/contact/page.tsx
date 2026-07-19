@@ -34,7 +34,7 @@ const contactItems = [
 
 export default function ContactPage() {
   return (
-    <main className="min-h-screen bg-[#0a0a0a] pt-28 pb-20 px-6 md:px-8">
+    <main className="min-h-screen bg-[#0a0a0a] pt-8 pb-20 px-6 md:px-8">
       <div className="max-w-[1400px] mx-auto">
         <section className="grid lg:grid-cols-[0.9fr_1.1fr] gap-10 lg:gap-14 items-start">
           <div>

@@ -5,6 +5,8 @@ import { Analytics } from '@vercel/analytics/next'
 import { GamerBackground } from "@/components/GamerBackground"
 import { Navbar } from "@/components/Navbar"
 import { Footer } from "@/components/Footer"
+import { BackButton } from "@/components/BackButton"
+import { NavigationStateRestorer } from "@/components/NavigationStateRestorer"
 import './globals.css'
 
 
@@ -175,7 +177,9 @@ export default function RootLayout({
       </head>
       <body className={`font-sans antialiased text-white`}>
         <GamerBackground />
+        <NavigationStateRestorer />
         <Navbar />
+        <BackButton />
         {children}
         <Footer />
         <Analytics />

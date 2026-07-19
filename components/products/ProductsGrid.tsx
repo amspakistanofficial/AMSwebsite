@@ -1,6 +1,6 @@
 "use client"
 
-import { useMemo, useState } from "react"
+import { useCallback, useEffect, useMemo, useState } from "react"
 import { CategoryFilter } from "@/components/products/CategoryFilter"
 import { ProductCard } from "@/components/products/ProductCard"
 import type { ProductDetail } from "@/lib/product-catalog"
@@ -14,12 +14,34 @@ interface ProductsGridProps {
   searchQuery?: string
 }
 
+const SELECTED_CATEGORY_KEY = "ams-products-selected-category"
+
 export function ProductsGrid({
   products,
   categories,
   searchQuery = "",
 }: ProductsGridProps) {
-  const [selectedCategory, setSelectedCategory] = useState("all")
+  const [selectedCategory, setSelectedCategory] = useState(() => {
+    if (typeof window === "undefined") {
+      return "all"
+    }
+
+    return window.sessionStorage.getItem(SELECTED_CATEGORY_KEY) ?? "all"
+  })
+
+  useEffect(() => {
+    const categoryExists = selectedCategory === "all" || categories.some((category) => category.id === selectedCategory)
+
+    if (!categoryExists) {
+      setSelectedCategory("all")
+      window.sessionStorage.setItem(SELECTED_CATEGORY_KEY, "all")
+    }
+  }, [categories, selectedCategory])
+
+  const handleCategoryChange = useCallback((category: string) => {
+    setSelectedCategory(category)
+    window.sessionStorage.setItem(SELECTED_CATEGORY_KEY, category)
+  }, [])
 
   const filteredProducts = useMemo(() => {
     const normalizedSearch = searchQuery.trim().toLowerCase()
@@ -42,7 +64,7 @@ export function ProductsGrid({
       <CategoryFilter
         categories={categories}
         selectedCategory={selectedCategory}
-        onCategoryChange={setSelectedCategory}
+        onCategoryChange={handleCategoryChange}
       />
 
       <div className="transition-opacity duration-300">

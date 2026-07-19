@@ -12,7 +12,7 @@ export default function ProductsPage() {
   const categories = getProductCategories()
 
   return (
-    <main className="min-h-screen bg-[#0a0a0a] pt-28 pb-20 px-6 md:px-8">
+    <main className="min-h-screen bg-[#0a0a0a] pt-8 pb-20 px-6 md:px-8">
       <div className="max-w-[1400px] mx-auto">
         <section className="mb-12 text-center">
           <p className="text-primary text-xs font-black uppercase tracking-[0.3em] mb-4">
