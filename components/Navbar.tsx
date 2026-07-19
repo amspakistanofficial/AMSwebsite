@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
@@ -21,6 +21,7 @@ function getActiveClass(isActive: boolean) {
 export function Navbar() {
   const pathname = usePathname()
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const mobileMenuRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     setIsMobileMenuOpen(false)
@@ -29,19 +30,57 @@ export function Navbar() {
   useEffect(() => {
     if (!isMobileMenuOpen) return
 
-    const originalOverflow = document.body.style.overflow
-    const handleEscape = (event: KeyboardEvent) => {
+    const focusableSelector = [
+      "a[href]",
+      "button:not([disabled])",
+      "[tabindex]:not([tabindex='-1'])",
+    ].join(",")
+    const previouslyFocusedElement = document.activeElement instanceof HTMLElement ? document.activeElement : null
+    const originalBodyOverflow = document.body.style.overflow
+    const originalHtmlOverflow = document.documentElement.style.overflow
+
+    const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
         setIsMobileMenuOpen(false)
+        return
+      }
+
+      if (event.key !== "Tab") return
+
+      const focusableElements = Array.from(
+        mobileMenuRef.current?.querySelectorAll<HTMLElement>(focusableSelector) ?? []
+      ).filter((element) => element.offsetParent !== null)
+
+      if (!focusableElements.length) return
+
+      const firstElement = focusableElements[0]
+      const lastElement = focusableElements[focusableElements.length - 1]
+
+      if (event.shiftKey && document.activeElement === firstElement) {
+        event.preventDefault()
+        lastElement.focus()
+      } else if (!event.shiftKey && document.activeElement === lastElement) {
+        event.preventDefault()
+        firstElement.focus()
       }
     }
 
     document.body.style.overflow = "hidden"
-    document.addEventListener("keydown", handleEscape)
+    document.documentElement.style.overflow = "hidden"
+    document.addEventListener("keydown", handleKeyDown)
+    window.setTimeout(() => {
+      const initialFocusElement =
+        mobileMenuRef.current?.querySelector<HTMLElement>("[data-menu-initial]") ??
+        mobileMenuRef.current?.querySelector<HTMLElement>(focusableSelector)
+
+      initialFocusElement?.focus()
+    }, 100)
 
     return () => {
-      document.body.style.overflow = originalOverflow
-      document.removeEventListener("keydown", handleEscape)
+      document.body.style.overflow = originalBodyOverflow
+      document.documentElement.style.overflow = originalHtmlOverflow
+      document.removeEventListener("keydown", handleKeyDown)
+      previouslyFocusedElement?.focus()
     }
   }, [isMobileMenuOpen])
 
@@ -106,63 +145,120 @@ export function Navbar() {
         GET QUOTE
       </Button>
 
-      <button
-        type="button"
-        className="md:hidden inline-flex h-11 w-11 items-center justify-center border border-[#1a1a1a] bg-[#111111] text-gray-200 transition-colors hover:border-primary/50 hover:text-primary"
-        onClick={() => setIsMobileMenuOpen((isOpen) => !isOpen)}
-        aria-label={isMobileMenuOpen ? "Close navigation menu" : "Open navigation menu"}
-        aria-expanded={isMobileMenuOpen}
-        aria-controls="mobile-navigation"
-      >
-        {isMobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-      </button>
-
       <div
-        className={`md:hidden fixed inset-x-0 bottom-0 top-[73px] z-40 transition-opacity duration-300 ${
+        ref={mobileMenuRef}
+        role="dialog"
+        aria-modal="true"
+        aria-label="Mobile navigation"
+        className={`md:hidden fixed inset-0 z-40 bg-black/95 backdrop-blur-[2px] transition-opacity duration-300 ${
           isMobileMenuOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
         }`}
         aria-hidden={!isMobileMenuOpen}
+        onClick={() => setIsMobileMenuOpen(false)}
       >
         <button
           type="button"
-          className="absolute inset-0 bg-black/70 backdrop-blur-sm"
+          className={`absolute right-6 top-4 z-[60] inline-flex h-11 w-11 items-center justify-center border border-[#1a1a1a] bg-[#111111] text-gray-200 transition-colors hover:border-primary/50 hover:text-primary active:scale-95 ${
+            isMobileMenuOpen ? "opacity-100" : "opacity-0"
+          }`}
           onClick={() => setIsMobileMenuOpen(false)}
           aria-label="Close navigation menu"
           tabIndex={isMobileMenuOpen ? 0 : -1}
-        />
+        >
+          <X className="h-5 w-5" />
+        </button>
+
         <div
           id="mobile-navigation"
-          className={`absolute right-0 top-0 h-full w-full max-w-xs border-l border-[#1a1a1a] bg-[#0a0a0a] shadow-2xl transition-transform duration-300 ease-out ${
-            isMobileMenuOpen ? "translate-x-0" : "translate-x-full"
+          onClick={(event) => event.stopPropagation()}
+          className={`flex min-h-dvh w-full flex-col items-center justify-center px-6 py-24 text-center transition-all duration-300 ease-out ${
+            isMobileMenuOpen ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
           }`}
         >
-          <div className="flex h-full flex-col px-6 py-8">
-            <div className="flex flex-col gap-2 text-sm font-medium tracking-widest uppercase">
-              {navItems.map((item) => (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  onClick={item.href === "/" ? handleHomeClick : () => setIsMobileMenuOpen(false)}
-                  className={`${getActiveClass(isActive(item.href))} flex min-h-11 items-center border-b border-[#1a1a1a] transition-colors`}
-                  aria-current={isActive(item.href) ? "page" : undefined}
-                  tabIndex={isMobileMenuOpen ? 0 : -1}
+          <Link
+            href="/"
+            onClick={handleHomeClick}
+            className={`mb-10 inline-flex transition-all duration-300 ${
+              isMobileMenuOpen ? "translate-y-0 opacity-100" : "translate-y-3 opacity-0"
+            }`}
+            style={{ transitionDelay: isMobileMenuOpen ? "80ms" : "140ms" }}
+            aria-label="AMS Home"
+            data-menu-initial
+            tabIndex={isMobileMenuOpen ? 0 : -1}
+          >
+            <Image
+              src="/ams-logo.png"
+              alt="AMS"
+              width={72}
+              height={72}
+              priority
+              sizes="72px"
+              className="h-16 w-auto"
+            />
+          </Link>
+
+          <div className="flex w-full max-w-xs flex-col items-center gap-3 text-base font-medium tracking-widest uppercase">
+            {navItems.map((item, index) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                onClick={item.href === "/" ? handleHomeClick : () => setIsMobileMenuOpen(false)}
+                className={`${getActiveClass(isActive(item.href))} flex min-h-11 w-full items-center justify-center transition-all duration-300 active:scale-95`}
+                style={{
+                  transitionDelay: isMobileMenuOpen
+                    ? `${140 + index * 45}ms`
+                    : `${(navItems.length - index) * 25}ms`,
+                }}
+                aria-current={isActive(item.href) ? "page" : undefined}
+                tabIndex={isMobileMenuOpen ? 0 : -1}
+              >
+                <span
+                  className={`transition-all duration-300 ${
+                    isMobileMenuOpen ? "translate-y-0 opacity-100" : "translate-y-3 opacity-0"
+                  }`}
                 >
                   {item.label}
-                </Link>
-              ))}
-            </div>
-
-            <Button
-              size="sm"
-              className="mt-8 min-h-11 w-full from-primary bg-linear-to-r text-white hover:bg-orange-600 font-bold tracking-wide rounded-none border-l-4 to-accent"
-              onClick={handleQuoteClick}
-              tabIndex={isMobileMenuOpen ? 0 : -1}
-            >
-              GET QUOTE
-            </Button>
+                </span>
+              </Link>
+            ))}
           </div>
+
+          <Button
+            size="sm"
+            className={`mt-10 min-h-11 w-48 from-primary bg-linear-to-r text-white hover:bg-orange-600 font-bold tracking-wide rounded-none border-l-4 to-accent transition-all duration-300 active:scale-95 ${
+              isMobileMenuOpen ? "translate-y-0 opacity-100" : "translate-y-3 opacity-0"
+            }`}
+            style={{ transitionDelay: isMobileMenuOpen ? "340ms" : "0ms" }}
+            onClick={handleQuoteClick}
+            tabIndex={isMobileMenuOpen ? 0 : -1}
+          >
+            GET QUOTE
+          </Button>
+
+          <button
+            type="button"
+            className="sr-only"
+            onClick={() => setIsMobileMenuOpen(false)}
+            tabIndex={isMobileMenuOpen ? 0 : -1}
+          >
+            Close navigation menu
+          </button>
         </div>
       </div>
+
+      <button
+        type="button"
+        className={`relative z-[60] md:hidden inline-flex h-11 w-11 items-center justify-center border border-[#1a1a1a] bg-[#111111] text-gray-200 transition-colors hover:border-primary/50 hover:text-primary active:scale-95 ${
+          isMobileMenuOpen ? "opacity-0 pointer-events-none" : "opacity-100"
+        }`}
+        onClick={() => setIsMobileMenuOpen(true)}
+        aria-label="Open navigation menu"
+        aria-expanded={isMobileMenuOpen}
+        aria-controls="mobile-navigation"
+        tabIndex={isMobileMenuOpen ? -1 : 0}
+      >
+        <Menu className="h-5 w-5" />
+      </button>
     </nav>
   )
 }
