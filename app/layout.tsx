@@ -4,6 +4,7 @@ import { Orbitron, Inter, Geist_Mono } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import { GamerBackground } from "@/components/GamerBackground"
 import { Navbar } from "@/components/Navbar"
+import { Footer } from "@/components/Footer"
 import './globals.css'
 
 
@@ -176,6 +177,7 @@ export default function RootLayout({
         <GamerBackground />
         <Navbar />
         {children}
+        <Footer />
         <Analytics />
       </body>
     </html>

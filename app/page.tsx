@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState, useCallback } from "react"
 import { Button } from "@/components/ui/button"
 import Image from "next/image"
-import { ChevronDown, Phone, Cpu, Zap, Shield } from 'lucide-react'
+import { ChevronDown, Phone } from 'lucide-react'
 import { GamerHeroBackground } from "@/components/GamerHeroBackground"
 import { HERO_PRODUCTS } from "@/lib/products"
 import { VideoCard } from "@/components/VideoCard"
@@ -259,64 +259,6 @@ export default function HomePage() {
 
       <FeaturedProducts />
 
-      {/* About Section */}
-      <section id="about" className="py-24 px-8 bg-[#0a0a0a] relative overflow-hidden">
-        {/* bg1 Positioning - Full Section Coverage */}
-        <div className="absolute inset-0 opacity-[0.06] pointer-events-none z-0 animate-float">
-          <Image
-            src="/backgrounds/bg5.webp"
-            alt="AMS background 1"
-            fill
-            loading="lazy"
-            sizes="100vw"
-            className="object-cover"
-          />
-        </div>
-
-        <div className="max-w-[1400px] mx-auto relative z-10">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-5xl font-black text-white mb-4 tracking-tighter uppercase">
-              WHY CHOOSE <span className="text-[#ff6b00]">AMS</span>
-            </h2>
-            <p className="text-gray-400 text-base md:text-lg max-w-2xl mx-auto italic px-4">
-              Your trusted partner for premium PC components and gaming hardware in Pakistan
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-8">
-            <div className="bg-[#111111] border-l-4 border-[#ff6b00] rounded-none p-8 hover:bg-[#1a1a1a] transition-all group">
-              <div className="w-14 h-14 bg-[#ff6b00]/10 rounded-none flex items-center justify-center mb-6 group-hover:bg-[#ff6b00]/20 transition-colors">
-                <Shield className="w-7 h-7 text-[#ff6b00]" />
-              </div>
-              <h3 className="text-xl font-black text-white mb-3 uppercase tracking-tighter">Authentic Products</h3>
-              <p className="text-gray-400 leading-relaxed font-medium">
-                100% genuine components sourced directly from authorized distributors with full manufacturer warranty.
-              </p>
-            </div>
-
-            <div className="bg-[#111111] border-l-4 border-[#8a2be2] rounded-none p-8 hover:bg-[#1a1a1a] transition-all group">
-              <div className="w-14 h-14 bg-[#8a2be2]/10 rounded-none flex items-center justify-center mb-6 group-hover:bg-[#8a2be2]/20 transition-colors">
-                <Zap className="w-7 h-7 text-[#8a2be2]" />
-              </div>
-              <h3 className="text-xl font-black text-white mb-3 uppercase tracking-tighter">Expert Support</h3>
-              <p className="text-gray-400 leading-relaxed font-medium">
-                Our team of PC enthusiasts provides personalized guidance to help you build the perfect system.
-              </p>
-            </div>
-
-            <div className="bg-[#111111] border-l-4 border-[#ff6b00] rounded-none p-8 hover:bg-[#1a1a1a] transition-all group">
-              <div className="w-14 h-14 bg-[#ff6b00]/10 rounded-none flex items-center justify-center mb-6 group-hover:bg-[#ff6b00]/20 transition-colors">
-                <Cpu className="w-7 h-7 text-[#ff6b00]" />
-              </div>
-              <h3 className="text-xl font-black text-white mb-3 uppercase tracking-tighter">Latest Hardware</h3>
-              <p className="text-gray-400 leading-relaxed font-medium">
-                Stay ahead with the newest GPUs, CPUs, and components from top brands like NVIDIA, AMD, and Intel.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* Video Showcase Section */}
       <section className="py-24 px-8 bg-[#080808]">
         <div className="max-w-[1400px] mx-auto">
@@ -417,33 +359,6 @@ export default function HomePage() {
           </div>
         </section >
       </div>
-
-      {/* Footer */}
-      < footer className="py-12 px-8 bg-[#050505] border-t border-[#1a1a1a]" >
-        <div className="max-w-[1400px] mx-auto">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-            <div className="flex items-center gap-3">
-              <Image
-                src="/ams-logo.png"
-                alt="AMS"
-                width={32}
-                height={32}
-                loading="lazy"
-                sizes="32px"
-                className="h-8 w-auto opacity-70"
-              />
-            </div>
-            <p className="text-gray-600 text-sm">
-              2025 AMS PC Parts. All rights reserved.
-            </p>
-            <div className="flex items-center gap-6 text-gray-500 text-sm">
-              <a href="#" className="hover:text-primary transition-colors">Privacy</a>
-              <a href="#" className="hover:text-primary transition-colors">Terms</a>
-              <a href="#" className="hover:text-primary transition-colors">Support</a>
-            </div>
-          </div>
-        </div>
-      </footer >
 
       {/* JSON-LD Structured Data */}
       < script type="application/ld+json" dangerouslySetInnerHTML={{
