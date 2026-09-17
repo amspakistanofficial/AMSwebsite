@@ -17,7 +17,12 @@ const CATEGORY_MAP = {
     'peripherals': 'Peripherals',
     'ram': 'RAM',
     'fans': 'Fans',
-    'monitors': 'Monitors'
+    'monitors': 'Monitors',
+    'cables': 'Cables',
+    'gaming-chairs': 'Gaming Chairs',
+    'thermal-paste': 'Thermal Paste',
+    'monitor-arms': 'Monitor Arms',
+    'wifi-network-accessories': 'WiFi / Network Accessories'
 };
 
 function getCategoryName(folderName) {

@@ -16,16 +16,16 @@ export const HERO_PRODUCTS: Product[] = [
     },
     {
         "id": "cooling-1",
-        "name": "A400",
-        "image": "/products/cooling/1.png",
-        "description": "4 PIPE RGB AIR COOLER",
+        "name": "AMS A-400",
+        "image": "/products/cooling/1.jpeg",
+        "description": "4 Pipe Cooler\n32 CFM\nHigh Performance",
         "category": "Cooling"
     },
     {
         "id": "monitors-1",
-        "name": "PIXEL STORM X",
-        "image": "/products/monitors/1.png",
-        "description": "FHD, 24INCH, IPS, RGB BACK, BORDERLESS,165HZ",
+        "name": "AMS Pixle Storm X",
+        "image": "/products/monitors/1.jpeg",
+        "description": "24 Inch Monitor\n165Hz\n1ms\n100% sRGB\nFreeSync\nG-Sync\n1K\nIPS Panel",
         "category": "Monitors"
     },
     {
@@ -36,22 +36,29 @@ export const HERO_PRODUCTS: Product[] = [
         "category": "Fans"
     },
     {
+        "id": "cables-1",
+        "name": "AMS CyberGlow",
+        "image": "/products/cables/1.jpeg",
+        "description": "RGB Cable\nARGB Sync\n16.8 Million Color Beads\n24-Pin and 8-Pin",
+        "category": "Cables"
+    },
+    {
         "id": "cases-2",
         "name": "WHITE BIG",
         "image": "/products/cases/2.png",
-        "description": "Premium Cases component selected by AMS.",
-        "category": "Cases"
-    },
-    {
-        "id": "cases-3",
-        "name": "BLACK BIG",
-        "image": "/products/cases/3.png",
         "description": "Premium Cases component selected by AMS.",
         "category": "Cases"
     }
 ];
 
 export const ALL_PRODUCTS: Product[] = [
+    {
+        "id": "cables-1",
+        "name": "AMS CyberGlow",
+        "image": "/products/cables/1.jpeg",
+        "description": "RGB Cable\nARGB Sync\n16.8 Million Color Beads\n24-Pin and 8-Pin",
+        "category": "Cables"
+    },
     {
         "id": "cases-1",
         "name": "SMALL BLACK",
@@ -151,10 +158,24 @@ export const ALL_PRODUCTS: Product[] = [
         "category": "Cases"
     },
     {
+        "id": "cases-15",
+        "name": "AMS Aero Case",
+        "image": "/products/cases/15.jpeg",
+        "description": "mATX Case\nSupports up to 7 fans\nDouble-side glass",
+        "category": "Cases"
+    },
+    {
+        "id": "cases-16",
+        "name": "AMS Prism",
+        "image": "/products/cases/16.jpeg",
+        "description": "mATX Case\nDouble Side Glass\nSupports up to 7 Fans\n3 ARGB Fans Included",
+        "category": "Cases"
+    },
+    {
         "id": "cooling-1",
-        "name": "A400",
-        "image": "/products/cooling/1.png",
-        "description": "4 PIPE RGB AIR COOLER",
+        "name": "AMS A-400",
+        "image": "/products/cooling/1.jpeg",
+        "description": "4 Pipe Cooler\n32 CFM\nHigh Performance",
         "category": "Cooling"
     },
     {
@@ -165,6 +186,13 @@ export const ALL_PRODUCTS: Product[] = [
         "category": "Cooling"
     },
     {
+        "id": "cooling-3",
+        "name": "SAMA A-40L",
+        "image": "/products/cooling/3.jpeg",
+        "description": "4 Pipe Air Cooler\n72 CFM\nHigh Performance",
+        "category": "Cooling"
+    },
+    {
         "id": "fans-1",
         "name": "FREEZO FAN KIT",
         "image": "/products/fans/1.png",
@@ -172,11 +200,46 @@ export const ALL_PRODUCTS: Product[] = [
         "category": "Fans"
     },
     {
+        "id": "gaming-chairs-1",
+        "name": "AMS Black Hawk",
+        "image": "/products/gaming-chairs/1.jpeg",
+        "description": "Gaming Chair\nSupports up to 100kg\nRecline Angle\nGas Lift",
+        "category": "Gaming Chairs"
+    },
+    {
+        "id": "monitor-arms-1",
+        "name": "AMS Titan X",
+        "image": "/products/monitor-arms/1.jpeg",
+        "description": "Single Mount Monitor Arm\nSupports up to 10kg\nSupports up to 32 Inch",
+        "category": "Monitor Arms"
+    },
+    {
+        "id": "monitor-arms-2",
+        "name": "AMS Titan X Pro",
+        "image": "/products/monitor-arms/2.jpeg",
+        "description": "Dual Mount Monitor Arm\n10kg Per Mount\nSupports up to 32 Inch\nUniversal VESA Compatible",
+        "category": "Monitor Arms"
+    },
+    {
         "id": "monitors-1",
-        "name": "PIXEL STORM X",
-        "image": "/products/monitors/1.png",
-        "description": "FHD, 24INCH, IPS, RGB BACK, BORDERLESS,165HZ",
+        "name": "AMS Pixle Storm X",
+        "image": "/products/monitors/1.jpeg",
+        "description": "24 Inch Monitor\n165Hz\n1ms\n100% sRGB\nFreeSync\nG-Sync\n1K\nIPS Panel",
         "category": "Monitors"
+    },
+    {
+        "id": "thermal-paste-1",
+        "name": "AMS TX-90",
+        "image": "/products/thermal-paste/1.jpeg",
+        "description": "Thermal Paste\n4 Gram Paste\n18 W/mK\nEasy Application\nExcellent Thermal Conductivity",
+        "category": "Thermal Paste"
+    },
+    {
+        "id": "wifi-network-accessories-1",
+        "name": "WiFi Dongle",
+        "image": "/products/wifi-network-accessories/1.jpeg",
+        "description": "2.4GHz\n150Mbps\nLong Range\nPlug and Play",
+        "category": "WiFi / Network Accessories"
     }
 ];
 
@@ -185,6 +248,11 @@ export const FEATURED_CATEGORIES = [
         "id": "all",
         "name": "All",
         "desc": "All Components"
+    },
+    {
+        "id": "Cables",
+        "name": "Cables",
+        "desc": "Cables Components"
     },
     {
         "id": "Cases",
@@ -202,8 +270,28 @@ export const FEATURED_CATEGORIES = [
         "desc": "Fans Components"
     },
     {
+        "id": "Gaming Chairs",
+        "name": "Gaming Chairs",
+        "desc": "Gaming Chairs Components"
+    },
+    {
+        "id": "Monitor Arms",
+        "name": "Monitor Arms",
+        "desc": "Monitor Arms Components"
+    },
+    {
         "id": "Monitors",
         "name": "Monitors",
         "desc": "Monitors Components"
+    },
+    {
+        "id": "Thermal Paste",
+        "name": "Thermal Paste",
+        "desc": "Thermal Paste Components"
+    },
+    {
+        "id": "WiFi / Network Accessories",
+        "name": "WiFi / Network Accessories",
+        "desc": "WiFi / Network Accessories Components"
     }
 ];

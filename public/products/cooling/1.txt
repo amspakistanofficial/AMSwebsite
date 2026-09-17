@@ -1,3 +1,5 @@
-A400
+AMS A-400
 
-4 PIPE RGB AIR COOLER
+4 Pipe Cooler
+32 CFM
+High Performance
