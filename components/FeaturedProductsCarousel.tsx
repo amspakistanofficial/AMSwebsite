@@ -6,14 +6,12 @@ interface FeaturedProductsCarouselProps {
 }
 
 export function FeaturedProductsCarousel({ products }: FeaturedProductsCarouselProps) {
-  const carouselProducts = [...products, ...products]
-
   return (
-    <div className="featured-carousel overflow-hidden py-3">
+    <div className="featured-carousel overflow-x-auto py-3">
       <div className="featured-carousel-track flex w-max gap-6">
-        {carouselProducts.map((product, index) => (
+        {products.map((product) => (
           <div
-            key={`${product.id}-${index}`}
+            key={product.id}
             className="featured-carousel-item shrink-0"
           >
             <ProductCard product={product} />
@@ -25,16 +23,6 @@ export function FeaturedProductsCarousel({ products }: FeaturedProductsCarouselP
         .featured-carousel {
           mask-image: linear-gradient(to right, transparent, black 7%, black 93%, transparent);
           -webkit-mask-image: linear-gradient(to right, transparent, black 7%, black 93%, transparent);
-        }
-
-        .featured-carousel-track {
-          animation: featured-scroll 52s linear infinite;
-          transform: translate3d(0, 0, 0);
-          will-change: transform;
-        }
-
-        .featured-carousel:hover .featured-carousel-track {
-          animation-play-state: paused;
         }
 
         .featured-carousel-item {
@@ -65,14 +53,6 @@ export function FeaturedProductsCarousel({ products }: FeaturedProductsCarouselP
           }
         }
 
-        @keyframes featured-scroll {
-          from {
-            transform: translate3d(0, 0, 0);
-          }
-          to {
-            transform: translate3d(calc(-50% - 12px), 0, 0);
-          }
-        }
       `}</style>
     </div>
   )

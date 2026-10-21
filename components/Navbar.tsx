@@ -250,6 +250,17 @@ export function Navbar() {
         </div>
       </div>
 
+      <div className={`md:hidden flex items-center gap-2 ${
+        isMobileMenuOpen ? "opacity-0 pointer-events-none" : "opacity-100"
+      }`}>
+      <Link
+        href="/products"
+        onClick={() => setIsMobileMenuOpen(false)}
+        className="inline-flex h-11 items-center border border-primary/60 px-3 text-[10px] font-bold tracking-wider text-primary transition-colors hover:bg-primary hover:text-white"
+        aria-current={isActive("/products") ? "page" : undefined}
+      >
+        ALL PRODUCTS
+      </Link>
       <button
         type="button"
         className={`relative z-[60] md:hidden inline-flex h-11 w-11 items-center justify-center border border-[#1a1a1a] bg-[#111111] text-gray-200 transition-colors hover:border-primary/50 hover:text-primary active:scale-95 ${
@@ -263,6 +274,7 @@ export function Navbar() {
       >
         <Menu className="h-5 w-5" />
       </button>
+      </div>
     </nav>
   )
 }

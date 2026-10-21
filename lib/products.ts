@@ -44,7 +44,7 @@ export const HERO_PRODUCTS: Product[] = [
     },
     {
         "id": "cases-2",
-        "name": "WHITE BIG",
+        "name": "Furion White",
         "image": "/products/cases/2.png",
         "description": "Premium Cases component selected by AMS.",
         "category": "Cases"
@@ -68,21 +68,21 @@ export const ALL_PRODUCTS: Product[] = [
     },
     {
         "id": "cases-2",
-        "name": "WHITE BIG",
+        "name": "Furion White",
         "image": "/products/cases/2.png",
         "description": "Premium Cases component selected by AMS.",
         "category": "Cases"
     },
     {
         "id": "cases-3",
-        "name": "BLACK BIG",
+        "name": "Furion Black",
         "image": "/products/cases/3.png",
         "description": "Premium Cases component selected by AMS.",
         "category": "Cases"
     },
     {
         "id": "cases-4",
-        "name": "WHITE CASE",
+        "name": "Iroshell White",
         "image": "/products/cases/4.png",
         "description": "Premium Cases component selected by AMS.",
         "category": "Cases"
@@ -130,20 +130,6 @@ export const ALL_PRODUCTS: Product[] = [
         "category": "Cases"
     },
     {
-        "id": "cases-11",
-        "name": "COOL WHITE",
-        "image": "/products/cases/11.png",
-        "description": "Premium Cases component selected by AMS.",
-        "category": "Cases"
-    },
-    {
-        "id": "cases-12",
-        "name": "COOL BLACK",
-        "image": "/products/cases/12.png",
-        "description": "Premium Cases component selected by AMS.",
-        "category": "Cases"
-    },
-    {
         "id": "cases-13",
         "name": "GOLDEN BOY",
         "image": "/products/cases/13.png",
@@ -152,7 +138,7 @@ export const ALL_PRODUCTS: Product[] = [
     },
     {
         "id": "cases-14",
-        "name": "NORMAL BLACK",
+        "name": "Ironshell",
         "image": "/products/cases/14.png",
         "description": "Premium Cases component selected by AMS.",
         "category": "Cases"
